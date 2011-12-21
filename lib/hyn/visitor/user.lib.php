@@ -1,14 +1,14 @@
 <?PHP
 if(!defined("HYN")) { exit; }
 
-class user extends AutoRecord {
+class user_ extends AutoRecord {
 	protected static function _db()
 	{
 		return AnewtDatabase::get_connection( "default" );
 	}
 	protected static function _db_table()
 	{
-		return "system_user";
+		return "site_user";
 	}
 	protected static function _db_columns()
 	{
@@ -24,3 +24,4 @@ class user extends AutoRecord {
 		);
 	}
 }
+#AutoRecord::register('user');

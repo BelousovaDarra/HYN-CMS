@@ -48,12 +48,11 @@ if( !$ms ) {
 	if( HYN_DEBUG ) {
 		exit(sprintf("<h1>System malfunctioned</h1><pre>No sites in system_domain table: %s - %s</pre>.",__FILE__,__LINE__));
 	}
-	exit(sprintf("<pre>System error, our apologies for the inconvencience.</pre>"));
+	exit(sprintf("<pre>System error, our apologies for the inconvenience.</pre>"));
 }
 
 // setup defined dirs
 $ms -> setConstants();
-
 if( HYN_SYSTEM_ID && $db		= $ms -> get("database") ) {
 	AnewtDatabase::setup_connection( array(
 		"type"			=> HYN_DB_TYPE,
@@ -62,6 +61,11 @@ if( HYN_SYSTEM_ID && $db		= $ms -> get("database") ) {
 		"username"		=> $db['un'],
 		"password"		=> $db['pw']
 	)	, "default" );
+} else {
+	if( HYN_DEBUG ) {
+		exit(sprintf("<h1>System malfunctioned</h1><pre>Database from portal could not be setup: %s - %s</pre>.",__FILE__,__LINE__));
+	}
+	exit(sprintf("<pre>System error, our apologies for the inconvenience.</pre>"));	
 }
 
 /**

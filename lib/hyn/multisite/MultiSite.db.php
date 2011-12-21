@@ -33,6 +33,14 @@ class MultiSite_ extends AutoRecord {
 					"own_key"		=> "id",
 					"multi"			=> true,				# multiple aliases can be defined per domain
 					"child_name"		=> "aliases"				# set to be able to request aliases by doing -> get("aliases")
+				),
+				array(
+					"foreign_class"		=> "MultiSiteUser",
+					"foreign_key"		=> "uid",
+					"columns"		=> array( "id" , "email" , "realname" , "dob" , "status" , "signedup" , "lastactivity" , "country" , "admin" , "uid" ),
+					"own_key"		=> "owner",
+					"multi"			=> false,
+					"child_name"		=> "owneraccount"
 				)
 		
 		);
@@ -66,7 +74,7 @@ class MultiSite_ extends AutoRecord {
 	
 	}
 	function get_settings($setting=false) {
-		if( $this -> _get("database") != "" && $settings = unserialize( $this -> _get("database") )) {
+		if( $this -> _get("settings") != "" && $settings = unserialize( $this -> _get("settings") )) {
 			if( $setting && isset($settings[$setting]) && $settings[$setting] != "" ) {
 				return $setting[$setting];
 			} elseif( !$setting ) {
