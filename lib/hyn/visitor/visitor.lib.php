@@ -1,14 +1,18 @@
 <?PHP
 if(!defined("HYN")) { exit; }
 
-class visitor extends Container {
-	static public $v;
+class SiteVisitor {
+	static private $v 	= null;
+	
+	static function get_instance() {
+		if( is_null( self::$v )) {
+			self::$v	= new SiteVisitor;
+		}
+		return self::$v;
+	}
 	
 	static function init() {
-		$v			= new visitor;
-		$v			-> set( "ip" 	, $_SERVER['REMOTE_ADDR'] );
-		$v			-> set( "host"	, gethostbyaddr( $_SERVER['REMOTE_ADDR'] ));
-		self::$v					= $v;
+		$v			= self::get_instance();
 	}
 	static function login() {
 		anewt_include( "gpc" );
@@ -17,5 +21,9 @@ class visitor extends Container {
 		} else {
 			return false;
 		}
+	}
+	private function __construct() {
+		$this		-> ip 				= $_SERVER['REMOTE_ADDR'] ;
+		$this		-> host				= gethostbyaddr( $_SERVER['REMOTE_ADDR'] );	
 	}
 }

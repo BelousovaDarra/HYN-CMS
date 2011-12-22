@@ -37,10 +37,11 @@ class MultiSite_ extends AutoRecord {
 				array(
 					"foreign_class"		=> "MultiSiteUser",
 					"foreign_key"		=> "uid",
-					"columns"		=> array( "id" , "email" , "realname" , "dob" , "status" , "signedup" , "lastactivity" , "country" , "admin" , "uid" ),
-					"own_key"		=> "owner",
-					"multi"			=> false,
-					"child_name"		=> "owneraccount"
+					"foreign_alias"		=> "owner",
+					"columns"			=> array( "id" , "email" , "realname" , "dob" , "status" , "signedup" , "lastactivity" , "country" , "admin" , "uid" ),
+					"own_key"			=> "owner",
+					"multi"				=> false,
+					"child_name"		=> "owner"
 				)
 		
 		);

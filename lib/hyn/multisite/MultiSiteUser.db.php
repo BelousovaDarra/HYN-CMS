@@ -27,6 +27,13 @@ class MultiSiteUser_ extends AutoRecord {
 			"uid"			=> "string"
 		);
 	}
+	public function get_isSiteOwner() {
+		global $MultiSite;
+		if( $MultiSite -> owner && $MultiSite -> owner -> get("id") == $this -> get("id") ) {
+			return true;
+		}
+		return false;
+	}
 }
 
 AutoRecord::register('MultiSiteUser');

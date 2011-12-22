@@ -39,23 +39,23 @@ anewt_include( "autorecord" );
 *	hostname identification 
 */
 hyn_include( "multisite" );
-$ms			= MultiSite::getbyhost($_SERVER['HTTP_HOST']);
+$MultiSite			= MultiSite::getbyhost($_SERVER['HTTP_HOST']);
 // otherwise default to prime site
-if( !$ms ) {
-	$ms 		= MultiSite::find_one_by_column("prime",true);
+if( !$MultiSite ) {
+	$MultiSite 		= MultiSite::find_one_by_column("prime",true);
 }
-if( !$ms ) {
+if( !$MultiSite ) {
 	if( HYN_DEBUG ) {
 		exit(sprintf("<h1>System malfunctioned</h1><pre>No sites in system_domain table: %s - %s</pre>.",__FILE__,__LINE__));
 	}
-	exit(sprintf("<pre>System error, our apologies for the inconvenience.</pre>"));
+	exit(sprintf("<pre>System error, our apologies for the inconvenience [%s].</pre>",__LINE__));
 }
-
 // setup defined dirs
-$ms -> setConstants();
-if( HYN_SYSTEM_ID && $db		= $ms -> get("database") ) {
+$MultiSite -> setConstants();
+if( HYN_SYSTEM_ID && $db = $MultiSite -> get("database") ) {
+	
 	AnewtDatabase::setup_connection( array(
-		"type"			=> HYN_DB_TYPE,
+		"type"			=> (isset( $db['type']) ? $db['type'] : HYN_DB_TYPE),
 		"database"		=> $db['db'],
 		"hostname"		=> $db['host'],
 		"username"		=> $db['un'],
@@ -65,7 +65,7 @@ if( HYN_SYSTEM_ID && $db		= $ms -> get("database") ) {
 	if( HYN_DEBUG ) {
 		exit(sprintf("<h1>System malfunctioned</h1><pre>Database from portal could not be setup: %s - %s</pre>.",__FILE__,__LINE__));
 	}
-	exit(sprintf("<pre>System error, our apologies for the inconvenience.</pre>"));	
+	exit(sprintf("<pre>System error, our apologies for the inconvenience [%s].</pre>",__LINE__));	
 }
 
 /**
@@ -77,7 +77,11 @@ if( HYN_SYSTEM_ID && $db		= $ms -> get("database") ) {
 */
 
 hyn_include( "visitor" );
-visitor::init();
+SiteVisitor::init();
 
 hyn_include( "routing" );
 routing::init();
+
+hyn_include( "dom" );
+DOM::set_js( "https://www.google.com/jsapi" );
+

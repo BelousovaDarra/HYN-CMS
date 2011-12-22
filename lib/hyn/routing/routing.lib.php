@@ -29,9 +29,9 @@ class routing extends Container {
 		}
 		if( $call_class && is_callable( $call_class )) {
 			$c		= new $call_class;
-		}
-		if( $c && $call_func && method_exists( $c , $call_func )) {
-			
+			if( $c && $call_func && method_exists( $c , $call_func )) {
+				# start building DOM content using DOM class
+			}
 		}
 	}
 }
