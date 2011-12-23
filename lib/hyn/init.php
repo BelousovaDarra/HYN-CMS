@@ -80,11 +80,10 @@ if( HYN_SYSTEM_ID && $db = $MultiSite -> get("database") ) {
 hyn_include( "visitor" );
 SiteVisitor::init();
 
+hyn_include( "dom" );
 hyn_include( "module" );
 hyn_include( "routing" );
 routing::init();
-
-hyn_include( "dom" );
 
 
 routing::flush();

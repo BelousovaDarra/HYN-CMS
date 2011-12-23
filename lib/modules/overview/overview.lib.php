@@ -2,7 +2,7 @@
 if( !defined("HYN")) { exit; }
 
 class overview extends module {
-	public function display() {
+	protected function _overview() {
 		DOM::set_css( HYN_PATH_HYN . "bootstrap".DS."bootstrap.min.css" );
 		DOM::set_css( HYN_PATH_TPL . "style.css" );
 		
@@ -11,7 +11,9 @@ class overview extends module {
 		DOM::set_js( HYN_PATH_HYN . "bootstrap".DS."js".DS."bootstrap-twipsy.js" );
 		DOM::set_js( HYN_PATH_HYN . "bootstrap".DS."js".DS."bootstrap-popover.js" );
 		DOM::set_js( HYN_PATH_HYN . "bootstrap".DS."js".DS."bootstrap-dropdown.js" );
-		DOM::set_meta( "name" , "generator" , "HYN.me" );
+		DOM::set_meta( "name" , "generator" , "HYN.me" );		
+	}
+	public function display() {
 		return $this -> parseTemplate( "overview.twig" );
 	}
 } 

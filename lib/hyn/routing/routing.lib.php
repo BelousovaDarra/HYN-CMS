@@ -42,7 +42,7 @@ class routing {
 		}
 	}
 	static function flush() {
-		$r 			= self::get_instance();
+		$r 				= self::get_instance();
 		if( !isset( $r -> c ) || !is_object( $r -> c )) {
 			if( HYN_DEBUG ) {
 				exit(sprintf("<h1>System malfunctioned</h1><pre>No class found to load module from: %s - %s</pre>.",__FILE__,__LINE__));
@@ -50,19 +50,18 @@ class routing {
 			exit(sprintf("<pre>System error, our apologies for the inconvenience [%s].</pre>",__LINE__));
 		}
 		if( isset($r -> f) ) {
-			$f		= $r -> f;
-			$content	= $r -> c -> $f();
+			$f			= $r -> f;
 		}
 		DOM::parse_js();
 		DOM::parse_css();
-		if( method_exists( $r -> c , "get_header" )) {
-			echo $r -> c -> get_header();
+#		if( method_exists( $r -> c , "get_header" )) {
+#			echo $r -> c -> get_header();
+#		}
+		if( isset($f)) {
+			echo $r -> c -> $f();
 		}
-		if( isset($content)) {
-			echo $content;
-		}
-		if( method_exists( $r -> c , "get_footer" )) {
-			echo $r -> c -> get_footer();
-		}
+#		if( method_exists( $r -> c , "get_footer" )) {
+#			echo $r -> c -> get_footer();
+#		}
 	}
 }

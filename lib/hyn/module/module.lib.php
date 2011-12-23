@@ -25,6 +25,28 @@ class module {
 		$this -> class		= $module;
 		$this -> setupDB();
 		$this -> setupTwig();
+		# now call constructor of module class
+		$callon		= "_".$this -> class;
+		if( method_exists( $this , $callon ) ) {
+			# read any session information
+			$this -> loadModuleSession();
+			$this -> $callon( (isset($moduleoptions) ? $moduleoptions : false) );
+		} else {
+#[TODO] error handling			
+			return;
+		}
+	}
+	protected function saveModuleSession() {
+		if( isset($this -> session)) {
+			$_SESSION[$this -> class]	= serialize( $this -> session );
+			return true;
+		} else { return false; }
+	}
+	protected function loadModuleSession() {
+		if( isset($_SESSION[$this -> class])) {
+			$this -> session			= unserialize( $_SESSION[$this -> class] );
+			return true;
+		} else { return false; }
 	}
 	final private function setupGlobalVars() {
 		global $MultiSite;
