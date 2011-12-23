@@ -51,6 +51,7 @@ if( !$MultiSite ) {
 	exit(sprintf("<pre>System error, our apologies for the inconvenience [%s].</pre>",__LINE__));
 }
 // setup defined dirs
+global $MultiSite;
 $MultiSite -> setConstants();
 if( HYN_SYSTEM_ID && $db = $MultiSite -> get("database") ) {
 	
@@ -79,9 +80,11 @@ if( HYN_SYSTEM_ID && $db = $MultiSite -> get("database") ) {
 hyn_include( "visitor" );
 SiteVisitor::init();
 
+hyn_include( "module" );
 hyn_include( "routing" );
 routing::init();
 
 hyn_include( "dom" );
-DOM::set_js( "https://www.google.com/jsapi" );
 
+
+routing::flush();

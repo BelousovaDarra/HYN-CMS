@@ -12,7 +12,7 @@ class SiteVisitor {
 	}
 	
 	static function init() {
-		$v			= self::get_instance();
+#		$v			= self::get_instance();
 	}
 	static function login() {
 		anewt_include( "gpc" );

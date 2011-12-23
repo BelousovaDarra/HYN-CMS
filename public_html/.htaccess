@@ -7,8 +7,8 @@ RewriteBase /
 
 RewriteRule ^index\.php$ - [L,NC]
 
-RewriteRule ^js/(.*) /min/ [L]
-RewriteRule ^css/(.*) /min/ [L]
+RewriteRule ^js/(.*) - [L,NC]
+RewriteRule ^css/(.*) - [L,NC]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

@@ -5,7 +5,7 @@ if( !defined("HYN")) { exit; }
 define(		"DS"				, DIRECTORY_SEPARATOR );
 define(		"HYN_PATH_ROOT"		, dirname(dirname( __DIR__ )) . DS );
 define(		"HYN_PATH_DOMAINS"	, dirname( HYN_PATH_ROOT ) . DS );
-define(		"HYN_PATH_LIB"		, HYN_PATH_ROOT . DS . "lib" . DS );
+define(		"HYN_PATH_LIB"		, HYN_PATH_ROOT . "lib" . DS );
 
 define(		"HYN_PATH_PUBLIC"	, HYN_PATH_ROOT . "public_html" . DS );
 define(		"HYN_PATH_CACHE"	, HYN_PATH_ROOT . "cache" . DS );
