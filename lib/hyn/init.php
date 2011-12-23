@@ -33,7 +33,7 @@ AnewtDatabase::setup_connection( array(
 	"persistent"		=> false
 )	, "hyn" );
 
-anewt_include( "autorecord" );
+anewt_include( "autorecord", "gpc" );
 
 /** 
 *	hostname identification 
