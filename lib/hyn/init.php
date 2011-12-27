@@ -2,7 +2,7 @@
 
 if( !defined( "HYN" )) { exit; }
 
-$debugips		= array( "85.223.52.86" , "83.160.60.188" );
+$debugips		= array( "85.223.52.86" , "83.160.60.188" , "79.242.186.80" );
 
 if( in_array($_SERVER['REMOTE_ADDR'],$debugips)) {
 	define( "HYN_DEBUG"	, true );

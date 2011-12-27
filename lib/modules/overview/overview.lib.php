@@ -6,8 +6,8 @@ class overview extends module {
 		# check for domain
 		if( GPC::post_string("hxs-domain-check")) {
 			hyn_include( "hxsapi" );
-			$hxs		= new hxsclient( HXS_API_UN , HXS_API_PW );
-			_debug( $hxs -> checkDomain( GPC::post_string("hxs-domain-name" )) );
+			$hxs			= new hxsclient( HXS_API_UN , HXS_API_PW );
+			$this -> domain	= $hxs -> checkDomain( GPC::post_string("hxs-domain-name" ));
 		}
 		DOM::set_css( HYN_PATH_HYN . "bootstrap".DS."bootstrap.css" );
 		DOM::set_css( HYN_PATH_TPL . "style.css" );
@@ -21,6 +21,10 @@ class overview extends module {
 		DOM::set_meta( "name" , "generator" , "HYN.me" );		
 	}
 	public function display() {
-		return $this -> parseTemplate( "overview.twig" );
+		if( isset( $this -> domain )) {
+			return $this -> parseTemplate( "domaincheck.twig" , array( "domain" => $this -> domain[0] ) );
+		} else {
+			return $this -> parseTemplate( "overview.twig" );
+		}
 	}
 } 
