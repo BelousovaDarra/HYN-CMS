@@ -78,7 +78,8 @@ if( HYN_SYSTEM_ID && $db = $MultiSite -> get("database") ) {
 *			identify paths & load requested url
 */
 
-
+# starts visitor object and loads saved session if possible
+# also begins analytics tracking
 SiteVisitor::init();
 
 hyn_include( "dom" );

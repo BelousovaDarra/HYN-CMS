@@ -44,7 +44,9 @@ class SiteVisitor {
 		$this		-> ip 				= $_SERVER['REMOTE_ADDR'] ;
 		$this		-> host				= gethostbyaddr( $_SERVER['REMOTE_ADDR'] );	
 		if( GPC::post_string("login-user") ) {
-			self::login();
+			if( self::login() ) {
+				# show public notification welcome	
+			}
 		}
 	}
 }
