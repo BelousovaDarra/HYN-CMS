@@ -2,16 +2,16 @@
 
 if( !defined( "HYN" )) { exit; }
 
-$debugips		= array( "85.223.52.86" , "83.160.60.188" , "79.242.186.80" );
-
-if( in_array($_SERVER['REMOTE_ADDR'],$debugips)) {
-	define( "HYN_DEBUG"	, true );
-	error_reporting( E_ALL );
-} else { define("HYN_DEBUG" , false ); }
-
 /** setup */
 require_once "constants.php";
 require_once "config.php";
+
+if( isset($debugips) && in_array($_SERVER['REMOTE_ADDR'],$debugips)) {
+	define( "HYN_DEBUG"	, true );
+	error_reporting( E_ALL );
+} else { 
+	define("HYN_DEBUG" , false );
+}
 
 /** anewt library included */
 require_once HYN_PATH_ANEWT . "anewt.lib.php";
@@ -84,7 +84,9 @@ SiteVisitor::init();
 hyn_include( "dom" );
 hyn_include( "module" );
 hyn_include( "routing" );
+
+# load url and requested module or load overview module
 routing::init();
 
-
+# throw the content to the browser
 routing::flush();

@@ -19,13 +19,14 @@ class SiteVisitor {
 		if( $un = GPC::post_string("login-username") && $pw = GPC::post_string("login-password") ) {
 			$remember				= GPC::post_bool("login-remember");
 			# check for Portal / Site USER
-			if( $u = SiteUser::find_one_by_un( $un ) ) {
+			if( $s = SystemUser::find_one_by_un( $un ) || $u = SiteUser::find_one_by_un( $un ) ) {
+				if( $s ) { $user = $s; } elseif( $u ) { $user = $u; }
 				# user found, check pw
-				if( crypt( $pw , $u -> get("password")) ) {
+				if( crypt( $pw , $user -> get("password")) ) {
 					# password is correct, check for state
-					if( !$u -> get("banned") ) {
+					if( !$user -> get("banned") ) {
 						$v	= self::get_instance();
-						$v	-> user		= $u;
+						$v	-> user		= $user;
 						return true;
 					} else {
 						# show error [TODO]	- banned

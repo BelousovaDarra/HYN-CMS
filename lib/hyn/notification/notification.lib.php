@@ -3,11 +3,20 @@ if( !defined('HYN') ) { exit; }
 
 class notification {
 	static $inst		= NULL;
+	
+	private function __construct() {
+		
+	}
+	
 	static function get_instance() {
 		if( is_null(self::$inst)) {
 			self::$inst	= new notification();
 		}
 		return self::$inst;
+	}
+	public function init() {
+		$inst		= self::get_instance();
+		
 	}
 /*
 	function __construct() {

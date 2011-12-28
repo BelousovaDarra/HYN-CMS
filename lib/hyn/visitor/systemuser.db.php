@@ -23,6 +23,5 @@ class SystemUser_ extends BasicUser {
 			"state"			=> "integer",		// 1 - signed up, 0 - banned
 		);
 	}
-
 }
-AutoRecord::register('SystemUser');
+BasicUser::register('SystemUser');
