@@ -1,27 +1,28 @@
 <?PHP
 if(!defined("HYN")) { exit; }
 
-class SiteUser_ extends AutoRecord {
+class SystemUser_ extends BasicUser {
 	protected static function _db()
 	{
-		return AnewtDatabase::get_connection( "default" );
+		return AnewtDatabase::get_connection( "hyn" );
 	}
 	protected static function _db_table()
 	{
-		return "site_user";
+		return "system_user";
 	}
 	protected static function _db_columns()
 	{
 		return array(
 			"id"			=> "integer",		// user id
-			"domain"		=> "integer",		// domain id
 			"email"			=> "string",		// email address
 			"password"		=> "string",		// password
 			"realname"		=> "string",		// realname
-			"created"		=> "datetime",
-			"updated"		=> "datetime",
-			"state"			=> "integer"		// 1 - signed up, 0 - banned
+			"signedup"		=> "datetime",
+			"lastactivity"	=> "datetime",
+			"admin"			=> "integer",
+			"state"			=> "integer",		// 1 - signed up, 0 - banned
 		);
 	}
+
 }
-AutoRecord::register('SiteUser');
+AutoRecord::register('SystemUser');
