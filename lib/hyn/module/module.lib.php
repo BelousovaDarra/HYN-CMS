@@ -60,12 +60,17 @@ class module {
 	final private function setupTwig() {
 		if( isset($this -> twig) ) return;
 		hyn_include( "twig" );
+		
+		# <domain>/templates/module/<file>
+		# <domain>/templates/<file>
+		# <system>/templates/<file>
+		# <system>/lib/modules/<module>/templates/<file>
 		if( defined("HYN_MS_DIR_TPL") && is_dir( HYN_MS_DIR_TPL ) ) {
 			$tpldirs[]		= HYN_MS_DIR_TPL;
 		}
 		$tpldirs[]			= HYN_PATH_TPL;
 		$twigloader			= new Twig_Loader_Filesystem( $tpldirs );
-		$this -> twig			= new Twig_Environment( $twigloader );	
+		$this -> twig		= new Twig_Environment( $twigloader );	
 	}
 	final public function parseTemplate( $tpl , $vrs=false ) {
 		if( !$vrs ) { $vrs	= array(); }

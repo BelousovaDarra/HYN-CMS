@@ -39,6 +39,7 @@ anewt_include( "autorecord", "gpc" );
 *	hostname identification 
 */
 hyn_include( "multisite" );
+hyn_include( "visitor" );
 $MultiSite			= MultiSite::getbyhost($_SERVER['HTTP_HOST']);
 // otherwise default to prime site
 if( !$MultiSite ) {
@@ -77,7 +78,7 @@ if( HYN_SYSTEM_ID && $db = $MultiSite -> get("database") ) {
 *			identify paths & load requested url
 */
 
-hyn_include( "visitor" );
+
 SiteVisitor::init();
 
 hyn_include( "dom" );

@@ -35,10 +35,10 @@ class MultiSite_ extends AutoRecord {
 					"child_name"		=> "aliases"				# set to be able to request aliases by doing -> get("aliases")
 				),
 				array(
-					"foreign_class"		=> "MultiSiteUser",
-					"foreign_key"		=> "uid",
+					"foreign_class"		=> "SystemUser",
+					"foreign_key"		=> "id",
 					"foreign_alias"		=> "owner",
-					"columns"			=> array( "id" , "email" , "realname" , "dob" , "status" , "signedup" , "lastactivity" , "country" , "admin" , "uid" ),
+					"columns"			=> array( "id" , "email" , "realname" , "state" , "signedup" , "lastactivity"  , "admin" ),
 					"own_key"			=> "owner",
 					"multi"				=> false,
 					"child_name"		=> "owner"
