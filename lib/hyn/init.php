@@ -82,9 +82,12 @@ if( HYN_SYSTEM_ID && $db = $MultiSite -> get("database") ) {
 # also begins analytics tracking
 SiteVisitor::init();
 
+
 hyn_include( "dom" );
 hyn_include( "module" );
 hyn_include( "routing" );
+
+hyn_include( "twig" );
 
 # load url and requested module or load overview module
 routing::init();

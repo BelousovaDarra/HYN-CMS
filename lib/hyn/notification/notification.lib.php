@@ -18,6 +18,7 @@ class notification {
 		$inst		= self::get_instance();
 		
 	}
+	
 /*
 	function __construct() {
 		$this -> number				= 0;

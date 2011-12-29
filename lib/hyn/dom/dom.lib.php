@@ -22,8 +22,9 @@ class DOM {
 		$dom		-> css[]	= $css;
 		$dom		-> css		= array_unique( $dom -> css , SORT_STRING );
 	}
-	static public function set_js( $js ) {
-		$dom				= self::get_instance();
+	static public function set_js( $js , $opts=false ) {
+		if( $opts ) { extract( $opts ); }
+		$dom					= self::get_instance();
 		$dom		-> js[]		= $js;
 		$dom		-> js		= array_unique( $dom -> js , SORT_STRING );
 	}
@@ -52,8 +53,16 @@ class DOM {
 				$uri		= parse_url( $js );
 				# local file
 				if( !isset($uri['scheme']) && !isset($uri['host'])) {
-					$javascript	= file_get_contents( $js );
-					$r		.= JSMin::minify( $javascript );
+					if( preg_match( "/\.twig/i",$js) ) {
+						$javascript = Twig::parse( $js );
+					} else {
+						$javascript	= file_get_contents( filefind($js) );
+					}
+					if( HYN_DEBUG ) {
+						$r 	.= $javascript;
+					} else {
+						$r		.= JSMin::minify( $javascript );
+					}
 					unset( $this -> js[$i] );
 				}
 			}
@@ -69,7 +78,7 @@ class DOM {
 				$uri		= parse_url( $css );
 				# local file
 				if( !isset($uri['scheme']) && !isset($uri['host'])) {
-					$stylesheet	= file_get_contents( $css );
+					$stylesheet	= file_get_contents( filefind($css) );
 					$r		.= preg_replace( $minsearch , $minreplace , $stylesheet );
 					unset( $this -> css[$i] );
 				}

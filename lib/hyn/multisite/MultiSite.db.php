@@ -20,7 +20,6 @@ class MultiSite_ extends AutoRecord {
 			"owner"			=> "integer",
 			"state"			=> "integer",
 			"prime"			=> "boolean",
-			"settings"		=> "string",
 		);
 	}
 	protected static function _db_join_many() {
@@ -74,21 +73,18 @@ class MultiSite_ extends AutoRecord {
 		}
 	
 	}
-	function get_settings($setting=false) {
-		if( $this -> _get("settings") != "" && $settings = unserialize( $this -> _get("settings") )) {
-			if( $setting && isset($settings[$setting]) && $settings[$setting] != "" ) {
-				return $setting[$setting];
-			} elseif( !$setting ) {
-				return $settings;
-			} 
+	static function get_instance() {
+		global $MultiSite;
+		if( is_a( $MultiSite , "MultiSite" )) {
+			return $MultiSite;
+		} else {
+			return false;
 		}
-		return false;
 	}
-	function get_setting( $setting=false ) {
-		if( $setting ) {
-			return self::get("settings",$setting);
-		}
-		return false;
+	static function setting( $setting=false , $module=false ) {
+		return SiteSettings::find_one_by_sql( 
+			sprintf("WHERE `name` = '%s'". ($module ? " AND `module` = '%s'" : false ) , $setting , ($module ? $module : NULL ))
+		);
 	}
 }
 

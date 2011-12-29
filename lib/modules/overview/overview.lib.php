@@ -13,18 +13,22 @@ class overview extends module {
 		DOM::set_css( HYN_PATH_TPL . "style.css" );
 		
 		DOM::set_js( "https://www.google.com/jsapi" );
-		DOM::set_js( HYN_PATH_TPL . "load.js" );
+		DOM::set_js( HYN_URI_HTTPS . HYN_URI_HTTPHOST . "/js/jq+jqui.js" );
 		DOM::set_js( HYN_PATH_HYN . "bootstrap".DS."js".DS."bootstrap-twipsy.js" );
 		DOM::set_js( HYN_PATH_HYN . "bootstrap".DS."js".DS."bootstrap-popover.js" );
 		DOM::set_js( HYN_PATH_HYN . "bootstrap".DS."js".DS."bootstrap-dropdown.js" );
 		DOM::set_js( HYN_PATH_HYN . "bootstrap".DS."js".DS."bootstrap-buttons.js" );
+		DOM::set_js( HYN_PATH_HYN . "bootstrap".DS."js".DS."bootstrap-alerts.js" );
+		
+		hyn_include( "beaconpush" );
+	
 		DOM::set_meta( "name" , "generator" , "HYN.me" );		
 	}
 	public function display() {
 		if( isset( $this -> domain )) {
-			return $this -> parseTemplate( "domaincheck.twig" , array( "domain" => $this -> domain[0] ) );
+			return $this -> parseTemplate( "domaincheck" , array( "domain" => $this -> domain[0] ) );
 		} else {
-			return $this -> parseTemplate( "overview.twig" );
+			return $this -> parseTemplate( "overview" );
 		}
 	}
 } 

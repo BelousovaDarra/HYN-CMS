@@ -9,10 +9,7 @@
 	{% endfor %}
     {% endfor %}{% for css in dom.css %}
 	<link href="{{ css }}" rel="stylesheet">
-    {% endfor %}{% for js in dom.js %}
-	<script src="{{ js }}"></script>
     {% endfor %}
-
   </head> 
  
 <body>
@@ -60,4 +57,7 @@
 				</ul>
 			</div>
 		</div>
+	</div>
+	<div id="notify-placeholder" class="hidden alert-message block-message error fade in">
+		<a class="close"></a>
 	</div>

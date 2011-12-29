@@ -15,5 +15,8 @@
 			</div>
 		</footer> 
 	</div>
+	{% for js in dom.js %}
+	<script src="{{ js }}"></script>
+    {% endfor %}
 </body> 
 </html>
