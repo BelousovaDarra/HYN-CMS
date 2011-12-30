@@ -1,8 +1,11 @@
 // add more channels if user is admin or so
 Beacon.connect('{{ beaconpush_apikey }}', ['notify']{% if visitor.user %}, ['user':'{{ visitor.user.get_uid }}'}{% endif %});
-Beacon.listen(function (data) { 
-	alert(data);
-	jQuery("#notify-placeholder p").html(data);
-	jQuery("#notify-placeholder").show();
+Beacon.listen(function(data) { 
+	var clone = jQuery("#notify-placeholder").clone();
+	jQuery("#notify-placeholder").after( clone );
+	jQuery( clone ).addClass( data.class );
+	jQuery( clone ).find("p").html(data.message);
+	jQuery( clone ).find("p").prepend("<strong>" + data.title + ":</strong> ");
+	jQuery( clone ).show();
 	jQuery(".alert-message").alert();
 });

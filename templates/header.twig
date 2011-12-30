@@ -21,36 +21,37 @@
 				<a class="brand" href="http://{{ ms.domain }}">{{ ms.domain }}</a>
 				<ul class="nav">
 					<li class="active"><a href="http://{{ ms.domain }}">Home</a></li>
-					<li>
-						<a class="menu" href="#">Platforms</a>
-{#						<ul>
+					<li class="dropdown" data-dropdown="dropdown">
+						<a class="dropdown-toggle" class="menu" href="#">Platforms</a>
+						<ul class="dropdown-menu">
 							<li><a href="#">Linux</a></li>
 							<li><a href="#">Windows</a></li>
 							<li class="divider"></li>
 							<li><a href="#">Custom</a></li>
-						</ul> #}
+						</ul>
 					</li>
-					<li data-dropdown="dropdown">
-						<a class="menu" href="#">Applications</a>
-{#						<ul>
+					<li class="dropdown" data-dropdown="dropdown">
+						<a class="dropdown-toggle" href="#">Applications</a>
+						<ul class="dropdown-menu">
 							<li><a href="#">CMS's</a></li>
 							<li><a href="#">Blogs</a></li>
 							<li><a href="#">Shops</a></li>
 							<li><a href="#">CRM's</a></li>
 							<li><a href="#">ELO's</a></li>
-						</ul>#}
+						</ul>
 					</li>
 				</ul>
 				<ul class="nav secondary-nav">
 					<li data-dropdown="dropdown">
-						<a class="menu" href="#">About</a>
-{#						<ul>
-							<li><a href="#"></a></li>
-						</ul>#}
+						<a class="dropdown-toggle" href="#">About</a>
+						<ul class="dropdown-menu">
+							<li><a href="#">how it work</a></li>
+							<li><a href="#">who we are</a></li>
+						</ul>
 					</li>
 					<li data-dropdown="dropdown">
-						<a class="menu" href="#">Help</a>
-{#						<ul>
+						<a class="dropdown-toggle" href="#">Help</a>
+{#						<ul class="dropdown-menu">
 							<li><a href="#"></a></li>
 						</ul>#}
 					</li>
@@ -58,6 +59,10 @@
 			</div>
 		</div>
 	</div>
-	<div id="notify-placeholder" class="hidden alert-message block-message error fade in">
-		<a class="close"></a>
+	<div id="notify-placeholder" class="hidden alert-message block-message fade in">
+		<a class="close">×</a>
+		<h3></h3>
+		<p>
+					
+		</p>
 	</div>

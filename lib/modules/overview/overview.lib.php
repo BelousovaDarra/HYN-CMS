@@ -21,8 +21,13 @@ class overview extends module {
 		DOM::set_js( HYN_PATH_HYN . "bootstrap".DS."js".DS."bootstrap-alerts.js" );
 		
 		hyn_include( "beaconpush" );
+#		BeaconPusher::send_to_channel( "notify" , "test" , array("Yes we are testing the push") );
 	
-		DOM::set_meta( "name" , "generator" , "HYN.me" );		
+		DOM::set_meta( "name" , "generator" , "HYN.me" );
+		
+		DOM::set_js( HYN_PATH_PUBLIC_JS . "jq-slides.js" );
+		DOM::set_css( filefind( "slides.css" , $this -> class ) );
+		DOM::set_js( filefind( "slides-load.js" , $this -> class ) );
 	}
 	public function display() {
 		if( isset( $this -> domain )) {

@@ -82,7 +82,6 @@ if( HYN_SYSTEM_ID && $db = $MultiSite -> get("database") ) {
 # also begins analytics tracking
 SiteVisitor::init();
 
-
 hyn_include( "dom" );
 hyn_include( "module" );
 hyn_include( "routing" );

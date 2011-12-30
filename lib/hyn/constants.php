@@ -8,6 +8,9 @@ define(		"HYN_PATH_DOMAINS"	, dirname( HYN_PATH_ROOT ) . DS );
 define(		"HYN_PATH_LIB"		, HYN_PATH_ROOT . "lib" . DS );
 
 define(		"HYN_PATH_PUBLIC"	, HYN_PATH_ROOT . "public_html" . DS );
+define(		"HYN_PATH_PUBLIC_JS", HYN_PATH_PUBLIC . "js" . DS );
+define(		"HYN_PATH_PUBLIC_CSS", HYN_PATH_PUBLIC . "css" . DS );
+
 define(		"HYN_PATH_CACHE"	, HYN_PATH_ROOT . "cache" . DS );
 define(		"HYN_PATH_TPL"		, HYN_PATH_ROOT . "templates" . DS );
 
