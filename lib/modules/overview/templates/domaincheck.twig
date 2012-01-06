@@ -2,7 +2,7 @@
 	<div class="hero-unit">
 		<h1>{{ domain.name }}</h1>
 		<p>{{ domain.name }}
-				{% if domain.free == 1 %}
+				{% if domain.free == true %}
 					is <strong>available</strong>. Register it now for only &euro; {{ domain.prices.1 }} each year.
 				{% else %}
 					is already registered. If this domain belongs to you, it is possible to transfer your domain to us.

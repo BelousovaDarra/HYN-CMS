@@ -58,7 +58,7 @@ class module {
 		$this -> twig			= Twig::get_instance();
 	}
 	final public function parseTemplate( $tpl , $vrs=false ) {
-		return Twig::parse( filefind($tpl,$this -> class) , (_v($vars,"array") ? $vars : array()) );
+		return Twig::parse( filefind($tpl,$this -> class) , (_v($vrs,"array") ? $vrs : array()) );
 	}
 	public function get_header() {
 		return $this -> parseTemplate( "header.twig" );
