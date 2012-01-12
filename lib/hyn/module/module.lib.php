@@ -6,7 +6,7 @@ if(!defined("HYN")) { exit; }
 *
 *		modules must extend this class
 */
-class module {
+abstract class module {
 	/**
 	*	
 	*

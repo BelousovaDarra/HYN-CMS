@@ -13,7 +13,8 @@ class sitecheck extends module {
 		$ignoreusers		= explode(",",MultiSite::setting( "ignoreusers" , "sitecheck" ) -> get("value"));
 		$id			= $this -> get_lastid();
 		$mentions		= $this -> tf -> get( "/statuses/mentions.json" , array( "since_id" => $id) );
-
+_debug( $mentions -> response );
+		$cnt			= 0;
 		if( _v($mentions -> response,"array")) { foreach( $mentions -> response as $mention ) {
 			if( in_array($mention['user']['screen_name'],$ignoredusers)) { continue; }
 
@@ -24,14 +25,15 @@ class sitecheck extends module {
 			$users	= $this -> get_users( $users );
 			if( !count( $users )) { continue; }
 			$this -> dissectTweet( $mention['text'] );
+			if( !count( $this -> domains ) ) { continue; }
 #			$this -> tf -> post( "/statuses/update.json" , array(
 #					"status" => $users . ": Uw siteanalyse wordt nu verwerkt. - http://facebook.com/hostingxs" ));
 			$this -> resp[]	= $mention['text'];
 #			if( $mention['id'] > $id ) {
 #				$this -> set_lastid( $id );
 #			}
-
-return;
+			$cnt++;
+if( $cnt >= 2 ) {return;}
 		}}
 	}
 	private function get_users( $users=array() ) {
@@ -72,13 +74,13 @@ return;
 	function display() {
 		if( _v($this -> domains,"array")) {foreach( $this -> domains as $dom ) {
 			if( isset($r[$dom])) { continue; }
-			$r[$dom]	= array(
+			$r[]	= array(
+					"domain"		=> $dom,
 					"pagespeed"		=> $this -> pagespeed( $dom ),
 					"ping"			=> $this -> siteping( $dom ),
 					"location"		=> $this -> location( $dom )
 			);
 		}}
-		_debug( $r );
 		return json_encode( $r );
 	}
 	private function siteping( $dom ) {
@@ -100,10 +102,17 @@ return;
 		curl_setopt( $c , CURLOPT_RETURNTRANSFER , true );
 		$ret	= json_decode( curl_exec( $c ));
 		if( $ret -> responseCode == 200 ) {
-			$r['score']		= $ret -> score;
+			$score			= (string) $ret -> score;
+			$lastnr			= intval(substr( $score , -1 ));
+			$score			= substr( $score , 0 , -1 );
+			if( $lastnr && $lastnr > 0 ) {
+				$score		= $score .",". (string) $lastnr;
+			}
+
+			$r['score']		= $score;
 			$r['title']		= $ret -> title;
 			$r['pagestats']		= $ret -> pageStats;
-		}
+		} else { $r = false; }
 		
 		return $r;
 		#return json_decode(file_get_contents( "https://www.googleapis.com/pagespeedonline/v1/runPagespeed?url=".$dom."&key=".MultiSite::setting( "ga-pagespeedkey" , "sitecheck" ) -> get("value")));

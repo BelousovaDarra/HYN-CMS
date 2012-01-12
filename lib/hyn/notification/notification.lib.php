@@ -3,9 +3,38 @@ if( !defined('HYN') ) { exit; }
 
 class notification {
 	static $inst		= NULL;
+	static $message		= array();
+	static $error		= array();
+	static $debug		= array();
 	
 	private function __construct() {
+		error_reporting( E_ALL | E_STRICT );
+		ini_set( 'display_errors' , 'On' );
+		set_error_handler( array( $this , "errorHandler" ) , E_ALL );
+	}
+	
+	public function errorHandler( $code , $message , $file , $line ) {
+		switch( $code ) {
+			case E_USER_ERROR:
+				$friendly				= _("Something went terribly wrong, we have been notified of this issue.");
+				break;
+			case E_USER_WARNING:
+				$friendly				= _("Something went wrong, we have been notified of this issue.");
+				break;
+			case E_USER_NOTICE:
+#				$friendly				= _("Something went wrong, as a precaution we are notified of this issue.");
+				break;
+			default:
+#				$friendly				= _("Something went wrong, we've been notified of this issue.");
+		}
+		if( $this -> debug ) {
+#			$message					= $message . '<span class="ui-silk ui-silk-error" class="toggler" href="errordebug-'.$this -> number.'"></span><div tab="errordebug-'.$this -> number.'">'.debug_backtrace().'</div>';
+			$this -> add( $this -> errCode($code) , sprintf("%s @ %s on line %s" , $message , $file , $line ) , (isset($friendly) ? "error" : "info") );
+		} else {
+			$this -> add( $this -> errCode($code) , $friendly , "info" );
+		}
 		
+		if( $code == E_USER_ERROR ) { exit; }
 	}
 	
 	static function get_instance() {

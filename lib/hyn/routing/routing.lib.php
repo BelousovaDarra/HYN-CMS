@@ -34,14 +34,14 @@ class routing {
 			$call_func		= $r -> route -> get("function");
 		}
 		// now check for uri based on class, function
-		elseif( $r -> uri['path'] != "/" && count( $this -> path ) && class_exists( $this -> path[0] ) ) {
-			$call_class		= $this -> path[0];
-			if( isset($this -> path[1]) && method_exists( $call_class , $this -> path[1] ) ) {
-				$call_func	= $this -> path[1];
+		elseif( $r -> uri['path'] != "/" && count( $r -> path ) && class_exists( $r -> path[0] ) ) {
+			$call_class		= $r -> path[0];
+			if( isset($r -> path[1]) && method_exists( $call_class , $r -> path[1] ) ) {
+				$call_func	= $r -> path[1];
 			}
 		}
 		// now if not root page, show 404 etc
-		elseif( $r -> uri['path'] != "/" && count( $this -> path ) && class_exists( "ErrorPage" ) ) {
+		elseif( $r -> uri['path'] != "/" && count( $r -> path ) && class_exists( "ErrorPage" ) ) {
 			$call_class		= "ErrorPage";
 		}
 		// otherwise show overview, if available
