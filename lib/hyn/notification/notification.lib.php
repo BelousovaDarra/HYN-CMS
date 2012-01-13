@@ -27,14 +27,15 @@ class notification {
 			default:
 #				$friendly				= _("Something went wrong, we've been notified of this issue.");
 		}
-		if( $this -> debug ) {
+		
+		if( HYN_DEBUG ) {
 #			$message					= $message . '<span class="ui-silk ui-silk-error" class="toggler" href="errordebug-'.$this -> number.'"></span><div tab="errordebug-'.$this -> number.'">'.debug_backtrace().'</div>';
 			$this -> add( $this -> errCode($code) , sprintf("%s @ %s on line %s" , $message , $file , $line ) , (isset($friendly) ? "error" : "info") );
 		} else {
 			$this -> add( $this -> errCode($code) , $friendly , "info" );
 		}
 		
-		if( $code == E_USER_ERROR ) { exit; }
+		# [ TODO ] exit
 	}
 	
 	static function get_instance() {

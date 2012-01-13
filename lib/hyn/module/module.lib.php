@@ -25,6 +25,7 @@ abstract class module {
 		$this -> class		= $module;
 		$this -> setupDB();
 		$this -> setupTwig();
+		$this -> setupRoutes();
 		# now call constructor of module class
 		$callon		= "_".$this -> class;
 		if( method_exists( $this , $callon ) ) {
@@ -48,7 +49,9 @@ abstract class module {
 			return true;
 		} else { return false; }
 	}
-
+	final private function setupRoutes() {
+		$this -> route			= routing::get_instance();
+	}
 	final private function setupDB() {
 		if( isset($this -> db) ) return;
 		$this -> db			= AnewtDatabase::get_connection( "default" );
