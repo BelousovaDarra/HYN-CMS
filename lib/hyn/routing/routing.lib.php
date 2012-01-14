@@ -11,8 +11,25 @@ class routing {
 		$this			-> request_uri		= HYN_URI_REQUEST;
 		$this			-> uri			= parse_url( HYN_URI_REQUEST );
 		$this			-> path			= explode( "/" , $this -> uri['path'] );
+		# due to explosion, the first part is empty uri /subdir
 		array_shift($this -> path);
-		$this			-> route		= routes::routefrompath($this -> path);
+		$this			-> route		= routes::routefrompath( $this -> path );
+		# no route in database found find routing from file
+		if( !$this -> route && count( $this -> path ) ) {
+			$this 		-> route		= $this -> findFolderRouting( $this -> path );
+		}
+	}
+	# [TODO] find file based routings
+	private function findFolderRouting( $path ) {
+		# not using $this -> path because we do not want to change it
+		$module							= array_shift( $path );
+		if( isset($module) && _v( $module , "string" )) {
+			# routing can only be located in the module dir
+			if( $r = _filefind( "routing" , HYN_MS_DIR_MODULES . $module . DS , ".twig" )) {
+				
+			}
+		}
+		return false;
 	}
 	static function get_instance() {
 		if( is_null(self::$r)) {
