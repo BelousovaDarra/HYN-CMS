@@ -11,7 +11,7 @@ class sitecheck extends module {
 						MultiSite::setting( "accesskey" 	, "sitecheck" ) -> get("value") ,
 						MultiSite::setting( "accesssecret" 	, "sitecheck" ) -> get("value")
 		);
-		} catch( $e ) {
+		} catch( Exception $e ) {
 			return;
 		}
 		$ignoreusers		= explode(",",MultiSite::setting( "ignoreusers" , "sitecheck" ) -> get("value"));
@@ -90,11 +90,10 @@ class sitecheck extends module {
 				$excludes[]		= $m;
 			}
 		}
-
 	}
 	# it's an api so do not load any other template; just send to clients ( beaconpush or .. )
 	function display() {
-		if( _v($this -> domains,"array")) {foreach( $this -> domains as $dom ) {
+		if( isset($this -> domains) && _v($this -> domains,"array")) {foreach( $this -> domains as $dom ) {
 			if( file_exists( __DIR__ ."/domains/".$dom)) {
 				$r[]	= unserialize(file_get_contents( __DIR__ . "/domains/".$dom ));
 			} else {

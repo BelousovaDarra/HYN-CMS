@@ -30,6 +30,11 @@ class overview extends module {
 		DOM::set_js( filefind( "slides-load.js" , $this -> class ) );
 	}
 	public function display() {
+		# start sparking
+		if( $this -> route -> path[0] == "spark" ) {
+			return $this -> parseTemplate( "startcloud" , array( "domain" => $this -> route -> path[1] ) );
+		} else
+		# domain check
 		if( isset( $this -> domain )) {
 			return $this -> parseTemplate( "domaincheck" , array( "domain" => $this -> domain[0] ) );
 		} else {

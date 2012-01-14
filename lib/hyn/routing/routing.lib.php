@@ -11,7 +11,8 @@ class routing {
 		$this			-> request_uri		= HYN_URI_REQUEST;
 		$this			-> uri			= parse_url( HYN_URI_REQUEST );
 		$this			-> path			= explode( "/" , $this -> uri['path'] );
-		$this			-> route		= routes::routefrompath($this -> uri['path']);
+		array_shift($this -> path);
+		$this			-> route		= routes::routefrompath($this -> path);
 	}
 	static function get_instance() {
 		if( is_null(self::$r)) {
@@ -54,6 +55,7 @@ class routing {
 		}
 		
 		$c					= new $call_class;
+		$r -> called				= strtolower($call_class);
 		self::$c			= $c;
 		// find function - first by defined, if
 		if( $call_func && method_exists( $c , $call_func )) {
