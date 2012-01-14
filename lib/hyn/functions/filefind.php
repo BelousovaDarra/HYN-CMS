@@ -10,71 +10,55 @@ function filefind( $tpl , $module=false ) {
 	if( defined("HYN_MS_DIR_TPL") && is_dir( HYN_MS_DIR_TPL ) ) {
 		# check site module dir
 		if( $module ) {
-			# <domain>/templates/<module>/<name>.twig
-			if( is_dir( HYN_MS_DIR_TPL . $module ) && is_file( HYN_MS_DIR_TPL . $module . DS . $tpl . ".twig" )) {
-				return 	HYN_MS_DIR_TPL . $module . DS . $tpl . ".twig";
+			
+			# <domain>/templates/<module>/<name>(.twig)
+			if( $r = _filefind( $tpl , HYN_MS_DIR_TPL . $module . DS , "twig" )) {
+				return $r;
 			} else
-			# <domain>/templates/<module>/<name>
-			if( is_dir( HYN_MS_DIR_TPL . $module ) && is_file( HYN_MS_DIR_TPL . $module . DS . $tpl ) ) {
-				return 	HYN_MS_DIR_TPL . $module . DS . $tpl;
-			} else
-			# <domain>/templates/<module>_<name>.twig
-			if( is_dir( HYN_MS_DIR_TPL ) && is_file( HYN_MS_DIR_TPL . $module . "_" . $tpl . ".twig" ) ) {
-				return 	HYN_MS_DIR_TPL . $module . "_" . $tpl . ".twig";
-			} else
-			# <domain>/templates/<module>_<name>
-			if( is_dir( HYN_MS_DIR_TPL ) && is_file( HYN_MS_DIR_TPL . $module . "_" . $tpl ) ) {
-				return 	HYN_MS_DIR_TPL . $module . "_" . $tpl;
+			# <domain>/templates/<module>_<name>(.twig)
+			if( $r = _filefind( $module . "_" . $tpl , HYN_MS_DIR_TPL , "twig" )) {
+				return 	$r;
 			}
 		}
 		# check site template dir with
-		# <domain>/templates/<name>.twig
-		if( is_file( HYN_MS_DIR_TPL . $tpl . ".twig" )) {
-			return 	HYN_MS_DIR_TPL .  $tpl . ".twig";
-		} else
-		# <domain>/templates/<name>
-		if( is_file( HYN_MS_DIR_TPL . $tpl ) ) {
-			return 	HYN_MS_DIR_TPL . $tpl;
+		# <domain>/templates/<name>(.twig)
+		if( $r = _filefind( $tpl , HYN_MS_DIR_TPL , "twig")) {
+			return 	$r;
 		}
 		# check system module dir
 		if( $module ) {
-			# <system>/lib/modules/<module>/templates/<name>.twig
-			if( is_dir( HYN_PATH_MODULES . $module . DS . "templates" ) && is_file( HYN_PATH_MODULES . $module . DS . "templates" . DS . $tpl . ".twig" )) {
-				return HYN_PATH_MODULES . $module . DS . "templates" . DS . $tpl . ".twig";
+			# <system>/lib/modules/<module>/templates/<name>(.twig)
+			if( $r = _filefind( $tpl , HYN_PATH_MODULES . $module . DS . "templates" . DS , "twig" )) {
+				return $r;
 			} else
-			# <system>/lib/modules/<module>/templates/<name>
-			if( is_dir( HYN_PATH_MODULES . $module . DS . "templates" ) && is_file( HYN_PATH_MODULES . $module . DS . "templates" . DS . $tpl )) {
-				return HYN_PATH_MODULES . $module . DS . "templates" . DS . $tpl;
-			} else
-			# <system>/lib/modules/<module>/<name>.twig
-			if( is_dir( HYN_PATH_MODULES . $module ) && is_file( HYN_PATH_MODULES . $module . DS . $tpl . ".twig" )) {
-				return HYN_PATH_MODULES . $module . DS . DS . $tpl . ".twig";
-			} else
-			# <system>/lib/modules/<module>/<name>
-			if( is_dir( HYN_PATH_MODULES . $module ) && is_file( HYN_PATH_MODULES . $module . DS . $tpl )) {
-				return HYN_PATH_MODULES . $module . DS . $tpl;
+			# <system>/lib/modules/<module>/<name>(.twig)
+			if( $r = _filefind( $tpl , HYN_PATH_MODULES . $module . DS , "twig" )) {
+				return $r;
 			}
 		}
 		# check system module dir
 		if( $module ) {
-			# <system>/templates/<module>/<name>.twig
-			if( is_dir( HYN_PATH_TPL . DS . $module ) && is_file( HYN_PATH_TPL . DS . $module . DS . $tpl . ".twig")) {
-				return HYN_PATH_TPL . $tpl . ".twig";
-			} else
-			# <system>/templates/<module>/<name>
-			if( is_dir( HYN_PATH_TPL . DS . $module ) && is_file( HYN_PATH_TPL . DS . $module . $tpl )) {
-				return HYN_PATH_TPL . $tpl;
+			# <system>/templates/<module>/<name>(.twig)
+			if( $r = _filefind( $tpl , HYN_PATH_TPL . $module . DS , "twig" )) {
+				return $r;
 			}
 		}
 		# check system template dir
 		# <system>/templates/<name>.twig
-		if( is_dir( HYN_PATH_TPL ) && is_file( HYN_PATH_TPL . $tpl . ".twig")) {
-			return HYN_PATH_TPL . $tpl . ".twig";
-		} else
-		# <system>/templates/<name>
-		if( is_dir( HYN_PATH_TPL ) && is_file( HYN_PATH_TPL . $tpl )) {
-			return HYN_PATH_TPL . $tpl;
+		if( $r = _filefind( $tpl , HYN_PATH_TPL , "twig" )) {
+			return $r;
 		}
 		return false;
 	}
+}
+function _filefind( $file , $dir , $ext=false ) {
+	if( $ext ) {
+		if( is_dir( $dir ) && is_file( $dir . $file . "." . $ext ) ) {
+			return $dir . $file . "." . $ext;
+		}
+	}
+	if( is_dir( $dir ) && is_file( $dir . $file ) ) {
+		return $dir . $file;
+	}
+	return false;
 }
