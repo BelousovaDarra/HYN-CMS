@@ -17,8 +17,16 @@ class DOM {
 		$dom		-> meta[$meta][$field]	= $value;
 		
 	}
+	/** 
+	*		add_js allows adding parsed js code to the body execution
+	*/
+	static public function add_js( $js , $where="body" ) {
+		$dom					= self::get_instance();
+		$dom		-> parsejs[$where][]	
+								= $js;
+	}
 	static public function set_css( $css ) {
-		$dom				= self::get_instance();
+		$dom					= self::get_instance();
 		$dom		-> css[]	= $css;
 		$dom		-> css		= array_unique( $dom -> css , SORT_STRING );
 	}
@@ -69,7 +77,19 @@ class DOM {
 			if( strlen($r) > 0 ) {
 				file_put_contents( HYN_PATH_PUBLIC ."js". DS . md5(HYN_URI_REQUEST) . ".js" , $r );
 				$this -> js[]		= "/js/".md5(HYN_URI_REQUEST).".js";
-			}			
+			}
+			// add any other scripts seperately
+			
+			if( _v($this -> parsejs,"array")) { foreach( $this -> parsejs as $where => $jsfiles ) {
+				$r			= "";
+				foreach( $jsfiles as $js ) {
+					$r		.= JSMin::minify( $js );
+				}
+				if( strlen($r) > 0 ) {
+					file_put_contents( HYN_PATH_PUBLIC . "js" . DS . md5( HYN_URI_REQUEST ) . "_".$where.".js" , $r );
+					$this -> js[]		= "/js/" . md5( HYN_URI_REQUEST) . "_".$where.".js";
+				}
+			}}
 		} else {
 			$minsearch	= array("/(\t|\r|\n)+/i","/([ ]{2,})+/i","/\/\*(.*?)\*\//im","/\/\/(.*?)$/im");
 			$minreplace	= array(" ","","","");
