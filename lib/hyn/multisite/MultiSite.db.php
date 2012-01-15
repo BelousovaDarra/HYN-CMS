@@ -27,10 +27,10 @@ class MultiSite_ extends AutoRecord {
 				array(
 					"foreign_class" 	=> "MultiSiteAlias",
 					"foreign_key"		=> "aliasof",
-					#"foreign_alias"		=> "alias",
-					"columns"		=> array( "aliasof" , "alias" ),
-					"own_key"		=> "id",
-					"multi"			=> true,				# multiple aliases can be defined per domain
+					#"foreign_alias"	=> "alias",
+					"columns"			=> array( "aliasof" , "alias" ),
+					"own_key"			=> "id",
+					"multi"				=> true,				# multiple aliases can be defined per domain
 					"child_name"		=> "aliases"				# set to be able to request aliases by doing -> get("aliases")
 				),
 				array(
@@ -81,10 +81,14 @@ class MultiSite_ extends AutoRecord {
 			return false;
 		}
 	}
-	static function setting( $setting=false , $module=false ) {
+	static public function setting( $setting=false , $module=false ) {
 		return SiteSettings::find_one_by_sql( 
 			sprintf("WHERE `name` = '%s'". ($module ? " AND `module` = '%s'" : false ) , $setting , ($module ? $module : NULL ))
 		);
+	}
+	static public function validateCreation( $vars=false ) {
+		if( !$vars ) { return false; }
+		
 	}
 }
 

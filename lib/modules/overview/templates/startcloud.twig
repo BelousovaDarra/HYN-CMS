@@ -24,15 +24,23 @@
 				</div>
 				<div class="clearfix">
 					<label for="password">Password</label>
-					<div class="input"><input type="password" class="span2" name="password" id="password" /></div>
+					<div class="input">
+						<div class="input-append">
+							<input type="password" name="password" class="span2" id="password" />
+							<label class="add-on">
+								<input type="checkbox" id="password-valid" disabled />
+							</label>
+						</div>
+					</div>
 				</div>
 				<div class="clearfix">
-					<label for="pw-check">Password again</label>
+					<label for="pw-check">Repeat password</label>
 					<div class="input">
 						<div class="input-append">
 							<input type="password" name="pw-check" class="span2" id="pw-check" />
 							<label class="add-on">
-								<input type="checkbox" id="pw-valid" disabled />
+									<input type="checkbox" id="pw-check-valid" disabled 
+										rel="popover" data-content="Checked when password is validated" data-original-title="Validation necessary" />
 							</label>
 						</div>
 					</div>
@@ -45,6 +53,12 @@
 								<label>
 									<input type="checkbox" name="accept" value="ga" />
 									<span>the general agreement</span>
+								</label>
+							</li>
+							<li>
+								<label>
+									<input type="checkbox" name="newsletter" value="1" />
+									<span>subscription onto our newsletter list</span>
 								</label>
 							</li>
 						</ul>
@@ -93,7 +107,7 @@
 				</div>
 			</fieldset>
 			<fieldset class="clearfix">
-				<input type="submit" name="create" class="btn large primary" value="Go!" />
+				<input type="submit" name="spark" class="btn large primary" value="Go!" />
 			</fieldset>
 			<div class="clearfix"></div>
 		</form>

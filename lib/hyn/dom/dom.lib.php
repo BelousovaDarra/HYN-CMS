@@ -5,6 +5,7 @@ anewt_include( "xhtml" );
 
 class DOM {
 	static protected $dom	= null;
+	
 	static public function get_instance() {
 		if( is_null(self::$dom) ) {
 			self::$dom		= new DOM;
@@ -79,13 +80,17 @@ class DOM {
 				$this -> js[]		= "/js/".md5(HYN_URI_REQUEST).".js";
 			}
 			// add any other scripts seperately
-			
 			if( _v($this -> parsejs,"array")) { foreach( $this -> parsejs as $where => $jsfiles ) {
 				$r			= "";
 				foreach( $jsfiles as $js ) {
 					$r		.= JSMin::minify( $js );
+//					$r		.= $js;
 				}
 				if( strlen($r) > 0 ) {
+					// parse to body or other where; if posssible
+					if( $t	= _filefind( $where , __DIR__ . DS . "js" , "twig" )) {
+						$r				= Twig::parse( $t , array( "content" => $r ));
+					}
 					file_put_contents( HYN_PATH_PUBLIC . "js" . DS . md5( HYN_URI_REQUEST ) . "_".$where.".js" , $r );
 					$this -> js[]		= "/js/" . md5( HYN_URI_REQUEST) . "_".$where.".js";
 				}
@@ -95,11 +100,11 @@ class DOM {
 			$minreplace	= array(" ","","","");
 			$r			= "";
 			foreach( $this -> css as $i => $css ) {
-				$uri		= parse_url( $css );
+				$uri					= parse_url( $css );
 				# local file
 				if( !isset($uri['scheme']) && !isset($uri['host'])) {
-					$stylesheet	= file_get_contents( filefind($css) );
-					$r		.= preg_replace( $minsearch , $minreplace , $stylesheet );
+					$stylesheet			= file_get_contents( filefind($css) );
+					$r					.= preg_replace( $minsearch , $minreplace , $stylesheet );
 					unset( $this -> css[$i] );
 				}
 			}

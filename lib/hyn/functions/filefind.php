@@ -52,6 +52,9 @@ function filefind( $tpl , $module=false ) {
 	}
 }
 function _filefind( $file , $dir , $ext=false ) {
+	if( substr( $dir , -1 ) != DS ) {
+		$dir		= $dir . DS;
+	}
 	if( $ext ) {
 		if( is_dir( $dir ) && is_file( $dir . $file . "." . $ext ) ) {
 			return $dir . $file . "." . $ext;

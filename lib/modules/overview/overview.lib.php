@@ -28,10 +28,15 @@ class overview extends module {
 		DOM::set_js( HYN_PATH_PUBLIC_JS . "jq-slides.js" );
 		DOM::set_css( filefind( "slides.css" , $this -> class ) );
 		DOM::set_js( filefind( "slides-load.js" , $this -> class ) );
+		DOM::add_js( 'jQuery("a[rel=popover]").popover({ live: true });' , "body" );
 	}
 	public function display() {
 		# start sparking
 		if( $this -> route -> path[0] == "spark" ) {
+			
+			if( GPC::post_string( "spark" ) ) {
+				
+			}
 			return $this -> parseTemplate( "startcloud" , array( "domain" => $this -> route -> path[1] ) );
 		} else
 		# domain check
