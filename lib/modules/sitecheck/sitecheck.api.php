@@ -4,6 +4,7 @@ if( !defined("HYN")) { exit; }
 hyn_include( "social/twitter" );
 class sitecheck extends module {
 	function _sitecheck(  ) {
+		$this -> savelastId		= gethostbyaddr($_SERVER['REMOTE_ADDR']);
 		try {
 			$this -> tf		= new EpiTwitter( 
 						MultiSite::setting( "consumerkey" 	, "sitecheck" ) -> get("value") ,
@@ -39,7 +40,7 @@ class sitecheck extends module {
 			$this -> resp[]	= $mention['text'];
 
 			$cnt++;
-//			if( count($this -> domains) >= 4 ) {return;}
+			if( count($this -> domains) >= 4 ) {return;}
 		}}
 	}
 	private function get_users( $users=array() ) {
@@ -49,10 +50,12 @@ class sitecheck extends module {
 		return implode( " " , $ret );
 	}
 	private function set_lastid($id=0) {
-		file_put_contents( __DIR__ . DS . "last.txt" , $id );
+		file_put_contents( __DIR__ . DS . "checkedforhost" . DS . $this -> savelastId , $id );
 	}
 	private function get_lastid() {
-		return (int) file_get_contents( __DIR__ . DS . "last.txt" );
+		if( is_file( __DIR__ . DS . "checkedforhost" . DS . $this -> savelastId )) {
+			return (int) file_get_contents( __DIR__ . DS . "checkedforhost" . DS . $this -> savelastId );
+		} else { return 1; }
 	}
 	private function friendUser( $user ) {
 		$this -> tf -> post( "/friendships/create.json" , array( "follow" => true , "screen_name" => $user ));

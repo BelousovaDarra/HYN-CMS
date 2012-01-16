@@ -28,7 +28,8 @@ class overview extends module {
 		DOM::set_js( HYN_PATH_PUBLIC_JS . "jq-slides.js" );
 		DOM::set_css( filefind( "slides.css" , $this -> class ) );
 		DOM::set_js( filefind( "slides-load.js" , $this -> class ) );
-		DOM::add_js( 'jQuery("a[rel=popover]").popover({ live: true });' , "body" );
+		DOM::add_js( 'jQuery("[data-popover-content]").popover({ live: true, html: true, title: \'data-popover-title\', content: \'data-popover-content\' });' , "body" );
+		DOM::add_js( 'jQuery("[data-twipsy-content]").twipsy({ live: true, html: true, title: \'data-twipsy-title\' });' , "body" );
 	}
 	public function display() {
 		# start sparking

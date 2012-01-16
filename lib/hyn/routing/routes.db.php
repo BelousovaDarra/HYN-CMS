@@ -28,7 +28,7 @@ class routes_ extends AutoRecord {
 		$check	= $path;
 		while( $i >= 0 ) {
 			$checkroute	= implode( "/" , $check );
-			if( $r	 = routes::find_one_by_sql( "WHERE `route` = ?string? AND `active`" , $checkroute ) ) {
+			if( $r	 = routes::find_one_by_sql( "WHERE `route` = ?string? AND `active`" , "/".$checkroute ) ) {
 				return $r;
 			}
 			array_pop( $check );

@@ -8,7 +8,8 @@
 					<div class="input">
 						<div class="input-append">
 							<input type="text" name="name" id="name" />
-							<label class="add-on">
+							<label class="add-on"
+								data-popover-content="Your requested cloudname must be unique." data-popover-title="Unique cloud name">
 								<input type="checkbox" id="name-valid" disabled />
 							</label>
 						</div>
@@ -27,7 +28,8 @@
 					<div class="input">
 						<div class="input-append">
 							<input type="password" name="password" class="span2" id="password" />
-							<label class="add-on">
+							<label class="add-on" 
+								data-popover-content="This checkbox is checked when you have entered a password which matches the following criteria: <ul><li>at least 6 characters</li><li>at least one symbol (eg #,.)</li><li>at least one number</li></ul>" data-popover-title="Safe password>"
 								<input type="checkbox" id="password-valid" disabled />
 							</label>
 						</div>
@@ -38,9 +40,8 @@
 					<div class="input">
 						<div class="input-append">
 							<input type="password" name="pw-check" class="span2" id="pw-check" />
-							<label class="add-on">
-									<input type="checkbox" id="pw-check-valid" disabled 
-										rel="popover" data-content="Checked when password is validated" data-original-title="Validation necessary" />
+							<label class="add-on" data-popover-content="This checkbox is checked when you have correctly repeated your password." data-popover-title="Repeat password">
+								<input type="checkbox" id="pw-check-valid" disabled />
 							</label>
 						</div>
 					</div>
@@ -100,6 +101,31 @@
 								<label>
 									<input type="radio" name="payment" value="2" />
 									<span>usage-based</span>
+								</label>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="clearfix">
+					<label for="payment">{{ domain }}</label>
+					<div class="input">
+						<ul class="inputs-list">
+							<li>
+								<label>
+									<input type="radio" name="order-domain" value="0" />
+									<span>do not register</span>
+								</label>
+							</li>
+							<li>
+								<label>
+									<input type="radio" name="order-domain" value="1" />
+									<span>register immediately</span>
+								</label>
+							</li>
+							<li>
+								<label>
+									<input type="radio" name="order-domain" value="7" checked />
+									<span>register after my free trial</span>
 								</label>
 							</li>
 						</ul>
