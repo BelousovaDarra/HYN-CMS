@@ -9,34 +9,39 @@ class overview extends module {
 			$hxs			= new hxsclient( HXS_API_UN , HXS_API_PW );
 			$this -> domain	= $hxs -> checkDomain( GPC::post_string("hxs-domain-name" ));
 		}
-		DOM::set_css( HYN_PATH_HYN . "bootstrap".DS."bootstrap.css" );
+
+		hyn_include( "bootstraps/twitter" );
 		DOM::set_css( HYN_PATH_TPL . "style.css" );
-		
-		DOM::set_js( "https://www.google.com/jsapi" );
-		DOM::set_js( HYN_URI_HTTPS . HYN_URI_HTTPHOST . "/js/jq+jqui.js" );
-		DOM::set_js( HYN_PATH_HYN . "bootstrap".DS."js".DS."bootstrap-twipsy.js" );
-		DOM::set_js( HYN_PATH_HYN . "bootstrap".DS."js".DS."bootstrap-popover.js" );
-		DOM::set_js( HYN_PATH_HYN . "bootstrap".DS."js".DS."bootstrap-dropdown.js" );
-		DOM::set_js( HYN_PATH_HYN . "bootstrap".DS."js".DS."bootstrap-buttons.js" );
-		DOM::set_js( HYN_PATH_HYN . "bootstrap".DS."js".DS."bootstrap-alerts.js" );
 		
 /*		hyn_include( "beaconpush" );
 #		BeaconPusher::send_to_channel( "notify" , "test" , array("Yes we are testing the push") );
 */	
 		DOM::set_meta( "name" , "generator" , "HYN.me" );
-		
-		DOM::set_js( HYN_PATH_PUBLIC_JS . "jq-slides.js" );
-		DOM::set_css( filefind( "slides.css" , $this -> class ) );
-		DOM::set_js( filefind( "slides-load.js" , $this -> class ) );
-		DOM::add_js( 'jQuery("[data-popover-content]").popover({ live: true, html: true, title: \'data-popover-title\', content: \'data-popover-content\' });' , "body" );
-		DOM::add_js( 'jQuery("[data-twipsy-content]").twipsy({ live: true, html: true, title: \'data-twipsy-title\' });' , "body" );
+
+		DOM::add_js( 'jQuery("[data-popover-placement=\'right\']").popover({ live: true, html: true, title: \'data-popover-title\', content: \'data-popover-content\' });' , "body" );
+		DOM::add_js( 'jQuery("[data-popover-placement=\'left\']").popover({ live: true, html: true, title: \'data-popover-title\', content: \'data-popover-content\', placement: \'left\' });' , "body" );
+		DOM::add_js( 'jQuery("[data-twipsy-content]").twipsy({ live: true, html: true, title: \'data-twipsy-content\' });' , "body" );
+
+		DOM::add_js( '	jQuery("input[name=\'free-trial\']").click(function() {
+					if( jQuery(this).attr("checked") ) {
+						jQuery("input[name=\'payment\'][value=0]:disabled").attr("disabled",false);
+						jQuery("input[name=\'order-domain\'][value=7]:disabled").attr("disabled",false);
+					} else {
+						jQuery("input[name=\'order-domain\'][value=7]").attr("disabled",true);
+						jQuery("input[name=\'payment\'][value=0]").attr("disabled",true);
+						jQuery("input[name=\'order-domain\'][value!=7]").first().attr("checked",true);
+						jQuery("input[name=\'payment\'][value!=0]").first().attr("checked",true);
+					} 
+				});
+		' , "body" );
+#		DOM::add_js( 'jQuery("input[name=\'free-trial\']").click(function() {jQuery("input[name=\'payment\'][value=0]").attr("disabled",false);});' , "body" );
 	}
 	public function display() {
 		# start sparking
 		if( $this -> route -> path[0] == "spark" ) {
-			
+			// cloud spark form filled in and submitted
 			if( GPC::post_string( "spark" ) ) {
-				
+				$fields		= $_POST;
 			}
 			return $this -> parseTemplate( "startcloud" , array( "domain" => $this -> route -> path[1] ) );
 		} else

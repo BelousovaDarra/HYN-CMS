@@ -4,13 +4,28 @@ if( !defined("HYN")) { exit; }
 hyn_include( "social/twitter" );
 class sitecheck extends module {
 	function _sitecheck(  ) {
-		$this -> savelastId		= gethostbyaddr($_SERVER['REMOTE_ADDR']);
+		if( GPC::get_string( "update" )) {
+			$this -> queryTwitter();
+			exit;
+		}
+
+		if( $last = GPC::get_int("last")) {
+
+			$last				= AnewtDatetime::parse_timestamp( $last );
+			$this -> publish	= websitecheck::find_by_sql("WHERE updated > ?int? OR created > ?int?",$last,$last);
+			return;
+		}
+		$this -> publish		= websitecheck::find_by_sql("WHERE 1 ORDER BY updated DESC LIMIT 10");
+		return;
+	}
+	private function queryTwitter(  ) {
+		$this -> savelastId		= "setting.txt";
 		try {
 			$this -> tf		= new EpiTwitter( 
-						MultiSite::setting( "consumerkey" 	, "sitecheck" ) -> get("value") ,
+						MultiSite::setting( "consumerkey" 		, "sitecheck" ) -> get("value") ,
 						MultiSite::setting( "consumersecret" 	, "sitecheck" ) -> get("value") ,
-						MultiSite::setting( "accesskey" 	, "sitecheck" ) -> get("value") ,
-						MultiSite::setting( "accesssecret" 	, "sitecheck" ) -> get("value")
+						MultiSite::setting( "accesskey" 		, "sitecheck" ) -> get("value") ,
+						MultiSite::setting( "accesssecret" 		, "sitecheck" ) -> get("value")
 		);
 		} catch( Exception $e ) {
 			return;
@@ -40,7 +55,31 @@ class sitecheck extends module {
 			$this -> resp[]	= $mention['text'];
 
 			$cnt++;
-			if( count($this -> domains) >= 4 ) {return;}
+#			if( count($this -> domains) >= 4 ) {return;}
+		}}
+#_debug( $this -> domains );
+		$this -> domains	= array_unique( $this -> domains );
+		if( isset($this -> domains) && _v($this -> domains,"array")) {foreach( $this -> domains as $dom ) {
+			if( $wsc = websitecheck::find_one_by_column("domain",$dom)) {
+				if( AnewtDatetime::timestamp($wsc -> get("updated")) >= (time() + (3600 * 24))) { continue; }
+				$wsc -> set("updated"	,AnewtDatetime::now());
+				$new	= NULL;
+			} else {
+				$wsc	= new websitecheck;
+				$new	= true;
+				$wsc -> set( 'domain' , $dom );
+				$wsc -> set( 'created', AnewtDatetime::now());
+				$wsc -> set( 'updated', AnewtDatetime::now()); 
+			}
+			$wsc		-> set('json' , serialize(array(
+						"domain"		=> $dom,
+						"pagespeed"		=> $this -> pagespeed( $dom ),
+						"ping"			=> $this -> siteping( $dom ),
+						"location"		=> $this -> location( $dom ),
+						"availability"		=> $this -> availability( $dom )
+			)));
+			$wsc		-> save($new);
+			unset( $wsc );
 		}}
 	}
 	private function get_users( $users=array() ) {
@@ -96,23 +135,12 @@ class sitecheck extends module {
 	}
 	# it's an api so do not load any other template; just send to clients ( beaconpush or .. )
 	function display() {
-		if( isset($this -> domains) && _v($this -> domains,"array")) {foreach( $this -> domains as $dom ) {
-			if( file_exists( __DIR__ ."/domains/".$dom)) {
-				$r[]	= unserialize(file_get_contents( __DIR__ . "/domains/".$dom ));
-			} else {
-				$ret	= array(
-						"domain"		=> $dom,
-						"pagespeed"		=> $this -> pagespeed( $dom ),
-						"ping"			=> $this -> siteping( $dom ),
-						"location"		=> $this -> location( $dom ),
-						"availability"		=> $this -> availability( $dom )
-				);
-				file_put_contents( __DIR__ . "/domains/".$dom , serialize($ret));
-				$r[]	= $ret;
-			}
-		}}
-		rsort( $r );
-		return json_encode( $r );
+		$ret			= array();
+		rsort( $this -> publish );
+		foreach( $this -> publish as $r ) {
+			$ret[]		= unserialize($r -> get("json"));
+		}
+		return json_encode( $ret );
 	}
 	private function siteping( $dom ) {
 		exec( "ping -c 4 ".$dom , $res );

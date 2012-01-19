@@ -49,6 +49,11 @@ class MultiSite_ extends AutoRecord {
 		return "id";
 	}
 	static function getbyhost( $host ) {
+		if( strstr($host,".") && $c = explode( '.' , $host ) && count($c) >= 3 && $c[0] == "cp" ) {
+			define( "HYNCP"	, true );
+			array_shift( $c );
+			$host		= implode( "." , $c );
+		}
 		return MultiSite::find_one_by_sql('WHERE `system_domain`.`domain` = ?string? OR `system_domain_alias`.`alias` = ?string?', $host , $host );
 	}
 	function get_database() {
