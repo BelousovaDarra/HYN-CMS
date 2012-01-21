@@ -7,14 +7,12 @@ class websitecheck_ extends ModuleRecord {
 	protected static function _db_columns()
 	{
 		return array(
+			"id"			=> "int",
 			"domain"		=> "string",		// domain id
 			"json"			=> "string",		// email address
 			"created"		=> "datetime",
 			"updated"		=> "datetime",
 		);
-	}
-	protected static function _db_primary_key() {
-		return "domain";
 	}
 } 
 

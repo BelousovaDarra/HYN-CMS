@@ -3,13 +3,13 @@
   <head> 
     <meta charset="utf-8"> 
     <title>{% if title %}{{ title }}{% elseif ms %}{{ ms.domain }}{% endif %}</title> 
-    {% for meta, metafield in dom.meta %}
-	{% for field, value in metafield %}
-	<meta {{ meta }}="{{ field }}" content="{{ value }}" />
+	{% for meta, metafield in dom.meta %}
+		{% for field, value in metafield %}
+		<meta {{ meta }}="{{ field }}" content="{{ value }}" />
+		{% endfor %}
+	{% endfor %}{% for css in dom.css %}
+		<link href="{{ css }}" rel="stylesheet">
 	{% endfor %}
-    {% endfor %}{% for css in dom.css %}
-	<link href="{{ css }}" rel="stylesheet">
-    {% endfor %}
   </head> 
  
 <body>

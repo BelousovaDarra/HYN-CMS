@@ -5,14 +5,18 @@ hyn_include( "social/twitter" );
 class sitecheck extends module {
 	function _sitecheck(  ) {
 		if( GPC::get_string( "update" )) {
-			$this -> queryTwitter();
+			while( true ) {
+				$this -> queryTwitter();
+				sleep( 10 );
+			}
 			exit;
 		}
 
 		if( $last = GPC::get_int("last")) {
 
-			$last				= AnewtDatetime::parse_timestamp( $last );
-			$this -> publish	= websitecheck::find_by_sql("WHERE updated > ?int? OR created > ?int?",$last,$last);
+			$last			= AnewtDatetime::parse_timestamp( $last );
+			$this -> publish	= websitecheck::find_by_sql("WHERE updated > ?datetime? OR created > ?datetime?",$last,$last);
+			rsort( $this -> publish );
 			return;
 		}
 		$this -> publish		= websitecheck::find_by_sql("WHERE 1 ORDER BY updated DESC LIMIT 10");
@@ -23,7 +27,7 @@ class sitecheck extends module {
 		try {
 			$this -> tf		= new EpiTwitter( 
 						MultiSite::setting( "consumerkey" 		, "sitecheck" ) -> get("value") ,
-						MultiSite::setting( "consumersecret" 	, "sitecheck" ) -> get("value") ,
+						MultiSite::setting( "consumersecret" 		, "sitecheck" ) -> get("value") ,
 						MultiSite::setting( "accesskey" 		, "sitecheck" ) -> get("value") ,
 						MultiSite::setting( "accesssecret" 		, "sitecheck" ) -> get("value")
 		);
@@ -58,12 +62,14 @@ class sitecheck extends module {
 #			if( count($this -> domains) >= 4 ) {return;}
 		}}
 #_debug( $this -> domains );
-		$this -> domains	= array_unique( $this -> domains );
-		if( isset($this -> domains) && _v($this -> domains,"array")) {foreach( $this -> domains as $dom ) {
+		
+		if( isset($this -> domains) && _v($this -> domains,"array")) {
+			$this -> domains	= array_unique( $this -> domains );
+			foreach( $this -> domains as $dom ) {
 			if( $wsc = websitecheck::find_one_by_column("domain",$dom)) {
 				if( AnewtDatetime::timestamp($wsc -> get("updated")) >= (time() + (3600 * 24))) { continue; }
 				$wsc -> set("updated"	,AnewtDatetime::now());
-				$new	= NULL;
+				$new	= false;
 			} else {
 				$wsc	= new websitecheck;
 				$new	= true;
@@ -78,7 +84,7 @@ class sitecheck extends module {
 						"location"		=> $this -> location( $dom ),
 						"availability"		=> $this -> availability( $dom )
 			)));
-			$wsc		-> save($new);
+			$wsc		-> save();
 			unset( $wsc );
 		}}
 	}
