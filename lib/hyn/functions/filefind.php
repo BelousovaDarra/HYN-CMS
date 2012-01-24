@@ -7,10 +7,23 @@ if( !defined("HYN")) { exit; }
 function filefind( $tpl , $module=false ) {
 	if( is_file( $tpl )) { return $tpl; }	
 
+	if( $module == "image" || $module == "img" || $module == "images" ) {
+		// [ todo ]
+	}
+	if( $module && defined("HYN_MS_DIR_MODULES") && is_dir( HYN_MS_DIR_MODULES )) {
+		# <domain>/modules/<module>/templates/<name>(.twig)
+		if( $r = _filefind( $tpl , HYN_MS_DIR_MODULES . $module . DS . "templates" . DS , "twig" )) {
+			return $r;
+		} else
+		# <domain>/modules/<module>/<name>(.twig)
+		if( $r = _filefind( $tpl , HYN_MS_DIR_MODULES . $module . DS , "twig" )) {
+			return $r;
+		}
+	}
 	if( defined("HYN_MS_DIR_TPL") && is_dir( HYN_MS_DIR_TPL ) ) {
 		# check site module dir
 		if( $module ) {
-			
+
 			# <domain>/templates/<module>/<name>(.twig)
 			if( $r = _filefind( $tpl , HYN_MS_DIR_TPL . $module . DS , "twig" )) {
 				return $r;
@@ -25,6 +38,8 @@ function filefind( $tpl , $module=false ) {
 		if( $r = _filefind( $tpl , HYN_MS_DIR_TPL , "twig")) {
 			return 	$r;
 		}
+	}
+	if( defined("HYN_PATH_MODULES") && is_dir( HYN_PATH_MODULES ) ) {
 		# check system module dir
 		if( $module ) {
 			# <system>/lib/modules/<module>/templates/<name>(.twig)
@@ -36,6 +51,8 @@ function filefind( $tpl , $module=false ) {
 				return $r;
 			}
 		}
+	}
+	if( defined("HYN_PATH_TPL") && is_dir( HYN_PATH_TPL ) ) {
 		# check system module dir
 		if( $module ) {
 			# <system>/templates/<module>/<name>(.twig)

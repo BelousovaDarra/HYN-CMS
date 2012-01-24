@@ -11,7 +11,7 @@ class overview extends module {
 		}
 
 		hyn_include( "bootstraps/twitter" );
-		DOM::set_css( HYN_PATH_TPL . "style.css" );
+		DOM::set_css( "style.css" );
 		
 /*		hyn_include( "beaconpush" );
 #		BeaconPusher::send_to_channel( "notify" , "test" , array("Yes we are testing the push") );

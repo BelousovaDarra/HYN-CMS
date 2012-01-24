@@ -1,6 +1,7 @@
 <?PHP
 
 if( !defined( "HYN" )) { exit; }
+header( "Access-Control-Allow-Origin: http://rohyn.nl" );
 
 /** setup */
 require_once "constants.php";
@@ -42,6 +43,7 @@ hyn_include( "multisite" );
 /**
 *	as long as script is not run on commandline, contine
 */
+
 if( HYN != "cmd" ) {
 	hyn_include( "visitor" );
 	
@@ -92,10 +94,9 @@ if( HYN != "cmd" ) {
 	hyn_include( "routing" );
 	
 	hyn_include( "twig" );
-	
+
 	# load url and requested module or load overview module
 	routing::init();
-	
 	# throw the content to the browser
 	routing::flush();
 }

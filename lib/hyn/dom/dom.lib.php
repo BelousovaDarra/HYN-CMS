@@ -95,7 +95,7 @@ class DOM {
 					$this -> js[]		= "/js/" . md5( HYN_URI_REQUEST) . "_".$where.".js";
 				}
 			}}
-		} else {
+		} elseif( $type == "css" ) {
 			$minsearch	= array("/(\t|\r|\n)+/i","/([ ]{2,})+/i","/\/\*(.*?)\*\//im","/\/\/(.*?)$/im");
 			$minreplace	= array(" ","","","");
 			$r			= "";

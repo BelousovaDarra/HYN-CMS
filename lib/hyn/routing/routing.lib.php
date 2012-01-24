@@ -50,6 +50,7 @@ class routing {
 		if( $r -> route && class_exists( $r -> route -> get("module") ) ) {
 			$call_class		= $r -> route -> get("module");
 			$call_func		= $r -> route -> get("function");
+
 		}
 		// now check for uri based on class, function
 		elseif( $r -> uri['path'] != "/" && count( $r -> path ) && class_exists( $r -> path[0] ) ) {
@@ -70,7 +71,7 @@ class routing {
 		else {
 			# [TODO] throw error
 		}
-		
+
 		$c					= new $call_class;
 		$r -> called				= strtolower($call_class);
 		self::$c			= $c;

@@ -4,10 +4,10 @@ if( !defined("HYN")) { exit; }
 hyn_include( "social/twitter" );
 class sitecheck extends module {
 	function _sitecheck(  ) {
-		if( GPC::get_string( "update" ) == 1) {
+
 			$this -> savelastId		= __DIR__ . DS . "checkedforhost" . DS ."setting.txt";
 			trigger_error( "UPDATE: last checked twitter mention: ".$this -> get_lastid() );
-			if( time() - filemtime( $this -> savelastId ) >= 15 ) {
+			if( time() - filemtime( $this -> savelastId ) >= 30 ) {
 				while( true ) {
 					trigger_error( "UPDATE: starting queryTwitter" );
 					touch( $this -> savelastId );
@@ -24,19 +24,6 @@ class sitecheck extends module {
 				trigger_error( "UPDATE: ending directly, too quickly rechecked" );
 			}
 			exit;
-		}
-
-		if( $last = GPC::get_int("last")) {
-			trigger_error( gethostbyaddr($_SERVER['REMOTE_ADDR']) . " requested last since ".date("Y/m/d H:i:s",$last) );	# show log notification
-			$last			= AnewtDatetime::parse_timestamp( $last );
-
-			$this -> publish	= websitecheck::find_by_sql("WHERE updated > ?datetime?",$last);
-			rsort( $this -> publish );
-			return;
-		}
-		trigger_error( gethostbyaddr( $_SERVER['REMOTE_ADDR'] ) . " requested last 10" );
-		$this -> publish		= websitecheck::find_by_sql("WHERE 1 ORDER BY updated DESC LIMIT 10");
-		return;
 	}
 	private function queryTwitter(  ) {
 		
@@ -59,9 +46,8 @@ class sitecheck extends module {
 		}
 		$ignoreusers		= explode(",",MultiSite::setting( "ignoreusers" , "sitecheck" ) -> get("value"));
 		$id			= $this -> get_lastid();
-		unset( $this -> domains , $mentions );
 		try {
-			$mentions		= $this -> tf -> get( "/statuses/mentions.json" , array( "since_id" => $id , "include_entities" => true , "count" => 10 ) );
+			$mentions		= $this -> tf -> get( "/statuses/mentions.json" , array( "since_id" => ( $id + 1 ) , "include_entities" => true , "count" => 20 ) );
 		} catch ( Exception $e ) {
 			trigger_error( "UPDATE: twitter unavailable during mentions fetch" );
 			$i = 1;
@@ -93,7 +79,7 @@ class sitecheck extends module {
 			foreach( $usersarr as $u ) {
 				$this -> friendUser( $u );
 			}
-			$this -> dissectTweet( $mention['entities']['urls'] , $mention );
+			$this -> dissectTweet( $mention['entities']['urls'] , $mention['text'] );
 			if( !count( $this -> domains ) ) { continue; }
 #			$this -> tf -> post( "/statuses/update.json" , array(
 #					"status" => $users . ": Uw siteanalyse wordt nu verwerkt. - http://facebook.com/hostingxs" ));
@@ -109,28 +95,28 @@ class sitecheck extends module {
 			touch( $this -> savelastId );
 			$this -> domains	= array_unique( $this -> domains );
 			foreach( $this -> domains as $dom ) {
-				if( $wsc = websitecheck::find_one_by_column("domain",$dom)) {
-					if( AnewtDatetime::timestamp($wsc -> get("updated")) >= (time() + (3600 * 24))) { continue; }
-					$wsc -> set("updated"	,AnewtDatetime::now());
-					$new	= false;
-				} else {
-					$wsc	= new websitecheck;
-					$new	= true;
-					$wsc -> set( 'domain' , $dom );
-					$wsc -> set( 'created', AnewtDatetime::now());
-					$wsc -> set( 'updated', AnewtDatetime::now()); 
-				}
-				$wsc		-> set('json' , serialize(array(
-							"domain"		=> $dom,
-							"pagespeed"		=> $this -> pagespeed( $dom ),
-	#						"ping"			=> $this -> siteping( $dom ),
-							"location"		=> $this -> location( $dom ),
-							"availability"		=> $this -> availability( $dom ),
-							"stamp"			=> time()
-				)));
-				$wsc		-> save( ( $new ? true : null ) );
-				touch( $this -> savelastId );
-				unset( $wsc );
+			if( $wsc = websitecheck::find_one_by_column("domain",$dom)) {
+				if( AnewtDatetime::timestamp($wsc -> get("updated")) >= (time() + (3600 * 24))) { continue; }
+				$wsc -> set("updated"	,AnewtDatetime::now());
+				$new	= false;
+			} else {
+				$wsc	= new websitecheck;
+				$new	= true;
+				$wsc -> set( 'domain' , $dom );
+				$wsc -> set( 'created', AnewtDatetime::now());
+				$wsc -> set( 'updated', AnewtDatetime::now()); 
+			}
+			$wsc		-> set('json' , serialize(array(
+						"domain"		=> $dom,
+						"pagespeed"		=> $this -> pagespeed( $dom ),
+//						"ping"			=> $this -> siteping( $dom ),
+						"location"		=> $this -> location( $dom ),
+						"availability"		=> $this -> availability( $dom ),
+						"stamp"			=> AnewtDatetime::now()
+			)));
+			$wsc		-> save( ( $new ? true : null ) );
+			touch( $this -> savelastId );
+			unset( $wsc );
 		}}
 	}
 	private function get_users( $users=array() ) {
@@ -139,7 +125,7 @@ class sitecheck extends module {
 		}} else { return false; }
 		return implode( " " , $ret );
 	}
-	private function set_lastid($id=1) {
+	private function set_lastid($id=0) {
 		file_put_contents(  $this -> savelastId , $id );
 	}
 	private function get_lastid() {
@@ -164,8 +150,7 @@ class sitecheck extends module {
 			return $ret;
 		} else { return array(); }
 	}
-	function dissectTweet( $urls , $mention ) {
-		$text	= $mention['text'];
+	function dissectTweet( $urls , $text ) {
 		$excludes = array( "t.co" , "on.fb.me" , "ow.ly" , "bit.ly" );
 		$domregex		= "/(www\.)?(?<hostname>[a-zA-Z0-9\-]+)(\.(?<tld>[a-zA-Z]{2,6}))(\.(?<tld2>[a-zA-Z]{2,6}))?/i";
 
@@ -215,15 +200,6 @@ class sitecheck extends module {
 		$r	= json_decode( curl_exec( $c ));
 		if( isset($r -> country_code) ) {
 			$r -> country_code	= strtolower($r -> country_code);
-		} else { $r = $this -> infodb($dom); }
-		return $r;
-	}
-	private function infodb( $dom ) {
-		$c 	= curl_init( "http://api.ipinfodb.com/v3/ip-country/?key=".MultiSite::setting( "infodb" , "sitecheck" ) -> get("value")."&ip=".$dom."&format=json" );
-		curl_setopt( $c , CURLOPT_RETURNTRANSFER , true );
-		$r	= json_decode( curl_exec( $c ));
-		if( isset($r['countryCode']) ) {
-			$r -> country_code	= strtolower($r['countryCode']);
 		} else { $r = ""; }
 		return $r;
 	}
@@ -245,6 +221,7 @@ class sitecheck extends module {
 		} else { $r = ""; }
 		
 		return $r;
+		#return json_decode(file_get_contents( "https://www.googleapis.com/pagespeedonline/v1/runPagespeed?url=".$dom."&key=".MultiSite::setting( "ga-pagespeedkey" , "sitecheck" ) -> get("value")));
 		
 	}
 	private function availability( $dom ) {
