@@ -25,11 +25,11 @@ class overview extends module {
 		DOM::add_js( '	jQuery("input[name=\'free-trial\']").click(function() {
 					if( jQuery(this).attr("checked") ) {
 						jQuery("input[name=\'payment\'][value=0]:disabled").attr("disabled",false);
-						jQuery("input[name=\'order-domain\'][value=7]:disabled").attr("disabled",false);
+						jQuery("input[name=\'order-domain\'][value=5]:disabled").attr("disabled",false);
 					} else {
-						jQuery("input[name=\'order-domain\'][value=7]").attr("disabled",true);
+						jQuery("input[name=\'order-domain\'][value=5]").attr("disabled",true);
 						jQuery("input[name=\'payment\'][value=0]").attr("disabled",true);
-						jQuery("input[name=\'order-domain\'][value!=7]").first().attr("checked",true);
+						jQuery("input[name=\'order-domain\'][value!=5]").first().attr("checked",true);
 						jQuery("input[name=\'payment\'][value!=0]").first().attr("checked",true);
 					} 
 				});
@@ -42,6 +42,10 @@ class overview extends module {
 			// cloud spark form filled in and submitted
 			if( GPC::post_string( "spark" ) ) {
 				$fields		= $_POST;
+				
+				
+				
+				return $this -> parseTemplate( "review" , array( "fields" => $fields ) );
 			}
 			return $this -> parseTemplate( "startcloud" , array( "domain" => $this -> route -> path[1] ) );
 		} else

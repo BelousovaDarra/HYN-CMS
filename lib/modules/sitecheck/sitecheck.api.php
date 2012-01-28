@@ -4,6 +4,8 @@ if( !defined("HYN")) { exit; }
 hyn_include( "social/twitter" );
 class sitecheck extends module {
 	function _sitecheck(  ) {
+		
+		
 		if( GPC::get_string( "update" ) == 1) {
 			$this -> savelastId		= __DIR__ . DS . "checkedforhost" . DS ."setting.txt";
 			trigger_error( "UPDATE: last checked twitter mention: ".$this -> get_lastid() );
@@ -109,6 +111,7 @@ class sitecheck extends module {
 			touch( $this -> savelastId );
 			$this -> domains	= array_unique( $this -> domains );
 			foreach( $this -> domains as $dom ) {
+				if( preg_match( "/hostingxs\./i" , $dom )) { continue; }
 				if( $wsc = websitecheck::find_one_by_column("domain",$dom)) {
 					if( AnewtDatetime::timestamp($wsc -> get("updated")) >= (time() + (3600 * 24))) { continue; }
 					$wsc -> set("updated"	,AnewtDatetime::now());
@@ -130,6 +133,7 @@ class sitecheck extends module {
 				)));
 				$wsc		-> save( ( $new ? true : null ) );
 				touch( $this -> savelastId );
+				sleep(1);
 				unset( $wsc );
 		}}
 	}
@@ -208,23 +212,23 @@ class sitecheck extends module {
 		$ret['avg']	= round( $ret['avg'] );
 		return $ret;
 	}
-	private function location( $dom ) {
+	private function freegeoip( $dom ) {
 		# http://freegeoip.net/json/74.200.247.59
 		$c = curl_init( "http://freegeoip.net/json/".$dom );
 		curl_setopt( $c , CURLOPT_RETURNTRANSFER , true );
 		$r	= json_decode( curl_exec( $c ));
-		if( isset($r -> country_code) ) {
+		if( isset($r -> country_code) && $r -> country_code != "" ) {
 			$r -> country_code	= strtolower($r -> country_code);
-		} else { $r = $this -> infodb($dom); }
+		} else { $r = ""; }
 		return $r;
 	}
-	private function infodb( $dom ) {
+	private function location( $dom ) {
 		$c 	= curl_init( "http://api.ipinfodb.com/v3/ip-country/?key=".MultiSite::setting( "infodb" , "sitecheck" ) -> get("value")."&ip=".$dom."&format=json" );
 		curl_setopt( $c , CURLOPT_RETURNTRANSFER , true );
 		$r	= json_decode( curl_exec( $c ));
-		if( isset($r['countryCode']) ) {
-			$r -> country_code	= strtolower($r['countryCode']);
-		} else { $r = ""; }
+		if( $r -> statusCode == 200 && isset($r -> countryCode) && $r -> countryCode != "" ) {
+			$r -> country_code	= strtolower($r -> countryCode );
+		} else { $r = $this -> freegeoip($dom); }
 		return $r;
 	}
 	private function pagespeed( $dom ) {
