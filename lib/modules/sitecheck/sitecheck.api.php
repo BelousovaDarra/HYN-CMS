@@ -27,7 +27,16 @@ class sitecheck extends module {
 			}
 			exit;
 		}
+		if( $this -> route -> route -> get("function") == "show" ) {
+			hyn_include( "bootstraps/twitter" );
+			DOM::set_css( "style.css" );
+			DOM::set_title( "@domeinvrij" );
+			DOM::set_meta( "name" , "generator" , "HYN.me" );
 
+			DOM::add_js( 'jQuery("[data-popover-placement=\'right\']").popover({ live: true, html: true, title: \'data-popover-title\', content: \'data-popover-content\' });' , "body" );
+			DOM::add_js( 'jQuery("[data-popover-placement=\'left\']").popover({ live: true, html: true, title: \'data-popover-title\', content: \'data-popover-content\', placement: \'left\' });' , "body" );
+			DOM::add_js( 'jQuery("[data-twipsy-content]").twipsy({ live: true, html: true, title: \'data-twipsy-content\' });' , "body" );
+		}
 		if( $last = GPC::get_int("last")) {
 			trigger_error( gethostbyaddr($_SERVER['REMOTE_ADDR']) . " requested last since ".date("Y/m/d H:i:s",$last) );	# show log notification
 			$last			= AnewtDatetime::parse_timestamp( $last );
@@ -36,9 +45,24 @@ class sitecheck extends module {
 			rsort( $this -> publish );
 			return;
 		}
+		if( $item = GPC::get_string("host")) {
+			$this -> publish[]	= websitecheck::find_one_by_column( "domain" , $item );
+			return;
+		}
+		if( $item = GPC::get_int("id") ) {
+			$this -> publish[]	= websitecheck::find_one_by_id( $item );
+			return;
+		}
 		trigger_error( gethostbyaddr( $_SERVER['REMOTE_ADDR'] ) . " requested last 10" );
 		$this -> publish		= websitecheck::find_by_sql("WHERE 1 ORDER BY updated DESC LIMIT 10");
 		return;
+	}
+	public function show() {
+		foreach( $this -> publish as $p ) {
+			$p -> json	= unserialize( $p -> get("json") );
+			$this -> d[]	= $p;
+		}
+		return $this -> parseTemplate( "show" , array( "domains" => $this -> d ) );
 	}
 	private function queryTwitter(  ) {
 		
@@ -89,14 +113,14 @@ class sitecheck extends module {
 			$users[]= $mention['user']['screen_name'];
 		
 			$users	= array_diff( $users , $ignoreusers );
-			$usersarr = $users;
-			$users	= $this -> get_users( $users );
-			if( !count( $users )) { continue; }
-			foreach( $usersarr as $u ) {
-				$this -> friendUser( $u );
-			}
+			$usersarr[$mention['id']] = $users;
+			$users[$mention['id']]	= $this -> get_users( $users );
+			if( !count( $users[$mention['id']] )) { continue; }
+
 			$this -> dissectTweet( $mention['entities']['urls'] , $mention );
 			if( !count( $this -> domains ) ) { continue; }
+
+
 #			$this -> tf -> post( "/statuses/update.json" , array(
 #					"status" => $users . ": Uw siteanalyse wordt nu verwerkt. - http://facebook.com/hostingxs" ));
 			$this -> resp[]	= $mention['text'];
@@ -106,7 +130,7 @@ class sitecheck extends module {
 #			if( count($this -> domains) >= 4 ) {return;}
 		}}
 #_debug( $this -> domains );
-		
+
 		if( isset($this -> domains) && _v($this -> domains,"array")) {
 			touch( $this -> savelastId );
 			$this -> domains	= array_unique( $this -> domains );
@@ -123,18 +147,31 @@ class sitecheck extends module {
 					$wsc -> set( 'created', AnewtDatetime::now());
 					$wsc -> set( 'updated', AnewtDatetime::now()); 
 				}
-				$wsc		-> set('json' , serialize(array(
+				$this -> read[$mention['id']][$dom]	= array(
 							"domain"		=> $dom,
 							"pagespeed"		=> $this -> pagespeed( $dom ),
 	#						"ping"			=> $this -> siteping( $dom ),
 							"location"		=> $this -> location( $dom ),
 							"availability"		=> $this -> availability( $dom ),
 							"stamp"			=> time()
-				)));
+				);
+				$wsc		-> set('json' , serialize( $this -> read[$mention['id']][$dom] ));
 				$wsc		-> save( ( $new ? true : null ) );
+				if( $this -> read[$mention['id']][$dom]['pagespeed'] != "" ) {
+					$score 		= $dom." heeft de score: ".$this -> read[$mention['id']][$dom]['pagespeed']['score']." (http://domeinvrij.hostingxs.nl/?host=".$dom.")";
+				} else {
+					$score 		= $dom." is beschikbaar (http://domeinvrij.hostingxs.nl/?host=".$dom.")";
+				} 
+				
+
+				
 				touch( $this -> savelastId );
 				sleep(1);
-				unset( $wsc );
+				foreach( $usersarr[$mention['id']] as $u ) {
+					$this -> friendUser( $u );
+					$this -> dmUser( $u , "Bedankt dat wij uw site mochten controleren; ".$score."!" );
+				}
+				unset( $wsc , $score );
 		}}
 	}
 	private function get_users( $users=array() ) {
@@ -155,8 +192,17 @@ class sitecheck extends module {
 		try {
 			$this -> tf -> post( "/friendships/create.json" , array( "follow" => true , "screen_name" => $user ));
 		} catch( Exception $e ) {
+			trigger_error( "UPDATE: could not create friendship with user ".$user ." / reason: ".$e -> getMessage() );
 			return;
 		} 
+	}
+	private function dmUser( $user , $msg ) {
+		try {
+			$this -> tf -> post( "/direct_messages/new.json" , array( "screen_name" => $user , "text" => $msg ));
+		} catch( Exception $e ) {
+			trigger_error( "UPDATE: could not send DM to user ".$user ." / reason: ".$e -> getMessage() );
+			return;
+		}
 	}
 	private function dissectUsers( $tweet ) {
 		$regex = "/(?<user>@[a-z0-9]+)/i";

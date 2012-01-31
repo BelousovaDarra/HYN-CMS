@@ -20,20 +20,45 @@ class Currency {
 		$i -> currency	= $c;
 	}
 	static public function updateSupportedCurrencies() {
+		
+		$curs			= curl_json( "http://openexchangerates.org/latest.json" );
+		$names			= curl_json( "http://openexchangerates.org/currencies.json" );
+		$base			= $curs -> base;
+		$base2eur		= 1 / $curs -> rates -> EUR;
+
+		foreach( $curs -> rates as $valuta => $rate ) {
+			$new 	= NULL;
+			if( !$c = currencies::find_one_by_column( "iso" , $valuta )) {
+				$c = new currencies; 
+				$c -> set( "iso" , $valuta );
+				$c -> set( "name" , $names -> $valuta );
+				$new = true;
+			}
+			$c -> set( "updated" , AnewtDatetime::now() );
+			$c -> set( "1USD" , $rate );
+			$c -> set( "1EUR" , round(( 1 / $base2eur ) * $rate ,6) );
+			$c -> save($new);
+		}
+
+		
+		/*
 		$curs			= currencies::find_all();
 		if( !count( $curs )) { return; }
 		if( _v($curs,"array")) {
 			foreach( $curs as $c ) {
-				$rate	= curl_get( "http://www.google.com/ig/calculator?hl=en&q=1000".$c -> get("iso")."%3D%3FEUR" );
-				$regex	= "/rhs: \"([0-9\.]+)/i";
+				$rate		= curl_get( "http://www.google.com/ig/calculator?hl=en&q=1000".$c -> get("iso")."%3D%3FEUR" );
+				$regex		= "/rhs: \"([^a-z]+)/i";
 				preg_match( $regex , $rate , $m );
-				$rate	= (int) $m[1];
+				_debug( $m[1] );
+				$rate		= (float) $m[1];
+				$rate		= round( $rate );
+
+				$rate		= (int) $rate;
 				$c -> set( "toeuro" , $rate );
 				$c -> set( "updated" , AnewtDatetime::now() );
 				$c -> save();
-				_debug( $c );
 				_debug( $rate );
 			}
-		} else { return; }
+		} else { return; }*/
 	}
 }

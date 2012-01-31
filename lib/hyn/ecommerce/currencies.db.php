@@ -17,7 +17,8 @@ class currencies_ extends AutoRecord {
 			"id"			=> "integer",
 			"iso"			=> "string",
 			"name"			=> "string",
-			"toeuro"		=> "integer",
+			"1USD"			=> "float",
+			"1EUR"			=> "float",
 			"updated"		=> "datetime",
 		);
 	}

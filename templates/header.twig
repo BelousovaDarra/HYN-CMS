@@ -2,7 +2,7 @@
 <html lang="{% if meta.i18n.iso %}{{ meta.i18n.iso }}{% else %}en{% endif %}"> 
   <head> 
     <meta charset="utf-8"> 
-    <title>{% if title %}{{ title }}{% elseif ms %}{{ ms.domain }}{% endif %}</title> 
+    <title>{% if dom.title %}{{ dom.title }}{% elseif ms %}{{ ms.domain }}{% endif %}</title> 
 	{% for meta, metafield in dom.meta %}
 		{% for field, value in metafield %}
 		<meta {{ meta }}="{{ field }}" content="{{ value }}" />

@@ -12,7 +12,11 @@ class DOM {
 		}
 		return self::$dom;
 	}
-	
+	static public function set_title( $value ) {
+		$dom				= self::get_instance();
+		$dom		-> title= $value;
+		
+	}	
 	static public function set_meta( $meta , $field , $value ) {
 		$dom				= self::get_instance();
 		$dom		-> meta[$meta][$field]	= $value;

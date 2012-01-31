@@ -1,0 +1,17 @@
+	{% include "header" %}
+	{% for domain in domains %}
+	<div class="hero-unit">
+		<p class="right">
+			{% if domain.json.availability is not empty  %}
+				<a href="https://www.hostingxs.nl/aanmelding/wizard/domein/?domein={{ domain.domain }}" class="btn primary large">Beschikbaar</a>
+			{% else %}
+				{% if domain.json.pagespeed.score %}
+				<a href="#" class="btn large info disabled">Google Paginasnelheid: {{ domain.json.pagespeed.score }}</a>
+				{% endif %}
+				<a href="https://www.hostingxs.nl/aanmelding/wizard/domein/?domein={{ domain.domain }}" class="btn large disabled">Bezet</a>
+			{% endif %}
+		</p>
+		<h1><a href="http://{{ domain.domain }}">{{ domain.domain }}</a></h1>
+	</div>
+	{% endfor %}
+	{% include "footer" %}
