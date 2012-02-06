@@ -1,7 +1,27 @@
 body {
 padding-top: 60px;
 }
-      
+
+/*
+
+*/
+.steps
+{ padding-top: 45px; background-repeat: no-repeat; background-position: center top; }
+.steps .details
+{ min-height: 100px; }
+.steps-0
+{ background-image: url("/images/cloudspark.nl/steps-0.png"); }
+.steps-1
+{ background-image: url("/images/cloudspark.nl/steps-1.png"); }
+.steps-2
+{ background-image: url("/images/cloudspark.nl/steps-2.png"); }
+.steps-3
+{ background-image: url("/images/cloudspark.nl/steps-3.png"); }
+
+
+
+/**/
+
       
 ul.nodots
 { list-style-type: none !important; margin: 0; padding: 0; width: 100%; }
@@ -9,6 +29,8 @@ ul.nodots
 { width: 100% !important; }
 .width-30
 { width: 30% !important; }
+.width-50
+{ width: 50% !important; }
 .width-60
 { width: 60% !important; }
 .smaller
@@ -17,6 +39,8 @@ ul.nodots
 { font-size: .8em !important; }
 .text-center
 { text-align: center; }
+.text-right
+{ text-align: right; }
 .middle
 { margin: 0 auto; }
 

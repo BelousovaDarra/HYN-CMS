@@ -95,6 +95,13 @@ class MultiSite_ extends AutoRecord {
 		if( !$vars ) { return false; }
 		
 	}
+	static public function get_owners() {
+		$m 		= self::get_instance();
+		return array(
+			"owner" 	=> $m -> get("owner"),
+			"righted"	=> array() 					# should be array of User ID's from system_user_rights
+		);
+	}
 }
 
 AutoRecord::register('MultiSite');

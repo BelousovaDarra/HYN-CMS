@@ -12,9 +12,17 @@ class DOM {
 		}
 		return self::$dom;
 	}
+	static public function set_wysiwyg() {
+		$dom				= self::get_instance();
+		if( !isset( $dom -> wysiwyg ) || !$dom -> wysiwyg ) {
+			$dom		-> wysiwyg
+								= true;
+		}
+	}
 	static public function set_title( $value ) {
 		$dom				= self::get_instance();
-		$dom		-> title= $value;
+		$dom		-> title
+							= $value;
 		
 	}	
 	static public function set_meta( $meta , $field , $value ) {
@@ -80,8 +88,8 @@ class DOM {
 				}
 			}
 			if( strlen($r) > 0 ) {
-				file_put_contents( HYN_PATH_PUBLIC ."js". DS . md5(HYN_URI_REQUEST) . ".js" , $r );
-				$this -> js[]		= "/js/".md5(HYN_URI_REQUEST).".js";
+				file_put_contents( HYN_PATH_PUBLIC ."js". DS . "cache" . DS . md5(HYN_URI_REQUEST) . ".js" , $r );
+				$this -> js[]		= "/js/cache/".md5(HYN_URI_REQUEST).".js";
 			}
 			// add any other scripts seperately
 			if( _v($this -> parsejs,"array")) { foreach( $this -> parsejs as $where => $jsfiles ) {
@@ -95,8 +103,8 @@ class DOM {
 					if( $t	= _filefind( $where , __DIR__ . DS . "js" , "twig" )) {
 						$r				= Twig::parse( $t , array( "content" => $r ));
 					}
-					file_put_contents( HYN_PATH_PUBLIC . "js" . DS . md5( HYN_URI_REQUEST ) . "_".$where.".js" , $r );
-					$this -> js[]		= "/js/" . md5( HYN_URI_REQUEST) . "_".$where.".js";
+					file_put_contents( HYN_PATH_PUBLIC . "js" . DS .  "cache" . DS . md5( HYN_URI_REQUEST ) . "_".$where.".js" , $r );
+					$this -> js[]		= "/js/cache/" . md5( HYN_URI_REQUEST) . "_".$where.".js";
 				}
 			}}
 		} elseif( $type == "css" ) {

@@ -6,11 +6,12 @@ class overview extends module {
 		# check for domain
 		if( GPC::post_string("hxs-domain-check")) {
 			hyn_include( "hxsapi" );
-			$hxs			= new hxsclient( HXS_API_UN , HXS_API_PW );
+			$hxs			= new hxsclient( MultiSite::setting( "resellerid" , "hxsclient" ) -> get("value") , MultiSite::setting( "resellerpw" , "hxsclient" ) -> get("value") );
 			$this -> domain	= $hxs -> checkDomain( GPC::post_string("hxs-domain-name" ));
 		}
 
 		hyn_include( "bootstraps/twitter" );
+		
 		DOM::set_css( "style.css" );
 		
 /*		hyn_include( "beaconpush" );
@@ -20,7 +21,7 @@ class overview extends module {
 
 		DOM::add_js( 'jQuery("[data-popover-placement=\'right\']").popover({ live: true, html: true, title: \'data-popover-title\', content: \'data-popover-content\' });' , "body" );
 		DOM::add_js( 'jQuery("[data-popover-placement=\'left\']").popover({ live: true, html: true, title: \'data-popover-title\', content: \'data-popover-content\', placement: \'left\' });' , "body" );
-		DOM::add_js( 'jQuery("[data-twipsy-content]").twipsy({ live: true, html: true, title: \'data-twipsy-content\' });' , "body" );
+		DOM::add_js( 'jQuery("[data-tooltip-content]").tooltip({ live: true, html: true, title: \'data-tooltip-content\' });' , "body" );
 
 		DOM::add_js( '	jQuery("input[name=\'free-trial\']").click(function() {
 					if( jQuery(this).attr("checked") ) {
@@ -33,9 +34,35 @@ class overview extends module {
 						jQuery("input[name=\'payment\'][value!=0]").first().attr("checked",true);
 					} 
 				});
-		' , "body" );
+		' , "body" );		
 #		DOM::add_js( 'jQuery("input[name=\'free-trial\']").click(function() {jQuery("input[name=\'payment\'][value=0]").attr("disabled",false);});' , "body" );
 	}
+	/**
+	*		information pages ; uses page class?
+	*/
+	public function discover() {
+		if( !class_exists("page")) {
+			# [TODO] show error
+		}
+		// load page
+		$p 		= new page;
+		return $p -> display();
+	}
+	/**
+	*		shows all options and store it into session and server to be used if order is not finished
+	*/
+	public function decide() {
+		
+	}
+	/**
+	*		deploy shows registration steps and sets up everything for (almost) instant use
+	*/
+	public function deploy() {
+		
+	}
+	/**
+	*		shows default frontpage
+	*/
 	public function display() {
 		# start sparking
 		if( $this -> route -> path[0] == "spark" ) {

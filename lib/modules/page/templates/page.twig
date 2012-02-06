@@ -1,0 +1,20 @@
+	{% include "header" %}
+	
+	{% if page.title %}
+		<h1>{{ page.title }}{% if page.subtitle %} <small>{{ page.subtitle }}</small>{% endif %}</h1>
+	{% endif %}
+	{% if page.content %}
+		<div class="well">
+		{{ page.content }}
+		</div>
+	{% endif %}
+	
+	{% if page and page.id %}
+		<div class="form-actions">
+			<span class="label right"><i class="icon-barcode icon-white"></i> Page ID: {{ page.id }}</span><br />
+		</div>
+	{% endif %}
+	
+	{% include "footer" %}
+
+	

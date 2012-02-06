@@ -9,13 +9,15 @@ class pages_ extends ModuleRecord {
 	{
 		return array(
 			"id"			=> "int",
-			"name"			=> "string",
-			"text"			=> "string",
-			"added"			=> "datetime",
+			"route"			=> "string",
+			"title"			=> "string",
+			"subtitle"		=> "string",
+			"content"		=> "string",
+			"created"		=> "datetime",
 			"updated"		=> "datetime",
 			
 		);
-	}	
+	}
 }
 
 ModuleRecord::register("pages");

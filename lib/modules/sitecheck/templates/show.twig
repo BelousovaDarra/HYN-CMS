@@ -3,15 +3,15 @@
 	<div class="hero-unit">
 		<p class="right">
 			{% if domain.json.availability is not empty  %}
-				<a href="https://www.hostingxs.nl/aanmelding/wizard/domein/?domein={{ domain.domain }}" class="btn primary large">Beschikbaar</a>
+				<a href="https://www.hostingxs.nl/aanmelding/wizard/domein/?domein={{ domain.domain }}" class="btn btn-primary btn-large">Beschikbaar</a>
 			{% else %}
 				{% if domain.json.pagespeed.score %}
-				<a href="#" class="btn large info disabled">Google Paginasnelheid: {{ domain.json.pagespeed.score }}</a>
+				<a href="#" class="btn btn-large btn-info disabled">Google Paginasnelheid: {{ domain.json.pagespeed.score }}</a>
 				{% endif %}
-				<a href="https://www.hostingxs.nl/aanmelding/wizard/domein/?domein={{ domain.domain }}" class="btn large disabled">Bezet</a>
+				<a href="https://www.hostingxs.nl/aanmelding/wizard/domein/?domein={{ domain.domain }}" class="btn btn-large disabled">Bezet</a>
 			{% endif %}
 		</p>
-		<h1><a href="http://{{ domain.domain }}">{{ domain.domain }}</a></h1>
+		<h1>{% if domain.json.location is not empty %}<img class="marged-e" style="vertical-align: middle;" src="/media/icons/64/flags/{{ domain.json.location.country_code }}.png" />{% endif %}<a href="http://{{ domain.domain }}">{{ domain.domain }}</a></h1>
 	</div>
 	{% endfor %}
 	{% include "footer" %}

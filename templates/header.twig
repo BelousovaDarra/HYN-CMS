@@ -10,59 +10,42 @@
 	{% endfor %}{% for css in dom.css %}
 		<link href="{{ css }}" rel="stylesheet">
 	{% endfor %}
+	
+	{% if dom.wysiwyg %}
+		<script type="text/javascript">
+			var Aloha	= {};
+			Aloha.settings = {
+				jQuery: $
+			}
+		</script>
+		<script type="text/javascript" src="/js/libs/aloha/src/lib/aloha.js" data-aloha-plugins="common/format,common/list,common/table"></script>
+		<script type="text/javascript">
+			Aloha.ready(function() {
+				Aloha.jQuery(".wysiwyg").aloha();
+			});
+		</script>
+		<link rel="stylesheet" href="/js/libs/aloha/src/css/aloha.css" id="aloha-style-include" type="text/css">
+	{% endif %}
+	
   </head> 
  
 <body>
 
 <div class="container">
-	<div class="topbar">
-		<div class="fill">
+	<div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
 			<div class="container">
 				<a class="brand" href="http://{{ ms.domain }}">{{ ms.domain }}</a>
 				<ul class="nav">
 					<li class="active"><a href="http://{{ ms.domain }}">Home</a></li>
-					<li class="dropdown" data-dropdown="dropdown">
-						<a class="dropdown-toggle" class="menu" href="#">Platforms</a>
-						<ul class="dropdown-menu">
-							<li><a href="#">Linux</a></li>
-							<li><a href="#">Windows</a></li>
-							<li class="divider"></li>
-							<li><a href="#">Custom</a></li>
-						</ul>
-					</li>
-					<li class="dropdown" data-dropdown="dropdown">
-						<a class="dropdown-toggle" href="#">Applications</a>
-						<ul class="dropdown-menu">
-							<li><a href="#">CMS's</a></li>
-							<li><a href="#">Blogs</a></li>
-							<li><a href="#">Shops</a></li>
-							<li><a href="#">CRM's</a></li>
-							<li><a href="#">ELO's</a></li>
-						</ul>
-					</li>
-				</ul>
-				<ul class="nav secondary-nav">
-					<li data-dropdown="dropdown">
-						<a class="dropdown-toggle" href="#">About</a>
-						<ul class="dropdown-menu">
-							<li><a href="#">how it work</a></li>
-							<li><a href="#">who we are</a></li>
-						</ul>
-					</li>
-					<li data-dropdown="dropdown">
-						<a class="dropdown-toggle" href="#">Help</a>
-{#						<ul class="dropdown-menu">
-							<li><a href="#"></a></li>
-						</ul>#}
-					</li>
 				</ul>
 			</div>
 		</div>
 	</div>
-	<div id="notify-placeholder" class="hidden alert-message block-message fade in">
+{#	<div id="notify-placeholder" class="hidden alert-message block-message fade in">
 		<a class="close">×</a>
 		<h3></h3>
 		<p>
 					
 		</p>
-	</div>
+	</div> #}
