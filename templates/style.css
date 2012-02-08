@@ -44,6 +44,13 @@ ul.nodots
 .middle
 { margin: 0 auto; }
 
+.height-min-100											.height-min-200
+{ min-height: 100px; }									{ min-height: 200px; }
+.height-min-300											.height-min-400
+{ min-height: 300px; }									{ min-height: 400px; }
+.height-min-500											.height-min-600
+{ min-height: 500px; }									{ min-height: 600px; }
+
 
 .table
 { width: 100%; }

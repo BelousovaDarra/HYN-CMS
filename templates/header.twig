@@ -1,7 +1,7 @@
 <!DOCTYPE html> 
 <html lang="{% if meta.i18n.iso %}{{ meta.i18n.iso }}{% else %}en{% endif %}"> 
   <head> 
-    <meta charset="utf-8"> 
+	<meta charset="utf-8">
     <title>{% if dom.title %}{{ dom.title }}{% elseif ms %}{{ ms.domain }}{% endif %}</title> 
 	{% for meta, metafield in dom.meta %}
 		{% for field, value in metafield %}
@@ -10,23 +10,19 @@
 	{% endfor %}{% for css in dom.css %}
 		<link href="{{ css }}" rel="stylesheet">
 	{% endfor %}
-	
+	{% for js in dom.js %}
+	<script src="{{ js }}"></script>
+    {% endfor %}
 	{% if dom.wysiwyg %}
 		<script type="text/javascript">
 			var Aloha	= {};
 			Aloha.settings = {
-				jQuery: $
+				jQuery: jQuery
 			}
 		</script>
 		<script type="text/javascript" src="/js/libs/aloha/src/lib/aloha.js" data-aloha-plugins="common/format,common/list,common/table"></script>
-		<script type="text/javascript">
-			Aloha.ready(function() {
-				Aloha.jQuery(".wysiwyg").aloha();
-			});
-		</script>
 		<link rel="stylesheet" href="/js/libs/aloha/src/css/aloha.css" id="aloha-style-include" type="text/css">
 	{% endif %}
-	
   </head> 
  
 <body>

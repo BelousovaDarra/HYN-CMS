@@ -12,7 +12,9 @@ abstract class module {
 	*
 	*/
 	
+
 	final public function __construct() {
+		global $MultiSite;
 		$module			= strtolower(get_called_class());
 		# subclass of a module is called
 		if( strstr($module,"_")) {
@@ -31,11 +33,18 @@ abstract class module {
 		if( method_exists( $this , $callon ) ) {
 			# read any session information
 			$this -> loadModuleSession();
+			if( $MultiSite -> get("ssl") && HYN_URI_HTTPS != "https://" && $this -> SSL() ) {
+				_p_redirect( "https://" . HYN_URI_HTTPHOST . HYN_URI_REQUEST );
+			}
+			
 			$this -> $callon( (isset($moduleoptions) ? $moduleoptions : false) );
 		} else {
 #[TODO] error handling			
 			return;
 		}
+	}
+	protected function SSL() {
+		return false;
 	}
 	protected function saveModuleSession() {
 		if( isset($this -> session)) {

@@ -13,6 +13,10 @@ class page extends module {
 			
 			# [TODO] show 404
 		}
+		global $MultiSite;
+		if( $MultiSite -> get("isowner") ) {
+			DOM::set_wysiwyg();
+		}
 		DOM::set_title( 
 				$this -> page -> title . 
 				( $this -> page -> subtitle && strlen( $this -> page -> title) < 100 

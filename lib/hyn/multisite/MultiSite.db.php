@@ -20,6 +20,7 @@ class MultiSite_ extends AutoRecord {
 			"owner"			=> "integer",
 			"state"			=> "integer",
 			"prime"			=> "boolean",
+			"ssl"			=> "boolean"
 		);
 	}
 	protected static function _db_join_many() {
@@ -95,12 +96,17 @@ class MultiSite_ extends AutoRecord {
 		if( !$vars ) { return false; }
 		
 	}
-	static public function get_owners() {
-		$m 		= self::get_instance();
-		return array(
-			"owner" 	=> $m -> get("owner"),
-			"righted"	=> array() 					# should be array of User ID's from system_user_rights
-		);
+	public function get_isowner() {
+		global $SiteVisitor;
+		if( $SiteVisitor -> loggedin() &&
+			(
+				$this -> get("owner") == $SiteVisitor -> user -> get("uid")
+				|| $SiteVisitor -> user -> get("admin")
+			)
+		) {
+			return true;
+		}
+		return false;
 	}
 }
 

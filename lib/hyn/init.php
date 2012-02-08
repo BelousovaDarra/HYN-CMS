@@ -87,7 +87,7 @@ if( HYN != "cmd" ) {
 	
 	# starts visitor object and loads saved session if possible
 	# also begins analytics tracking
-	SiteVisitor::init();
+	$SiteVisitor		= new SiteVisitor;
 	
 	hyn_include( "dom" );
 	hyn_include( "module" );

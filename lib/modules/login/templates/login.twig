@@ -1,0 +1,50 @@
+	{% include "header" %}
+	
+	<div class="row">
+		<div class="span6">
+			<h1>Login</h1>
+			<form method="POST" class="form-horizontal">
+			{% if visitor.user %}
+				<div class="control-group">
+					<label class="control-label" for="login-username">Logged in as</label>
+					<div class="controls">
+						<input type="text" class="input disabled" id="login-username" name="login-username" value="{{ visitor.user.email }}" disabled />
+					</div>
+				</div>
+				<div class="form-actions">
+					<input type="button" class="btn btn-large" name="logout-user" value="Log off" />
+				</div>
+			{% else %}
+				<div class="control-group">
+					<label class="control-label" for="login-username">Username</label>
+					<div class="controls">
+						<input type="text" class="input" id="login-username" name="login-username" placeholder="your e-mail address" />
+						{% if error.username %}<p class="help-block">{{ error.username }}</p>{% endif %}
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="login-password">Password</label>
+					<div class="controls">
+						<input type="password" class="input" id="login-password" name="login-password" />
+						{% if error.password %}<p class="help-block">{{ error.password }}</p>{% endif %}
+					</div>
+				</div>
+				<div class="form-actions">
+					<input type="submit" name="login-user" class="btn btn-primary btn-large" value="Login" />
+					<input type="submit" name="login-fpw" class="btn btn-large" value="Recover" />
+				</div>
+			{% endif %}
+			</form>
+		</div>
+		<div class="span6">
+			<h1>Sign up</h1>
+			<blockquote>Currently disabled, our apologies for making you anxious.<small>Cloudspark</small></blockquote>
+			<form method="POST" class="form-horizontal">
+				<div class="form-actions">
+					<input type="submit" name="register-user" class="btn btn-primary btn-large" value="Register" />
+				</div>
+			</form>
+		</div>
+	</div>
+	
+	{% include "footer" %}

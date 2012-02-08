@@ -23,5 +23,6 @@ class SystemUser_ extends BasicUser {
 			"state"			=> "integer",		// 1 - signed up, 0 - banned
 		);
 	}
+
 }
 BasicUser::register('SystemUser');

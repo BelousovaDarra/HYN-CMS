@@ -4,12 +4,43 @@
 		<h1>{{ page.title }}{% if page.subtitle %} <small>{{ page.subtitle }}</small>{% endif %}</h1>
 	{% endif %}
 	{% if page.content %}
-		<div class="well">
+		<p class="content">
 		{{ page.content }}
-		</div>
+		</p>
+		{% if ms.isowner %}
+				<div id="wysiwyg-modal" class='modal hidden fade'>
+					<div class='modal-header'>
+						<h3>Edit content</h3>
+					</div>
+					<div class='modal-body'>
+						
+					</div>
+					<div class='modal-footer'>
+						<a href="#" onclick="$('#wysiwyg-modal').modal('hide');return false;" class="btn">cancel</a>
+						<input type="submit" class="btn btn-primary" value="update" name="update" />
+						
+					</div>
+				</div>
+		{% endif %}
 	{% endif %}
 	
 	{% if page and page.id %}
+		{% if ms.isowner %}
+		<script type="text/javascript">
+		Aloha.ready(function() {
+			$("p.content").click( function() {
+				Aloha.jQuery(this).aloha();
+			});
+//			$("#wysiwyg-modal").on("show",function() {
+//				$(this).find(".modal-body").html($("p.content").html()).aloha();
+//				Aloha.jQuery(".wysiwyg").aloha();
+//			});
+//			$(".open-wysiwyg").click(function() {
+//				$("#wysiwyg-modal").modal();
+//			});
+		});
+		</script>
+		{% endif %}
 		<div class="form-actions">
 			<span class="label right"><i class="icon-barcode icon-white"></i> Page ID: {{ page.id }}</span><br />
 		</div>

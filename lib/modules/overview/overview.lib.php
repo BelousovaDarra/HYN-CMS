@@ -19,11 +19,13 @@ class overview extends module {
 */	
 		DOM::set_meta( "name" , "generator" , "HYN.me" );
 
-		DOM::add_js( 'jQuery("[data-popover-placement=\'right\']").popover({ live: true, html: true, title: \'data-popover-title\', content: \'data-popover-content\' });' , "body" );
-		DOM::add_js( 'jQuery("[data-popover-placement=\'left\']").popover({ live: true, html: true, title: \'data-popover-title\', content: \'data-popover-content\', placement: \'left\' });' , "body" );
-		DOM::add_js( 'jQuery("[data-tooltip-content]").tooltip({ live: true, html: true, title: \'data-tooltip-content\' });' , "body" );
+		DOM::add_js( 'if(jQuery("[data-popover-placement=\'right\']").length > 0) {jQuery("[data-popover-placement=\'right\']").popover({ live: true, html: true, title: \'data-popover-title\', content: \'data-popover-content\' });}' , "body" );
+		DOM::add_js( 'if(jQuery("[data-popover-placement=\'left\']").length > 0) {jQuery("[data-popover-placement=\'left\']").popover({ live: true, html: true, title: \'data-popover-title\', content: \'data-popover-content\', placement: \'left\' });}' , "body" );
+		DOM::add_js( 'if(jQuery("[data-tooltip-content]").length > 0) {jQuery("[data-tooltip-content]").tooltip({ live: true, html: true, title: \'data-tooltip-content\' });}' , "body" );
 
-		DOM::add_js( '	jQuery("input[name=\'free-trial\']").click(function() {
+		DOM::add_js( '	
+				if( jQuery("input[name=\'free-trial\']").length > 0) {
+				jQuery("input[name=\'free-trial\']").click(function() {
 					if( jQuery(this).attr("checked") ) {
 						jQuery("input[name=\'payment\'][value=0]:disabled").attr("disabled",false);
 						jQuery("input[name=\'order-domain\'][value=5]:disabled").attr("disabled",false);
@@ -33,7 +35,7 @@ class overview extends module {
 						jQuery("input[name=\'order-domain\'][value!=5]").first().attr("checked",true);
 						jQuery("input[name=\'payment\'][value!=0]").first().attr("checked",true);
 					} 
-				});
+				});}
 		' , "body" );		
 #		DOM::add_js( 'jQuery("input[name=\'free-trial\']").click(function() {jQuery("input[name=\'payment\'][value=0]").attr("disabled",false);});' , "body" );
 	}
@@ -47,6 +49,13 @@ class overview extends module {
 		// load page
 		$p 		= new page;
 		return $p -> display();
+	}
+	/**
+	*		shows login
+	*/
+	public function login() {
+		$l		= new login;
+		return $l -> display();
 	}
 	/**
 	*		shows all options and store it into session and server to be used if order is not finished
