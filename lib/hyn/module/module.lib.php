@@ -39,7 +39,7 @@ abstract class module {
 			
 			$this -> $callon( (isset($moduleoptions) ? $moduleoptions : false) );
 		} else {
-#[TODO] error handling			
+#[TODO] error handling
 			return;
 		}
 	}

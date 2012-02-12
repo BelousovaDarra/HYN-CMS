@@ -12,6 +12,19 @@ class DOM {
 		}
 		return self::$dom;
 	}
+	static public function set_piwik() {
+		$dom				= self::get_instance();
+		if( 	defined("PIWIK_TOKEN_AUTH") 
+			&& PIWIK_TOKEN_AUTH != FALSE
+			&& (	
+				!isset( $dom -> piwik ) 
+				|| ( isset($dom -> piwik) && !$dom -> piwik ) 
+			)
+		) {
+			$dom		-> piwik
+								= true;
+		}		
+	}
 	static public function set_wysiwyg() {
 		$dom				= self::get_instance();
 		if( !isset( $dom -> wysiwyg ) || !$dom -> wysiwyg ) {
@@ -49,9 +62,15 @@ class DOM {
 		$dom		-> js[]		= $js;
 		$dom		-> js		= array_unique( $dom -> js , SORT_STRING );
 	}
+	static public function set_show_uri( $uri ) {
+		$dom					= self::get_instance();
+		$dom		-> show_uri	= $uri;
+	}
 	private function __construct() {
 		$this -> css			= array();
 		$this -> js				= array();
+		$this -> request_uri	= HYN_URI_REQUEST;
+		$this -> show_uri		= HYN_URI_REQUEST;
 	}
 	static public function parse_js() {
 		$dom				= self::get_instance();

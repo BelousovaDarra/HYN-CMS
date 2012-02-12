@@ -11,16 +11,39 @@
 		<link href="{{ css }}" rel="stylesheet">
 	{% endfor %}
 	{% for js in dom.js %}
-	<script src="{{ js }}"></script>
-    {% endfor %}
+		<script src="{{ js }}"></script>
+    	{% endfor %}
 	{% if dom.wysiwyg %}
 		<script type="text/javascript">
-			var Aloha	= {};
-			Aloha.settings = {
-				jQuery: jQuery
+			var Aloha		= {};
+			Aloha.settings 		= {
+				jQuery: 		jQuery,
+				locale:			'{% if meta.i18n.iso %}{{ meta.i18n.iso }}{% else %}en{% endif %}',
+				floatingmenu:	{
+					width: 		'940',
+					behaviour:		'topalign',
+					marginTop:		0,
+					horizontalOffset:	'auto'
+				},
+				sidebar:		{ disabled: true },
+				plugins:		{
+					format:	{
+						editables: {
+							"h1"	: []
+						}
+					},
+					list:	{
+						editables: {
+							"h1"	: []
+						}
+					}
+				}
 			}
 		</script>
-		<script type="text/javascript" src="/js/libs/aloha/src/lib/aloha.js" data-aloha-plugins="common/format,common/list,common/table"></script>
+		<script type="text/javascript" src="/js/libs/aloha/src/lib/aloha.js" data-aloha-plugins="common/format,
+			common/list,common/table,common/link,common/block,common/undo,common/paste,common/commands,common/abbr,
+			common/image,
+			extra/flag-icons,extra/draganddropfiles"></script>
 		<link rel="stylesheet" href="/js/libs/aloha/src/css/aloha.css" id="aloha-style-include" type="text/css">
 	{% endif %}
   </head> 
@@ -28,13 +51,29 @@
 <body>
 
 <div class="container">
-	<div class="navbar navbar-fixed-top">
-		<div class="navbar-inner">
-			<div class="container">
-				<a class="brand" href="http://{{ ms.domain }}">{{ ms.domain }}</a>
-				<ul class="nav">
-					<li class="active"><a href="http://{{ ms.domain }}">Home</a></li>
-				</ul>
+	<div class="navbar navbar-fixed-top header-cs">
+		<div class="container">
+			<div class="brand"><a href="/">{{ ms.domain|capitalize }}</a></div>
+			<div class="btn-toolbar">
+				<div class="btn-group">
+					<a class="btn" href="/"><i class="icon-home"></i> {{ _("Home") }}</a>
+				</div>
+				<div class="btn-group">
+					{% set urldiscover = "/discover/" %}
+					<a class="btn{% if urldiscover == dom.show_uri %} disabled{% endif %}" href="{{ urldiscover }}"><i class="icon-eye-open"></i> {{ _("Discover") }}</a>
+					{% set urldiscoverproducts = "/discover/our-products/" %}
+					<a class="btn btn-info btn-small{% if urldiscoverproducts == dom.show_uri %} disabled{% endif %}" href="{{ urldiscoverproducts }}">{{ _("our products") }} <i class="icon-gift"></i></a>
+					{% set urldiscoverus = "/discover/who-we-are/" %}
+					<a class="btn btn-info btn-small{% if urldiscoverus == dom.show_uri %} disabled{% endif %}" href="{{ urldiscoverus }}">{{ _("who we are") }} <i class="icon-road"></i></a>
+				</div>
+				<div class="btn-group right">
+					{% if visitor.user %}
+						<a class="btn btn-small" href="/login/?logout-user"><i class="icon-lock"></i> {{ _("Log Out") }} {{ visitor.user.realname }}</a>
+					{% else %}
+						<a class="btn btn-small disabled" href="/login/"><i class="icon-user"></i> {{ _("Sign Up") }}</a>
+						<a class="btn btn-small" href="/login/"><i class="icon-lock"></i> {{ _("Log In") }}</a>
+					{% endif %}
+				</div>
 			</div>
 		</div>
 	</div>

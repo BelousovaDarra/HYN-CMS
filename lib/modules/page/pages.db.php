@@ -18,6 +18,12 @@ class pages_ extends ModuleRecord {
 			
 		);
 	}
+	public function get_created_dmy() {
+		return AnewtDatetime::format( "%d %h %Y" , $this -> get("created") );
+	}
+	public function get_updated_dmy() {
+		return AnewtDatetime::format( "%d %h %Y" , $this -> get("updated") );
+	}
 }
 
 ModuleRecord::register("pages");

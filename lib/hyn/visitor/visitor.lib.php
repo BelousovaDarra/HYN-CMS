@@ -48,7 +48,7 @@ class SiteVisitor {
 		
 		if( isset($_SESSION['user']) ) {
 			$this -> readSession();
-			if( GPC::post_string("logout-user")) {
+			if( GPC::post_string("logout-user") || GPC::get_string("logout-user")) {
 				session_unset();
 				unset($this -> user);
 			}
@@ -78,14 +78,14 @@ class SiteVisitor {
 		$owner		= $MultiSite -> get( "owner" );
 		// if system admin
 		if( $this -> user -> get("type") == 0 && $this -> user -> get("admin")) {
-			
+			return true;
 		} else
 		// if site owner
 		if( $owner == $this -> user -> get( "uid" )) {
 			return true;
 		}
 		// if site rights
-#		elseif(  ) {
+#		elseif( SystemUserRight::find_one_by_uid_site( $this -> user -> get("uid") , $MultiSite -> get("id") ) ) {
 			
 #		}
 		else {

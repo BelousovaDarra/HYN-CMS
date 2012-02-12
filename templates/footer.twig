@@ -1,6 +1,11 @@
 		<hr>
 		<footer>
-			<div class="left"><span class="label">powered by</span> <span class="label label-important">HYN</span> <span class="label">+</span> <span class="label label-important">HostingXS</span></div>
+			<div class="left">
+				<address>
+					<h6>Cloudspark; a product of HYN.me</h6>
+					<span class="label">powered by</span> <span class="label label-important">HYN</span> <span class="label">+</span> <span class="label label-important">HostingXS</span>
+				</address>
+			</div>
 			<div class="right width-50">
 				<form method="POST" class="clearfix">
 					<div class="input">
@@ -16,5 +21,63 @@
 			</div>
 		</footer> 
 	</div>
+	{% if dom.piwik %}
+	<script type="text/javascript">
+	var pkBaseURL = "/stats/";
+	document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+	</script><script type="text/javascript">
+	try {
+	var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", {{ ms.id }});
+	piwikTracker.trackPageView();
+	piwikTracker.enableLinkTracking();
+	} catch( err ) {}
+	</script><noscript><p><img src="/stats/piwik.php?idsite={{ ms.id }}" style="border:0" alt="" /></p></noscript>
+	{% endif %}
+
+
+	{% if dom.wysiwyg %}
+		<script type="text/javascript">
+			Aloha.ready(function() {
+				Aloha.jQuery("*[data-edit-href]").aloha();
+				// create a new page
+				$("*[data-new-href]").on("click", function() {
+					$.ajax({
+						cache:				false,
+						type:				'GET',
+						url:				$(this).attr('data-new-href'),
+						success:			function(route) {
+							window.location	=  route;
+						}
+					});
+					return false;
+				});
+				$("*[data-edit-href]").on('click', function() {
+					// store old html
+//todo					jQuery('.aloha-floatingmenu').setPosition( 0 , 500 );
+					$(this).data("current-content" , $(this).html() );
+				}).on('blur' , function() {
+					if( $(this).data("current-content") != $(this).html() ) {
+						var	progressbar		= $('<div class="alert alert-info"><div class="middle progress progress-striped active"><div class="bar" style="width: 0%;"></div></div></div>');
+						$(this).before( progressbar );
+		
+						$.ajax({
+							cache: 			false,
+							data:			{ newcontent: $(this).html() },
+							processData:	true,
+							type:			'POST',
+							url:			$(this).attr('data-edit-href'),
+							success:		function() {
+								progressbar.find(".bar").animate({
+									width:	'100%'
+								} , 2000 , function() {
+									progressbar.remove()
+								});
+							}
+						});
+					}
+				});
+			});
+		</script>
+	{% endif %}
 </body> 
 </html>

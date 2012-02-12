@@ -20,5 +20,8 @@ class SystemUserRight_ extends AutoRecord {
 			"updated"		=> "datetime",
 		);
 	}
+	public function find_one_by_uid_site( $uid , $site ) {
+	
+	}
 }
 AutoRecord::register('SystemUserRight');

@@ -1,48 +1,34 @@
 	{% include "header" %}
 	
 	{% if page.title %}
-		<h1>{{ page.title }}{% if page.subtitle %} <small>{{ page.subtitle }}</small>{% endif %}</h1>
+		<h1{% if ms.owner and dom.wysiwyg %} data-edit-href="/ajax/page/{{ page.id }}/title"{% endif %}>
+			{% if page.title %}{{ page.title }}{% elseif ms.owner %}no title, add one{% endif %}
+			{% if page.subtitle or ms.owner %} <small>{% if page.subtitle %}{{ page.subtitle }}{% elseif ms.owner %}no subtitle, add one {% endif %}</small>{% endif %}
+		</h1>
 	{% endif %}
 	{% if page.content %}
-		<p class="content">
-		{{ page.content }}
-		</p>
-		{% if ms.isowner %}
-				<div id="wysiwyg-modal" class='modal hidden fade'>
-					<div class='modal-header'>
-						<h3>Edit content</h3>
-					</div>
-					<div class='modal-body'>
-						
-					</div>
-					<div class='modal-footer'>
-						<a href="#" onclick="$('#wysiwyg-modal').modal('hide');return false;" class="btn">cancel</a>
-						<input type="submit" class="btn btn-primary" value="update" name="update" />
-						
-					</div>
-				</div>
-		{% endif %}
+		<div{% if ms.owner and dom.wysiwyg %} data-edit-href="/ajax/page/{{ page.id }}/content"{% endif %}>
+		{{ page.content|raw }}
+		</div>
 	{% endif %}
 	
-	{% if page and page.id %}
-		{% if ms.isowner %}
-		<script type="text/javascript">
-		Aloha.ready(function() {
-			$("p.content").click( function() {
-				Aloha.jQuery(this).aloha();
-			});
-//			$("#wysiwyg-modal").on("show",function() {
-//				$(this).find(".modal-body").html($("p.content").html()).aloha();
-//				Aloha.jQuery(".wysiwyg").aloha();
-//			});
-//			$(".open-wysiwyg").click(function() {
-//				$("#wysiwyg-modal").modal();
-//			});
-		});
-		</script>
-		{% endif %}
-		<div class="form-actions">
-			<span class="label right"><i class="icon-barcode icon-white"></i> Page ID: {{ page.id }}</span><br />
+	{% if page and page.id and ms.isowner %}
+		<div class="form-actions row">
+			<div class="span6">
+				{% if page.notexactsame %}
+					<a class="btn" href="#" data-original-title="Create new page for {{ page.route }}{{ page.notexactsame }}"
+						data-new-href="/ajax/page/new{{ page.route }}{{ page.notexactsame }}">
+						<i class="icon-plus-sign"></i> create</a> <code>{{ page.route }}{{ page.notexactsame }}</code>
+				{% else %}
+				&nbsp;
+				{% endif %}
+			</div>
+
+			<div class="span5 text-right">
+				<span class="label label-info" data-original-title="Creation date"><i class="icon-share icon-white"></i> {{ page.created_dmy }}</span>
+				<span class="label label-info" data-original-title="Modification date"><i class="icon-edit icon-white"></i> {{ page.updated_dmy }}</span>
+				<span class="label label-warning" data-original-title="Internal identifier of this page"><i class="icon-barcode icon-white"></i> Page ID: {{ page.id }}</span><br />
+			</div>
 		</div>
 	{% endif %}
 	

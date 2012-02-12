@@ -13,6 +13,10 @@ function _v( $input , $type=true ) {
 		if( !isset($input) || $input == "" ) {
 			return _("this field is required");
 		}
+	} elseif( $type == "int" || $type == "integer" ) {
+		if( !is_int( $input )) {
+			return false;
+		}
 	} elseif( $type == "array" ) {
 		if( !isset($input) || !is_array($input) || !count($input) ) {
 			return false;
