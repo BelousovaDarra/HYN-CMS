@@ -1,0 +1,3 @@
+[submodule "lib/hyn/bootstraps/twitter/lib"]
+	path = lib/hyn/bootstraps/twitter/lib
+	url = https://github.com/twitter/bootstrap.git
