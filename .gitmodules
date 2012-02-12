@@ -1,3 +1,12 @@
 [submodule "lib/hyn/bootstraps/twitter/lib"]
 	path = lib/hyn/bootstraps/twitter/lib
 	url = https://github.com/twitter/bootstrap.git
+[submodule "lib/modules/piwik/lib"]
+	path = lib/modules/piwik/lib
+	url = https://github.com/piwik/piwik.git
+[submodule "lib/hyn/onapp/lib"]
+	path = lib/hyn/onapp/lib
+	url = https://github.com/OnApp/OnApp-PHP-Wrapper.git
+[submodule "lib/hyn/twig/lib"]
+	path = lib/hyn/twig/lib
+	url = https://github.com/fabpot/Twig.git
