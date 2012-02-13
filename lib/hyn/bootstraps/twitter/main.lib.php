@@ -5,7 +5,7 @@ DOM::set_css( __DIR__ . DS . "lib" . DS . "docs" . DS . "assets" . DS . "css" . 
 
 DOM::set_css( __DIR__ . DS . "overrideimg.css" );
 
-DOM::set_js( HYN_PATH_PUBLIC_JS . "libs" . DS . "jq". DS . "jq.js" );
+DOM::set_js( HYN_PATH_PUBLIC_JS . "libs" . DS . "jquery". DS . "lib" . DS . "dist" . DS . "jquery.js" );
 
 DOM::set_js( __DIR__ . DS . "lib" . DS . "js" . DS . "bootstrap-alert.js" );
 DOM::set_js( __DIR__ . DS . "lib" . DS . "js" . DS . "bootstrap-button.js" );

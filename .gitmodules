@@ -10,3 +10,12 @@
 [submodule "lib/hyn/twig/lib"]
 	path = lib/hyn/twig/lib
 	url = https://github.com/fabpot/Twig.git
+[submodule "public_html/js/libs/aloha"]
+	path = public_html/js/libs/aloha
+	url = https://github.com/alohaeditor/Aloha-Editor.git
+[submodule "public_html/js/libs/sugar"]
+	path = public_html/js/libs/sugar
+	url = https://github.com/andrewplummer/Sugar.git
+[submodule "public_html/js/libs/jquery/lib"]
+	path = public_html/js/libs/jquery/lib
+	url = https://github.com/jquery/jquery.git
