@@ -22,3 +22,6 @@
 [submodule "public_html/phpma"]
 	path = public_html/phpma
 	url = https://github.com/phpmyadmin/phpmyadmin.git
+[submodule "lib/hyn/min/lib"]
+	path = lib/hyn/min/lib
+	url = https://github.com/mrclay/minify.git
