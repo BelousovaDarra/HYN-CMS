@@ -19,3 +19,6 @@
 [submodule "public_html/js/libs/jquery/lib"]
 	path = public_html/js/libs/jquery/lib
 	url = https://github.com/jquery/jquery.git
+[submodule "public_html/phpma"]
+	path = public_html/phpma
+	url = https://github.com/phpmyadmin/phpmyadmin.git
