@@ -31,3 +31,6 @@
 [submodule "public_html/js/libs/jquery/plugins/noty"]
 	path = public_html/js/libs/jquery/plugins/noty
 	url = https://github.com/needim/noty.git
+[submodule "lib/hyn/social/twitter/lib"]
+	path = lib/hyn/social/twitter/lib
+	url = https://github.com/jmathai/twitter-async.git

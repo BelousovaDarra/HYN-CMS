@@ -17,6 +17,8 @@ HYN CMS is a multi-site content management system built with:
 	* ANEWT  	; github.com/HostingXS/anewt
 	* Twig	 	; twig.sensiolabs.org
 
+When cloning the repository, all dependencies are automatically downloaded as well.
+
 > Info
 
 This Open Source CMS enables multiple websites to be created
