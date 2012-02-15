@@ -28,3 +28,6 @@
 [submodule "public_html/js/libs/pusher/lib"]
 	path = public_html/js/libs/pusher/lib
 	url = https://github.com/pusher/pusher-js.git
+[submodule "public_html/js/libs/jquery/plugins/noty"]
+	path = public_html/js/libs/jquery/plugins/noty
+	url = https://github.com/needim/noty.git
