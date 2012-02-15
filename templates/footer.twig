@@ -1,21 +1,19 @@
 		<hr>
-		<footer>
-			<div class="left">
+		<footer class="row">
+			<div class="span6">
 				<address>
 					<h6>Cloudspark; a product of HYN.me</h6>
 					<span class="label">powered by</span> <span class="label label-important">HYN</span> <span class="label">+</span> <span class="label label-important">HostingXS</span>
 				</address>
 			</div>
-			<div class="right width-50">
-				<form method="POST" class="clearfix">
-					<div class="input">
-						<div class="input-prepend inline">
-							<label class="add-on">
-								Domain availability
-							</label>
-							<input id="hxs-domaincheck" name="hxs-domain-name" size="20" type="text" value="{% if domain %}{{ domain.name }}{% endif %}">
-						</div>
-						<input type="submit" class="marged-w btn inline" value="check" name="hxs-domain-check" />
+			<div class="span6">
+				<form method="POST">
+					<input type="submit" class="marged-w btn right" value="check" name="hxs-domain-check" />
+					<div class="input-prepend">
+						<span class="add-on">
+							Domain availability
+						</span>
+						<input id="hxs-domaincheck" name="hxs-domain-name" size="20" type="text" value="{% if domain %}{{ domain.name }}{% endif %}">
 					</div>
 				</form>
 			</div>

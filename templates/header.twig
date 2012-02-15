@@ -56,22 +56,23 @@
 			<div class="brand"><a href="/">{{ ms.domain|capitalize }}</a></div>
 			<div class="btn-toolbar">
 				<div class="btn-group">
-					<a class="btn" href="/"><i class="icon-home"></i> {{ _("Home") }}</a>
+					<a class="btn{% if dom.show_uri == "/" or dom.show_uri == "" %} active{% endif %}" href="/"><i class="icon-home"></i> {{ _("Home") }}</a>
 				</div>
 				<div class="btn-group">
 					{% set urldiscover = "/discover/" %}
-					<a class="btn{% if urldiscover == dom.show_uri %} disabled{% endif %}" href="{{ urldiscover }}"><i class="icon-eye-open"></i> {{ _("Discover") }}</a>
+					<a class="btn btn-info{% if urldiscover == dom.show_uri %} active{% endif %}" href="{{ urldiscover }}"><i class="icon-eye-open"></i> {{ _("Discover") }} &raquo;</a>
 					{% set urldiscoverproducts = "/discover/our-products/" %}
-					<a class="btn btn-info btn-small{% if urldiscoverproducts == dom.show_uri %} disabled{% endif %}" href="{{ urldiscoverproducts }}">{{ _("our products") }} <i class="icon-gift"></i></a>
+					<a class="btn btn-info btn-small{% if urldiscoverproducts == dom.show_uri %} active{% endif %}" href="{{ urldiscoverproducts }}">{{ _("our products") }} <i class="icon-gift"></i></a>
 					{% set urldiscoverus = "/discover/who-we-are/" %}
-					<a class="btn btn-info btn-small{% if urldiscoverus == dom.show_uri %} disabled{% endif %}" href="{{ urldiscoverus }}">{{ _("who we are") }} <i class="icon-road"></i></a>
+					<a class="btn btn-info btn-small{% if urldiscoverus == dom.show_uri %} active{% endif %}" href="{{ urldiscoverus }}">{{ _("who we are") }} <i class="icon-road"></i></a>
 				</div>
 				<div class="btn-group right">
 					{% if visitor.user %}
 						<a class="btn btn-small" href="/login/?logout-user"><i class="icon-lock"></i> {{ _("Log Out") }} {{ visitor.user.realname }}</a>
 					{% else %}
-						<a class="btn btn-small disabled" href="/login/"><i class="icon-user"></i> {{ _("Sign Up") }}</a>
-						<a class="btn btn-small" href="/login/"><i class="icon-lock"></i> {{ _("Log In") }}</a>
+						{% set urllogin = "/login/" %}
+						<a class="btn btn-small disabled" href="{{ urllogin }}"><i class="icon-user"></i> {{ _("Sign Up") }}</a>
+						<a class="btn btn-small{% if urllogin == dom.show_uri %} active{% endif %}" href="{{ urllogin }}"><i class="icon-lock"></i> {{ _("Log In") }}</a>
 					{% endif %}
 				</div>
 			</div>

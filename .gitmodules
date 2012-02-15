@@ -25,3 +25,6 @@
 [submodule "lib/hyn/min/lib"]
 	path = lib/hyn/min/lib
 	url = https://github.com/mrclay/minify.git
+[submodule "public_html/js/libs/pusher/lib"]
+	path = public_html/js/libs/pusher/lib
+	url = https://github.com/pusher/pusher-js.git

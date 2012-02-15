@@ -46,7 +46,6 @@ hyn_include( "multisite" );
 
 if( HYN != "cmd" ) {
 	hyn_include( "visitor" );
-	
 	$MultiSite			= MultiSite::getbyhost($_SERVER['HTTP_HOST']);
 	// otherwise default to prime site
 	if( !$MultiSite ) {
