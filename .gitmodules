@@ -34,3 +34,6 @@
 [submodule "lib/hyn/social/twitter/lib"]
 	path = lib/hyn/social/twitter/lib
 	url = https://github.com/jmathai/twitter-async.git
+[submodule "public_html/media/icons/18/fugue"]
+	path = public_html/media/icons/18/fugue
+	url = https://github.com/yusukekamiyamane/fugue-icons.git
