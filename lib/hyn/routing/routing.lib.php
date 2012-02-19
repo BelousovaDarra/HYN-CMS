@@ -73,7 +73,17 @@ class routing {
 		}
 
 		$c					= new $call_class;
-		$r -> called				= strtolower($call_class);
+		
+		// verify SSL and LOGIN
+		global $MultiSite,$SiteVisitor;
+		if( $MultiSite -> get("ssl") && HYN_URI_HTTPS != "https://" && $c -> _SSL_() ) {
+			_p_redirect( "https://" . HYN_URI_HTTPHOST . HYN_URI_REQUEST );
+		}
+		if( $c -> _LOGIN_() && !$SiteVisitor -> user ) {
+			$c				= new login;
+			$call_func		= "display";
+		}
+		$r -> called		= strtolower($call_class);
 		self::$c			= $c;
 		// find function - first by defined, if
 		if( $call_func && method_exists( $c , $call_func )) {
@@ -85,24 +95,6 @@ class routing {
 			self::$f		= "display";
 			return;
 		}
-		
-/*		if( method_exists( $call_class , $r -> route -> get("function") )) {
-			$call_func	= $r -> route -> get("function");
-		} elseif( method_exists( $call_class , "display")) {
-			$call_func	= "display";
-		}
-		if( $call_class && class_exists( $call_class )) {
-			$c		= new $call_class;
-			if( $c && $call_func && method_exists( $c , $call_func )) {
-				self::$c		= $c;
-				self::$f		= $call_func;
-			}
-		} elseif( $r -> uri['path'] != "/" ) {			// let's assume user wanted to visit something, which is not there - 404
-#[TODO]			
-		} else {						// let's assume user visits the / root path
-			$r -> $c			= new Overview;
-			$r -> $f			="display";
-		}*/
 	}
 	static function flush() {
 		$r 					= self::get_instance();

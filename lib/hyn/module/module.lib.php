@@ -14,7 +14,7 @@ abstract class module {
 	
 
 	final public function __construct() {
-		global $MultiSite;
+		global $MultiSite,$SiteVisitor;
 		$module			= strtolower(get_called_class());
 		# subclass of a module is called
 		if( strstr($module,"_")) {
@@ -24,26 +24,28 @@ abstract class module {
 				// [TODO] error
 			}
 		}
+		
+	
 		$this -> class		= $module;
 		$this -> setupDB();
 		$this -> setupTwig();
 		$this -> setupRoutes();
+		$this -> pathid				= $this -> get_path_id();
 		# now call constructor of module class
 		$callon		= "_".$this -> class;
 		if( method_exists( $this , $callon ) ) {
 			# read any session information
 			$this -> loadModuleSession();
-			if( $MultiSite -> get("ssl") && HYN_URI_HTTPS != "https://" && $this -> SSL() ) {
-				_p_redirect( "https://" . HYN_URI_HTTPHOST . HYN_URI_REQUEST );
-			}
-			
 			$this -> $callon( (isset($moduleoptions) ? $moduleoptions : false) );
 		} else {
 #[TODO] error handling
 			return;
 		}
 	}
-	protected function SSL() {
+	public function _SSL_() {
+		return false;
+	}
+	public function _LOGIN_() {
 		return false;
 	}
 	protected function saveModuleSession() {
@@ -73,9 +75,19 @@ abstract class module {
 		return Twig::parse( filefind($tpl,$this -> class) , (_v($vrs,"array") ? $vrs : array()) );
 	}
 	public function get_header() {
-		return $this -> parseTemplate( "header.twig" );
+		return $this -> parseTemplate( "header" );
 	}
 	public function get_footer() {
-		return $this -> parseTemplate( "footer.twig" );
+		return $this -> parseTemplate( "footer" );
+	}
+	private function get_path_id() {
+		$r		= $this -> route -> path;
+		$set	= false;
+		if( _v($r,"array")) { foreach( $r as $i ) {
+			if( !$set && _v($i,"integer")) {
+				$set				= (int) $i;
+			}
+		}}
+		return $set;
 	}
 }

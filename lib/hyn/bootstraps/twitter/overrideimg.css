@@ -2,3 +2,6 @@
 { background-image: url("/media/icons/bootstraps/twitter/glyphicons-halflings.png") !important; }
 .icon-white 
 { background-image: url("/media/icons/bootstraps/twitter/glyphicons-halflings-white.png") !important; }
+
+.box-modal[class*="span"]
+{ margin-left: 15px !important; }

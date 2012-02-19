@@ -14,7 +14,7 @@ function _v( $input , $type=true ) {
 			return _("this field is required");
 		}
 	} elseif( $type == "int" || $type == "integer" ) {
-		if( !is_int( $input )) {
+		if( (int) $input != $input ) {
 			return false;
 		}
 	} elseif( $type == "array" ) {

@@ -75,7 +75,7 @@ class page extends module {
 			DOM::set_wysiwyg();
 		}
 		DOM::set_title( 
-				$this -> page -> title . 
+				trim($this -> page -> title) . 
 				( $this -> page -> subtitle && strlen( $this -> page -> title) < 100 
 					? " - " . $this -> page -> subtitle 
 					: false 

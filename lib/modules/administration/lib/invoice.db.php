@@ -20,3 +20,5 @@ class invoice_ extends ModuleRecord {
 		);*/
 	}
 }
+
+ModuleRecord::register("invoice");
