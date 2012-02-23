@@ -1,0 +1,33 @@
+{% include "header" %}
+
+<div class="row">
+	<div class="span4 box-modal">
+		<div class="modal-header">
+			<h3>{{ _("Relation options") }}</h3>
+		</div>
+		<div class="modal-content">
+{#			<a class="btn btn-small">edit</a>
+			<a class="btn btn-small">delete</a> #}
+		</div>
+		<div class="modal-footer">
+		
+		</div>
+	</div>
+	<form class="span8 box-modal form-horizontal" method="POST">
+		<div class="modal-header">
+			<h1>{{ relation.name }}
+				<small>{% if relation.company %}{{ orgtypes[relation.company] }}{% endif %}</small>
+			</h1>
+		</div>
+		<div class="modal-content padded-n">
+			
+			{% include "relation.form" %}
+		</div>
+		<div class="modal-footer">
+			<input type="hidden" name="relationid" value="{{ relation.id }}" />
+			<input type="submit" class="btn btn-primary" name="relation" value="{{ _("update") }}" />
+		</div>
+	</form>
+</div>
+
+{% include "footer" %}

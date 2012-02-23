@@ -1,0 +1,15 @@
+<div class="modal hide" id="create-relation">
+	<form class="modal form-horizontal" method="POST">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal" >&times;</a>
+			<h3>{{ _("create relation") }}</h3>
+		</div>
+		<div class="modal-content">
+			{% include "relation.form" %}
+		</div>
+		<div class="modal-footer">
+			<input type="submit" class="btn btn-primary" name="relation" value="{{ _("create") }}" />
+			<a data-dismiss="modal" href="" class="btn">{{ _("cancel") }}</a>
+		</div>
+	</form>
+</div>

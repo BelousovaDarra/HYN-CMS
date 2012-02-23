@@ -3,48 +3,10 @@ if( !defined("HYN")) { exit; }
 
 class overview extends module {
 	protected function _overview() {
-		# check for domain
-		if( GPC::post_string("hxs-domain-check")) {
-			hyn_include( "hxsapi" );
-			$hxs			= new hxsclient( MultiSite::setting( "resellerid" , "hxsclient" ) -> get("value") , MultiSite::setting( "resellerpw" , "hxsclient" ) -> get("value") );
-			$this -> domain	= $hxs -> checkDomain( GPC::post_string("hxs-domain-name" ));
-		}
 
-		hyn_include( "bootstraps/twitter" );
-		
-		# check for disabled piwik:
-		if( MultiSite::setting( "analytics" , "piwik" ) && MultiSite::setting( "analytics" , "piwik" ) -> get("value") ) {
-			DOM::set_piwik();
-		}
-
-		DOM::set_css( "style.css" );
+		DOM::set_default_theme();
 		DOM::set_css( "cloudspark.css" );
-		
-		DOM::set_css( 'https://fonts.googleapis.com/css?family=Cuprum' );
-		
-/*		hyn_include( "beaconpush" );
-#		BeaconPusher::send_to_channel( "notify" , "test" , array("Yes we are testing the push") );
-*/	
-		DOM::set_meta( "name" , "generator" , "HYN.me" );
-
-		DOM::add_js( 'if(jQuery("[data-original-title]:not([data-content])").length > 0) {jQuery("[data-original-title]").tooltip({ live: true, html: true });}' , "body" );
-		DOM::add_js( 'if(jQuery("[data-popover-placement=\'right\']").length > 0) {jQuery("[data-popover-placement=\'right\']").popover({ live: true, html: true });}' , "body" );
-		DOM::add_js( 'if(jQuery("[data-popover-placement=\'left\']").length > 0) {jQuery("[data-popover-placement=\'left\']").popover({ live: true, html: true, placement: \'left\' });}' , "body" );
-
-		DOM::add_js( '	
-				if( jQuery("input[name=\'free-trial\']").length > 0) {
-					jQuery("input[name=\'free-trial\']").click(function() {
-						if( jQuery(this).attr("checked") ) {
-							jQuery("input[name=\'payment\'][value=0]:disabled").attr("disabled",false);
-							jQuery("input[name=\'order-domain\'][value=5]:disabled").attr("disabled",false);
-						} else {
-							jQuery("input[name=\'order-domain\'][value=5]").attr("disabled",true);
-							jQuery("input[name=\'payment\'][value=0]").attr("disabled",true);
-							jQuery("input[name=\'order-domain\'][value!=5]").first().attr("checked",true);
-							jQuery("input[name=\'payment\'][value!=0]").first().attr("checked",true);
-						} 
-				});}
-		' , "body" );		
+	
 #		DOM::add_js( 'jQuery("input[name=\'free-trial\']").click(function() {jQuery("input[name=\'payment\'][value=0]").attr("disabled",false);});' , "body" );
 	}
 	/**

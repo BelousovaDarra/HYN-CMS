@@ -37,3 +37,6 @@
 [submodule "public_html/media/icons/18/fugue"]
 	path = public_html/media/icons/18/fugue
 	url = https://github.com/yusukekamiyamane/fugue-icons.git
+[submodule "lib/hyn/restler/lib"]
+	path = lib/hyn/restler/lib
+	url = https://github.com/Luracast/Restler.git

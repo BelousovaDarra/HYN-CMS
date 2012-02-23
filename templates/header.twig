@@ -12,40 +12,8 @@
 	{% endfor %}
 	{% for js in dom.js %}
 		<script src="{{ js }}"></script>
-    	{% endfor %}
-	{% if dom.wysiwyg %}
-		<script type="text/javascript">
-			var Aloha		= {};
-			Aloha.settings 		= {
-				jQuery: 		jQuery,
-				locale:			'{% if meta.i18n.iso %}{{ meta.i18n.iso }}{% else %}en{% endif %}',
-				floatingmenu:	{
-					width: 		'940',
-					behaviour:		'topalign',
-					marginTop:		0,
-					horizontalOffset:	'auto'
-				},
-				sidebar:		{ disabled: true },
-				plugins:		{
-					format:	{
-						editables: {
-							"h1"	: []
-						}
-					},
-					list:	{
-						editables: {
-							"h1"	: []
-						}
-					}
-				}
-			}
-		</script>
-		<script type="text/javascript" src="/js/libs/aloha/src/lib/aloha.js" data-aloha-plugins="common/format,
-			common/list,common/table,common/link,common/block,common/undo,common/paste,common/commands,common/abbr,
-			common/image,
-			extra/flag-icons,extra/draganddropfiles"></script>
-		<link rel="stylesheet" href="/js/libs/aloha/src/css/aloha.css" id="aloha-style-include" type="text/css">
-	{% endif %}
+    {% endfor %}
+	{% include "header.wysiwyg" %}
   </head> 
  
 <body>
@@ -53,7 +21,7 @@
 <div class="container">
 	<div class="navbar navbar-fixed-top header-cs">
 		<div class="container">
-			<div class="brand"><a href="/">{{ ms.domain|capitalize }}</a></div>
+			<div class="brand"><a href="/"><img src="/images/hyn.me/1.png" /></a></div>
 			<div class="btn-toolbar">
 				<div class="btn-group">
 					<a class="btn{% if dom.show_uri == "/" or dom.show_uri == "" %} active{% endif %}" href="/"><i class="icon-home"></i> {{ _("Home") }}</a>
@@ -61,8 +29,8 @@
 				<div class="btn-group">
 					{% set urldiscover = "/discover/" %}
 					<a class="btn btn-info{% if urldiscover == dom.show_uri %} active{% endif %}" href="{{ urldiscover }}"><i class="icon-eye-open"></i> {{ _("Discover") }} &raquo;</a>
-					{% set urldiscoverproducts = "/discover/our-products/" %}
-					<a class="btn btn-info btn-small{% if urldiscoverproducts == dom.show_uri %} active{% endif %}" href="{{ urldiscoverproducts }}">{{ _("our products") }} <i class="icon-gift"></i></a>
+					{% set urldiscoverproduct = "/discover/the-cms/" %}
+					<a class="btn btn-info btn-small{% if urldiscoverproduct == dom.show_uri %} active{% endif %}" href="{{ urldiscoverproduct }}">{{ _("the CMS") }} <i class="icon-gift"></i></a>
 					{% set urldiscoverus = "/discover/who-we-are/" %}
 					<a class="btn btn-info btn-small{% if urldiscoverus == dom.show_uri %} active{% endif %}" href="{{ urldiscoverus }}">{{ _("who we are") }} <i class="icon-road"></i></a>
 				</div>

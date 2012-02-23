@@ -1,0 +1,33 @@
+	{% if dom.wysiwyg %}
+		<script type="text/javascript">
+			var Aloha		= {};
+			Aloha.settings 		= {
+				jQuery: 		jQuery,
+				locale:			'{% if meta.i18n.iso %}{{ meta.i18n.iso }}{% else %}en{% endif %}',
+				floatingmenu:	{
+					width: 		'940',
+					behaviour:		'topalign',
+					marginTop:		0,
+					horizontalOffset:	'auto'
+				},
+				sidebar:		{ disabled: true },
+				plugins:		{
+					format:	{
+						editables: {
+							"h1"	: []
+						}
+					},
+					list:	{
+						editables: {
+							"h1"	: []
+						}
+					}
+				}
+			}
+		</script>
+		<script type="text/javascript" src="/js/libs/aloha/src/lib/aloha.js" data-aloha-plugins="common/format,
+			common/list,common/table,common/link,common/block,common/undo,common/paste,common/commands,common/abbr,
+			common/image,
+			extra/flag-icons,extra/draganddropfiles"></script>
+		<link rel="stylesheet" href="/js/libs/aloha/src/css/aloha.css" id="aloha-style-include" type="text/css">
+	{% endif %}

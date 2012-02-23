@@ -18,26 +18,8 @@ class DOM {
 #		BeaconPusher::send_to_channel( "notify" , "test" , array("Yes we are testing the push") );
 */	
 		DOM::set_meta( "name" , "generator" , "HYN.me" );
-
-		DOM::add_js( 'if(jQuery("[data-original-title]:not([data-content])").length > 0) {jQuery("[data-original-title]").tooltip({ live: true, html: true });}' , "body" );
-		DOM::add_js( 'if(jQuery("[data-popover-placement=\'right\']").length > 0) {jQuery("[data-popover-placement=\'right\']").popover({ live: true, html: true });}' , "body" );
-		DOM::add_js( 'if(jQuery("[data-popover-placement=\'left\']").length > 0) {jQuery("[data-popover-placement=\'left\']").popover({ live: true, html: true, placement: \'left\' });}' , "body" );
-		DOM::add_js( 'if(jQuery(".carousel .item").length > 0) {jQuery(".carousel").carousel();}' , "body" );
-		
-		DOM::add_js( '	jQuery("input[name=\'free-trial\']").click(function() {
-					if( jQuery(this).attr("checked") ) {
-						jQuery("input[name=\'payment\'][value=0]:disabled").attr("disabled",false);
-						jQuery("input[name=\'order-domain\'][value=7]:disabled").attr("disabled",false);
-					} else {
-						jQuery("input[name=\'order-domain\'][value=7]").attr("disabled",true);
-						jQuery("input[name=\'payment\'][value=0]").attr("disabled",true);
-						jQuery("input[name=\'order-domain\'][value!=7]").first().attr("checked",true);
-						jQuery("input[name=\'payment\'][value!=0]").first().attr("checked",true);
-					} 
-				});
-		' , "body" );	
-	}
 	
+	}
 	static public function get_instance() {
 		if( is_null(self::$dom) ) {
 			self::$dom				= new DOM;

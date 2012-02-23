@@ -2,20 +2,18 @@
 		<footer class="row">
 			<div class="span6">
 				<address>
-					<h6>Cloudspark; a product of HYN.me</h6>
-					<span class="label">powered by</span> <span class="label label-important">HYN</span> <span class="label">+</span> <span class="label label-important">HostingXS</span>
+					<h6>HYN.me; simply a modern, web 2.0 CMS</h6>
 				</address>
 			</div>
 			<div class="span6">
-				<form method="POST">
-					<input type="submit" class="marged-w btn right" value="check" name="hxs-domain-check" />
-					<div class="input-prepend">
-						<span class="add-on">
-							Domain availability
-						</span>
-						<input id="hxs-domaincheck" name="hxs-domain-name" size="20" type="text" value="{% if domain %}{{ domain.name }}{% endif %}">
-					</div>
-				</form>
+				<a 
+					href="http://creativecommons.org/licenses/by-nc-sa/3.0/">
+					<img 
+ 					data-popover-placement="top" 
+					data-content="<strong>Summary:</strong> This license lets you remix, tweak, and build upon our work non-commercially, as long as you credit us and license your new creations under the identical terms." 
+					data-original-title="HYN License"
+					src="/images/hyn.me/by-nc-sa.eu.png" style="height: 31px; width: 88px;" alt="BY-NC-SA License" />
+				</a>
 			</div>
 		</footer> 
 	</div>
@@ -33,49 +31,6 @@
 	{% endif %}
 
 
-	{% if dom.wysiwyg %}
-		<script type="text/javascript">
-			Aloha.ready(function() {
-				Aloha.jQuery("*[data-edit-href]").aloha();
-				// create a new page
-				$("*[data-new-href]").on("click", function() {
-					$.ajax({
-						cache:				false,
-						type:				'GET',
-						url:				$(this).attr('data-new-href'),
-						success:			function(route) {
-							window.location	=  route;
-						}
-					});
-					return false;
-				});
-				$("*[data-edit-href]").on('click', function() {
-					// store old html
-//todo					jQuery('.aloha-floatingmenu').setPosition( 0 , 500 );
-					$(this).data("current-content" , $(this).html() );
-				}).on('blur' , function() {
-					if( $(this).data("current-content") != $(this).html() ) {
-						var	progressbar		= $('<div class="alert alert-info"><div class="middle progress progress-striped active"><div class="bar" style="width: 0%;"></div></div></div>');
-						$(this).before( progressbar );
-		
-						$.ajax({
-							cache: 			false,
-							data:			{ newcontent: $(this).html() },
-							processData:	true,
-							type:			'POST',
-							url:			$(this).attr('data-edit-href'),
-							success:		function() {
-								progressbar.find(".bar").animate({
-									width:	'100%'
-								} , 2000 , function() {
-									progressbar.remove()
-								});
-							}
-						});
-					}
-				});
-			});
-		</script>
-	{% endif %}
+	{% include "footer.wysiwyg" %}
 </body> 
 </html>

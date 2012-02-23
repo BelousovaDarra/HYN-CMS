@@ -1,0 +1,28 @@
+{% include "header" %}
+
+{# we have to get all modal template; these are re-used on other pages #}
+{% include "relation.modal" %}
+{% include "product.modal" %}
+
+
+<div class="row">
+		<div class="span3 box-modal">
+			<div class="modal-header">
+				<h3>Quick Links</h3>
+			</div>
+			<div class="modal-body">
+				<ul class="nav nav-list">
+					<li class="nav-header">{{ _("create") }}</li>
+						<li><a href="#create-relation" data-toggle="modal"><i class="icon-user"></i> {{ _("relation")|capitalize }}</a></li>
+						<li><a href="#create-product" data-toggle="modal"><i class="icon-book"></i> {{ _("product")|capitalize }}</a></li>
+						<li><a href="#create-invoice" data-toggle="modal"><i class="icon-shopping-cart"></i> {{ _("invoice")|capitalize }}</a></li>
+
+				</ul>
+			</div>
+			<div class="modal-footer">
+			
+			</div>
+		</div>
+</div>
+
+{% include "footer" %}

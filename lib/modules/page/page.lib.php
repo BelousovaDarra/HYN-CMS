@@ -6,7 +6,6 @@ class page extends module {
 		$this -> path		= $this -> route -> path;
 		$this -> page		= pages::find_one_by_route( $this -> path );
 		$leftovers			= str_replace( ($this -> page ? $this -> page -> route : ''), '' ,  '/'.implode('/',$this -> path) );
-		
 		if( strlen( $leftovers) > 1  && preg_match( "/([a-z])/i" , $leftovers )) {
 			$this -> page -> notexactsame	= $leftovers;	
 		} else { $this -> page -> notexactsame	= false; }
@@ -71,6 +70,7 @@ class page extends module {
 			# [TODO] show 404
 		}
 		global $MultiSite;
+		
 		if( $MultiSite -> get("isowner") ) {
 			DOM::set_wysiwyg();
 		}
