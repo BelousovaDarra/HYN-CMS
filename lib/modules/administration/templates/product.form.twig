@@ -1,119 +1,84 @@
 
 			<ul class="nav nav-tabs padded-w">
-				<li class="active"><a data-toggle="tab" href="#basic">{{ _("basic")|capitalize }}</a></li>
-				<li><a data-toggle="tab" href="#address">{{ _("address")|capitalize }}</a></li>
-				<li><a data-toggle="tab" href="#company">{{ _("company")|capitalize }}</a></li>
-				<li><a data-toggle="tab" href="#billing">{{ _("billing")|capitalize }}</a></li>
+				<li class="active"><a data-toggle="tab" href="#product-basic">{{ _("basic")|capitalize }}</a></li>
+				<li><a data-toggle="tab" href="#product-pricing">{{ _("pricing")|capitalize }}</a></li>
+				<li><a data-toggle="tab" href="#product-billing">{{ _("billing")|capitalize }}</a></li>
 			</ul>
 			<div class="tab-content">
 				{# BASIC #}
-				<div class="tab-pane fade in active" id="basic">
+				<div class="tab-pane active" id="product-basic">
 					<div class="control-group">
 						<label class="control-label" for="name">{{ _("name")|capitalize }}</label>
 						<div class="controls">
-							<input type="text" id="name" name="name"{% if relation %} value="{{ relation.name }}"{% endif %} />
+							<input type="text" id="name" name="name"{% if product %} value="{{ product.name }}"{% endif %} />
 							<p class="help-block">
-								{{ _("This will help you recognize this relation in the administration.") }}
+								{{ _("This will help you recognize this product in the administration.") }}
 							</p>
 						</div>
 					</div>
 					<div class="control-group">
-						<label class="control-label" for="email">{{ _("email address")|capitalize }}</label>
+						<label class="control-label" for="description">{{ _("description")|capitalize }}</label>
 						<div class="controls">
-							<input type="text" id="email" name="email"{% if relation %} value="{{ relation.email }}"{% endif %} />
-						</div>
-					</div>
-				</div>
-				{# ADDRESS #}
-				<div class="tab-pane fade" id="address">
-					<div class="control-group">
-						<label class="control-label" for="address">{{ _("address")|capitalize }}</label>
-						<div class="controls">
-							<input type="text" id="address" name="address" placeholder="{{ _("street") }}"{% if relation %} value="{{ relation.address }}"{% endif %} />
-							<input class="span2" type="text" id="houseno" name="houseno" placeholder="{{ _("house number") }}"{% if relation %} value="{{ relation.houseno }}"{% endif %} />
+							<textarea class="wysiwyg" type="text" id="description" name="description">{% if product %}{{ product.email }}{% endif %}</textarea>
 						</div>
 					</div>
 					<div class="control-group">
-						<label class="control-label" for="city">{{ _("city")|capitalize }}</label>
+						<label class="control-label" for="category">{{ _("category")|capitalize }}</label>
 						<div class="controls">
-							<input class="span2" type="text" id="postal" name="postal" placeholder="{{ _("postal code") }}"{% if relation %} value="{{ relation.postal }}"{% endif %} />
-							<input type="text" id="city" name="city"  placeholder="{{ _("city") }}"{% if relation %} value="{{ relation.city }}"{% endif %} />
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="country">{{ _("country")|capitalize }}</label>
-						<div class="controls">
-							<select name="country">
-								{% for country in countries %}
-								<option value="{{ country.iso }}"{% if relation and relation.country == country.iso %} selected{% endif %}>{{ country.printable_name }}</option>
+							{% if categories %}
+							<select name="category">
+								{% for category in categories %}
+								<option value="{{ category.id }}"{% if product and product.category == category.id %} selected{% endif %}>{{ category.name }}</option>
 								{% endfor %}
 							</select>
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="phone">{{ _("phone")|capitalize }}</label>
-						<div class="controls">
-							<input type="text" id="phone" name="phone" placeholder="+31 8 00 00 00 00"{% if relation %} value="{{ relation.phone }}"{% endif %} />
+							{% else %}
+								<input type="hidden" value="0" name="cateogory">
+								<div class="alert"><strong>{{ _("uncategorized")|capitalize }}</strong>: {{ _("no categories available") }}</div>
+							{% endif %}
 						</div>
 					</div>
 				</div>
-				{# COMPANY #}
-				<div class="tab-pane fade" id="company">
+				{# PRICING #}
+				<div class="tab-pane" id="product-pricing">
 					<div class="control-group">
-						<label class="control-label" for="name">{{ _("organization")|capitalize }}</label>
+						<label class="control-label" for="price">{{ _("price")|capitalize }}</label>
 						<div class="controls">
-							{% for orgvalue, org in orgtypes %}
+							<input type="text" id="price" name="price" placeholder="{{ _("25,99") }}"{% if product %} value="{{ product.price }}"{% endif %} />
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="exvat">{{ _("VAT is included?")|capitalize }}</label>
+						<div class="controls">
 							<label class="radio">
-								<input type="radio" name="company" value="{{ orgvalue }}"{% if relation and relation.company == orgvalue %} checked{% elseif not relation and orgvalue == 0 %}checked{% endif %} />
-								{{ org|capitalize }}
+								<input type="radio" name="exvat" value="0"{% if product and not product.exvat %} checked{% elseif not product %} checked{% endif %} />
+								{{ _("Price excludes VAT") }}
 							</label>
-							{% endfor %}
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="taxno">{{ _("tax number")|capitalize }}</label>
-						<div class="controls">
-							<input type="text" id="taxno" name="taxno"{% if relation %} value="{{ relation.taxno }}"{% endif %} />
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="cocno">{{ _("chamber of commerce")|capitalize }}</label>
-						<div class="controls">
-							<input type="text" id="cocno" name="cocno"{% if relation %} value="{{ relation.cocno }}"{% endif %} />
+							<label class="radio">
+								<input type="radio" name="exvat" value="1"{% if product and product.exvat %} checked{% endif %} />
+								{{ _("Price includes VAT") }}
+							</label>
 						</div>
 					</div>
 				</div>
 				{# BILLING #}
-				<div class="tab-pane fade" id="billing">
-					<div class="control-group">
-						<label class="control-label" for="currency">{{ _("currency")|capitalize }}</label>
-						<div class="controls">
-							<select name="currency">
-							{% for currency in currencies %}
-								<option value="{{ currency.iso }}"{% if relation and relation.currency == currency.iso %} selected{% elseif not relation and currency.iso == "EUR" %} selected{% endif %}>
-								{{ currency.name }}
-								</option>
-							{% endfor %}
-							</select>
-						</div>
-					</div>
+				<div class="tab-pane" id="product-billing">
 					<div class="control-group">
 						<label class="control-label" for="billperiod">{{ _("bill period")|capitalize }}</label>
 						<div class="controls">
 							<label class="radio">
-								<input type="radio" name="billperiod" value="d"{% if relation and relation.billperiod == "d" %} checked{% endif %} />
+								<input type="radio" name="billperiod" value="d"{% if product and product.billperiod == "d" %} checked{% endif %} />
 								{{ _("days") }}
 							</label>
 							<label class="radio">
-								<input type="radio" name="billperiod" value="m"{% if relation and relation.billperiod == "m" %} checked{% elseif not relation %} checked{% endif %} />
+								<input type="radio" name="billperiod" value="m"{% if product and product.billperiod == "m" %} checked{% elseif not product %} checked{% endif %} />
 								{{ _("months") }}
 							</label>
 							<label class="radio">
-								<input type="radio" name="billperiod" value="q"{% if relation and relation.billperiod == "q" %} checked{% endif %} />
+								<input type="radio" name="billperiod" value="q"{% if product and product.billperiod == "q" %} checked{% endif %} />
 								{{ _("quarters") }}
 							</label>
 							<label class="radio">
-								<input type="radio" name="billperiod" value="y"{% if relation and relation.billperiod == "y" %} checked{% endif %} />
+								<input type="radio" name="billperiod" value="y"{% if product and product.billperiod == "y" %} checked{% endif %} />
 								{{ _("years") }}
 							</label>
 						</div>
@@ -121,7 +86,7 @@
 					<div class="control-group">
 						<label class="control-label" for="billunits">{{ _("bill period amount")|capitalize }}</label>
 						<div class="controls">
-							<input type="text" id="billunits" name="billunits" value="{% if relation %}{{ relation.billunits }}{% else %}1{% endif %}" />
+							<input type="text" id="billunits" name="billunits" value="{% if product %}{{ product.billunits }}{% else %}1{% endif %}" />
 							<p class="help-block">
 								{{ _("How much previously set units are between invoices.") }}
 							</p>

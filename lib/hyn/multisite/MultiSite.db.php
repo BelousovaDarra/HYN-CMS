@@ -50,6 +50,9 @@ class MultiSite_ extends AutoRecord {
 		return "id";
 	}
 	static function getbyhost( $host ) {
+		
+		$host	= str_replace( "www." , "" , $host );
+		
 /**		if( strstr($host,".") && $c = explode( '.' , $host ) && count($c) >= 3 && $c[0] == "cp" ) {
 			define( "HYNCP"	, true );
 			array_shift( $c );

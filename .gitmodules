@@ -40,3 +40,6 @@
 [submodule "lib/hyn/restler/lib"]
 	path = lib/hyn/restler/lib
 	url = https://github.com/Luracast/Restler.git
+[submodule "public_html/js/libs/jquery/jquerytools"]
+	path = public_html/js/libs/jquery/jquerytools
+	url = https://github.com/jquerytools/jquerytools.git

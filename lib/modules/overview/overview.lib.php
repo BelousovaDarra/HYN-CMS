@@ -5,7 +5,6 @@ class overview extends module {
 	protected function _overview() {
 
 		DOM::set_default_theme();
-		DOM::set_css( "cloudspark.css" );
 	
 #		DOM::add_js( 'jQuery("input[name=\'free-trial\']").click(function() {jQuery("input[name=\'payment\'][value=0]").attr("disabled",false);});' , "body" );
 	}

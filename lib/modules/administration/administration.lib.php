@@ -20,6 +20,8 @@ class administration extends module {
 						2		=> _("sole proprietorship"),
 						3		=> _("non profit"),
 						);
+		$this -> vars['categories']
+						= productcategory::find_all();
 		$this -> vars["currencies"]
 						= Currencies::find_all();
 		$this -> processGPCs();
@@ -61,6 +63,30 @@ class administration extends module {
 			}
 			$rid		= $r -> save( $save );
 #			_p_redirect( "/administration/relation/". $rid );
+		}
+		if( GPC::post_string("product") ) {
+			if( GPC::post_int( "productid" )) {
+				$p			= product::find_one_by_id( GPC::post_int( "relationid" ) );
+				$save		= false;
+			} else {
+				$p			= new product;
+				$save		= true;
+			}
+			$v			= array(
+				"name" , "description" , "category" , "price" , "billperiod" , "billunits"
+			);
+			foreach( $v as $req ) {
+				
+				if( $req == "price" ) {
+					$t		= GPC::post_string( $req );
+					$t		= (float) $t;
+					$t		= (int)($t * 100);
+					$p -> set( $req , $t );
+				} else {
+					$p -> set( $req , GPC::post_string( $req ) );
+				}
+			}
+			$pid		= $p -> save( $save );
 		}
 	}
 	public function display() {

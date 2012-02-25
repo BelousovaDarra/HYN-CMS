@@ -1,5 +1,33 @@
 {% include "header" %}
 
-
+<div class="row">
+	<div class="span4 box-modal">
+		<div class="modal-header">
+			<h3>{{ _("Product options") }}</h3>
+		</div>
+		<div class="modal-content">
+{#			<a class="btn btn-small">edit</a>
+			<a class="btn btn-small">delete</a> #}
+		</div>
+		<div class="modal-footer">
+		
+		</div>
+	</div>
+	<form class="span8 box-modal form-horizontal" method="POST">
+		<div class="modal-header">
+			<h1>{{ product.name }}
+				<small>{% if product.categoy %}{{ categories[product.category] }}{% endif %}</small>
+			</h1>
+		</div>
+		<div class="modal-content padded-n">
+			
+			{% include "product.form" %}
+		</div>
+		<div class="modal-footer">
+			<input type="hidden" name="productid" value="{{ product.id }}" />
+			<input type="submit" class="btn btn-primary" name="product" value="{{ _("update") }}" />
+		</div>
+	</form>
+</div>
 
 {% include "footer" %}

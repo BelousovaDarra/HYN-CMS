@@ -5,6 +5,8 @@ DOM::set_css( __DIR__ . DS . "lib" . DS . "docs" . DS . "assets" . DS . "css" . 
 
 DOM::set_css( __DIR__ . DS . "overrideimg.css" );
 
+DOM::set_css( "cloudspark.css" );
+
 DOM::set_js( "https://www.google.com/jsapi" );
 DOM::set_js( HYN_PATH_PUBLIC_JS . "libs" . DS . "jq". DS . "jq.js" );
 
