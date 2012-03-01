@@ -13,7 +13,7 @@ class SiteVisitor {
 	
 	
 	private function login() {
-		anewt_include( "gpc" );
+		
 		if( ($un = GPC::post_string("login-username")) && ($pw = GPC::post_string("login-password") )) {
 			$remember				= GPC::post_bool("login-remember");
 			# check for System & Site USER
@@ -29,23 +29,106 @@ class SiteVisitor {
 						return true;
 					} else {
 						# show error [TODO]	- banned
-						_debug( "banned" );
+						$this -> error['login']['general']	= _("Your access to this site has been disallowed.");
 					}
 				} else {
 					# show error [TODO]	- wrong pw
-					_debug( "wrong password" );
+					$this -> error['login']['password']		= _("Failed to log you in; incorrect password.");
 				}
 			} else {
 				# show error [TODO] - user not found	
-				_debug( "user not found in database" );
+				$this -> error['login']['username']			= _("Failed to log you in; incorrect username.");
+			}
+		} else {
+			if( !GPC::post_string("login-username") && !GPC::post_string("login-password")) {
+				$this -> error['login']['general']				= _("Please enter your username &amp; password.");
+			}
+			elseif( !GPC::post_string("login-username")) {
+				$this -> error['login']['username']				= _("Please enter your username.");
+			}
+			elseif( !GPC::post_string("login-password")) {
+				$this -> error['login']['password']				= _("Please enter your password.");
 			}
 		}
 		return false;
 	}
+	private function register() {
+		if( $email = GPC::post_string("signup-email") ) {
+			if( !_v( $email , "email" )) {
+				$this -> error['signup']['email']				= _("Please enter a valid e-mail address.");
+				return false;
+			}
+			
+			# check for existing
+			if( SiteUser::find_one_by_un( $email )) {
+				$this -> error['signup']['email']				= _("E-mail address is already registered on this website.");
+				return false;
+			}
+			if( SystemUser::find_one_by_un( $email )) {
+				$this -> error['signup']['email']				= _("E-mail address is already known in the system.");
+				return false;
+			}
+			
+			if( $password = GPC::post_string("signup-password") ) {
+				# validate pass
+				if( _v( $password , "password" ) !== TRUE) {
+					$this -> error['signup']['password']		= _v( $password , "password" );
+					return false;
+				}
+			} else {
+				$this -> error['signup']['password']			= _("Please enter a password.");
+				return false;
+			}
+			if( $password2 = GPC::post_string("signup-password2") ) {
+				# check if matches with first pw
+				if( $password != $password2 ) {
+					$this -> error['signup']['password2']		= _("Passwords do not match, please try again.");
+					return false;
+				}
+			} else {
+				$this -> error['signup']['password2']			= _("You need to enter your password twice.");
+				return false;
+			}
+			if( $realname = GPC::post_string("signup-realname") ) {
+
+			} else {
+				$this -> error['signup']['realname']			= _("Please enter a real name.");
+				return false;
+			}
+			
+			if( !MultiSite::setting( "registration" , "login" ) && !HYN_DEBUG ) {
+			
+				$this -> error['signup']['general']				= _("Registration is currently unavailable - but will be possible soon.");
+				return false;
+			
+			}
+			$su		= new SiteUser;
+			$su -> set( "email" , $email );
+			$su -> set( "realname" , $realname );
+			$su -> set( "password" , crypt( $password ));
+			$su -> set( "domain" , HYN_SYSTEM_ID );
+			$su -> set( "signedup" , AnewtDatetime::now() );
+			$su -> set( "lastactivity" , AnewtDatetime::now());
+			$su -> set( "state" , 1);
+			$su -> save( true );
+			
+			$this -> user	= $su;
+			$this -> saveSession();
+			return true;
+		}
+		else {
+			# no email address
+			$this -> error['signup']['email']					= _("Please enter your e-mail address.");
+			return false;
+		}
+	}
 	public function __construct() {
+		
+		anewt_include( "gpc" );
+		
 		$this		-> ip 				= $_SERVER['REMOTE_ADDR'] ;
 		$this		-> host				= gethostbyaddr( $_SERVER['REMOTE_ADDR'] );	
-		
+		// 
 		if( isset($_SESSION['user']) ) {
 			$this -> readSession();
 			if( GPC::post_string("logout-user") || GPC::get_string("logout-user")) {
@@ -53,10 +136,16 @@ class SiteVisitor {
 				unset($this -> user);
 			}
 		}
-		
+		// login
 		elseif( GPC::post_string("login-user") ) {
 			if( $this -> login() ) {
 				# show public notification welcome	
+			}
+		}
+		// register
+		elseif( GPC::post_string("register-user") ) {
+			if( $this -> register() ) {
+				# do something after registering
 			}
 		}
 	}

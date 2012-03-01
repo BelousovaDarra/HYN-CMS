@@ -25,7 +25,26 @@ DOM::set_js( __DIR__ . DS . "lib" . DS . "js" . DS . "bootstrap-tab.js" );
 DOM::set_js( __DIR__ . DS . "lib" . DS . "js" . DS . "bootstrap-transition.js" );
 DOM::set_js( __DIR__ . DS . "lib" . DS . "js" . DS . "bootstrap-typeahead.js" );
 
-
+DOM::add_js( '
+	if(jQuery("[data-box-minify]").length > 0) {
+		jQuery("[data-box-minify]").click(function() {
+//			alert(jQuery(this).attr("data-box-minify"));
+			var elm					= jQuery("#"+jQuery(this).attr("data-box-minify"));
+			
+			// hiding
+			if( jQuery(elm).find(".body").is(":visible") ) {
+				jQuery(this).find("i").attr("class","icon-resize-full");
+			}
+			// otherwise showing
+			else {
+				jQuery(this).find("i").attr("class","icon-resize-small");
+			}
+			jQuery( elm ).find(".body").toggle();
+			
+			return false;
+		});
+	}' 
+	, "body" );
 DOM::add_js( 'if(jQuery("[data-original-title]:not([data-content])").length > 0) {jQuery("[data-original-title]").tooltip({ live: true, html: true });}' , "body" );
 DOM::add_js( '	if(jQuery("[data-popover-placement]").length > 0) {
 			jQuery("[data-popover-placement]").popover({ 

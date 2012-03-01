@@ -36,6 +36,23 @@ function _v( $input , $type=true ) {
 		if( !preg_match($regex , $input )) {
 			return _("this date & time format is incorrect, use YYYY-mm-dd HH:ii:ss");
 		}
+	} elseif( $type == "password" ) {
+		if( strlen( $input ) < 6 ) {
+			return _("the password must be at least 6 characters long");
+		}
+		if( preg_match( "/^([a-z]*)$/i" , $input )) {
+			return _("the password must contain not only characters");
+		}
+		$regex	= "/([0-9]+)/i";
+		$cnt	= strlen($input);
+		if( !preg_match( $regex , $input ) ) {
+			return _("the password must contain at least a digit");
+		}
+		$regex	= "/[\W]/";
+		if( !preg_match( $regex , $input ) ) {
+			return _("the password must contain at least a symbol");
+		}
+		
 	} elseif( $type == "kvk" ) {
 /*		$c			= curl_init();
 		curl_setopt($c,CURLOPT_URL,"http://api.openkvk.nl/php/SELECT%20*%20FROM%20kvk%20WHERE%20kvks%20=%2052038219%20LIMIT%201;");

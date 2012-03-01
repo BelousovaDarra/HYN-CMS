@@ -79,6 +79,12 @@ class MultiSite_ extends AutoRecord {
 			if( is_dir( HYN_MS_DIR . "modules" . DS ) ) {
 				define(		"HYN_MS_DIR_MODULES"	, HYN_MS_DIR . "modules" . DS );
 			}
+			if( is_dir( HYN_MS_DIR . "images" . DS )) {
+				define(		"HYN_MS_DIR_IMAGES"	, HYN_MS_DIR . "images" . DS );
+			}
+			if( is_dir( HYN_MS_DIR . "media" . DS )) {
+				define(		"HYN_MS_DIR_MEDIA"	, HYN_MS_DIR . "media" . DS );
+			}
 		}
 	
 	}

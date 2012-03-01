@@ -86,7 +86,7 @@ class routing {
 		$r -> called		= strtolower($call_class);
 		self::$c			= $c;
 		// find function - first by defined, if
-		if( $call_func && method_exists( $c , $call_func )) {
+		if( $call_func && method_exists( $c , $call_func ) && is_callable( array( $c , $call_func ))) {
 			self::$f		= $call_func;
 			return;
 		}

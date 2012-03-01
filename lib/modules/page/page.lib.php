@@ -8,6 +8,26 @@ class page extends module {
 		$leftovers			= str_replace( ($this -> page ? $this -> page -> route : ''), '' ,  '/'.implode('/',$this -> path) );
 		if( strlen( $leftovers) > 1  && preg_match( "/([a-z])/i" , $leftovers )) {
 			$this -> page -> notexactsame	= $leftovers;	
+			global $MultiSite;
+			if( $MultiSite -> get('isowner') ) {
+				DOM::add_js("
+				// create a new page
+				jQuery('*[data-new-href]').on('click', function() {
+					jQuery.ajax({
+						cache:				false,
+						type:				'GET',
+						url:				jQuery(this).attr('data-new-href'),
+						success:			function(route) {
+							window.location	=  route;
+						}
+					});
+					return false;
+				});
+				","body"
+				);
+			}
+			
+			
 		} else { $this -> page -> notexactsame	= false; }
 	}
 	public function ajax() {

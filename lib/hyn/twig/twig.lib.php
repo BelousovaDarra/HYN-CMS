@@ -55,9 +55,17 @@ class Twig {
 		if( MultiSite::setting( "tracking-id" , "google-analytics" ) ) {
 			$this -> vars['ga']		= MultiSite::setting( "tracking-id" , "google-analytics" ) -> get('value');
 		}
+
 		$this -> vars['dom']		= DOM::get_instance();
 		$this -> vars['globals']	= $_SERVER;
 		$this -> vars['visitor']	= $SiteVisitor;
+		
+		if( isset($_POST)) {
+			$this -> vars['globals']['post']	= $_POST;	
+		}
+		if( isset($_GET)) {
+			$this -> vars['globals']['get']	= $_GET;
+		}
 	}
 	static function addVar( $var , $value ) {
 		$t							= self::get_instance();

@@ -1,7 +1,6 @@
 <?PHP
 
 if( !defined( "HYN" )) { exit; }
-header( "Access-Control-Allow-Origin: http://rohyn.nl" );
 
 /** setup */
 require_once "constants.php";
@@ -44,22 +43,23 @@ hyn_include( "multisite" );
 *	as long as script is not run on commandline, contine
 */
 
+hyn_include( "visitor" );
+$MultiSite			= MultiSite::getbyhost($_SERVER['HTTP_HOST']);
+// otherwise default to prime site
+if( !$MultiSite ) {
+	$MultiSite 		= MultiSite::find_one_by_column("prime",true);
+}
+if( !$MultiSite ) {
+	if( HYN_DEBUG ) {
+		exit(sprintf("<h1>System malfunctioned</h1><pre>No sites in system_domain table: %s - %s</pre>.",__FILE__,__LINE__));
+	}
+	exit(sprintf("<pre>System error, our apologies for the inconvenience [%s].</pre>",__LINE__));
+}
+
+// setup defined dirs
+global $MultiSite;
+$MultiSite -> setConstants();
 if( HYN != "cmd" ) {
-	hyn_include( "visitor" );
-	$MultiSite			= MultiSite::getbyhost($_SERVER['HTTP_HOST']);
-	// otherwise default to prime site
-	if( !$MultiSite ) {
-		$MultiSite 		= MultiSite::find_one_by_column("prime",true);
-	}
-	if( !$MultiSite ) {
-		if( HYN_DEBUG ) {
-			exit(sprintf("<h1>System malfunctioned</h1><pre>No sites in system_domain table: %s - %s</pre>.",__FILE__,__LINE__));
-		}
-		exit(sprintf("<pre>System error, our apologies for the inconvenience [%s].</pre>",__LINE__));
-	}
-	// setup defined dirs
-	global $MultiSite;
-	$MultiSite -> setConstants();
 	if( HYN_SYSTEM_ID && $db = $MultiSite -> get("database") ) {
 		
 		AnewtDatabase::setup_connection( array(

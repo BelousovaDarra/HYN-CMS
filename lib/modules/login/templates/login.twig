@@ -2,33 +2,38 @@
 	
 	<div class="row">
 		<div class="span6">
-			<h1>{% if visitor.user %}Log Out{% else %}Log In{% endif %}</h1>
+			<h1>{% if visitor.user %}{{ _("log out")|capitalize }}{% else %}{{ _("log in")|capitalize }}{% endif %}</h1>
 			<form method="POST" class="form-horizontal">
 			{% if visitor.user %}
 				<p>
-					Currently logged in as <code>{{ visitor.user.realname }}</code>.
+					{{ _("currently logged in as")|capitalize }} <code>{{ visitor.user.realname }}</code>.
 				</p>
 				<div class="form-actions">
-					<input type="button" class="btn btn-large btn-primary" name="logout-user" value="Not you? Log out" />
+					<input type="submit" class="btn btn-large btn-primary" name="logout-user" value="{{ _("not you?")|capitalize }} {{ _("log out")|capitalize }}" />
 				</div>
 			{% else %}
-				<div class="control-group">
-					<label class="control-label" for="login-username">Username</label>
+				{% if error.login.general %}
+				<p class="alert alert-error">
+					{{ error.login.general }}
+				</p>
+				{% endif %}
+				<div class="control-group{% if error.login.username %} error{% endif %}">
+					<label class="control-label" for="login-username">{{ _("username")|capitalize }}</label>
 					<div class="controls">
-						<input type="text" class="input" id="login-username" name="login-username" placeholder="your e-mail address" />
-						{% if error.username %}<p class="help-block">{{ error.username }}</p>{% endif %}
+						<input type="text" class="input" id="login-username" name="login-username" placeholder="{{ _("your e-maiil address") }}" />
+						{% if error.login.username %}<p class="help-block">{{ error.login.username }}</p>{% endif %}
 					</div>
 				</div>
-				<div class="control-group">
-					<label class="control-label" for="login-password">Password</label>
+				<div class="control-group{% if error.login.password %} error{% endif %}">
+					<label class="control-label" for="login-password">{{ _("password")|capitalize }}</label>
 					<div class="controls">
 						<input type="password" class="input" id="login-password" name="login-password" />
-						{% if error.password %}<p class="help-block">{{ error.password }}</p>{% endif %}
+						{% if error.login.password %}<p class="help-block">{{ error.login.password }}</p>{% endif %}
 					</div>
 				</div>
 				<div class="form-actions">
-					<input type="submit" name="login-user" class="btn btn-primary btn-large" value="Login" />
-					<input type="submit" name="login-fpw" class="btn btn-large" value="Recover" />
+					<input type="submit" name="login-user" class="btn btn-primary btn-large" value="{{ _("log in")|capitalize }}" />
+					<input type="submit" name="login-fpw" class="btn btn-large" value="{{ _("recover")|capitalize }}" />
 				</div>
 			{% endif %}
 			</form>
@@ -39,10 +44,56 @@
 				<ul class="nav nav-list">
 					<li><a href="/account/">Account</a></li>
 				</ul>
-			{% else %}
+			{% elseif allow-registration is sameas(true) %}
 				<h1>Sign up</h1>
-				<blockquote>Currently disabled, our apologies for making you anxious.<small>Cloudspark</small></blockquote>
+				{% if error.su.general %}
+				<p class="alert alert-error">
+					{{ error.su.general }}
+				</p>
+				{% endif %}
 				<form method="POST" class="form-horizontal">
+					<div class="control-group{% if error.su.email %} error{% endif %}">
+						<label class="control-label" for="signup-email">{{ _("e-mail address")|capitalize }}</label>
+						<div class="controls">
+							<input type="text" class="input" id="signup-email" name="signup-email"{% if globals.post.signup-email %} value="{{ _post.signup-email }}"{% endif %} />
+							{% if error.su.email %}
+								<p class="help-block">{{ error.su.email }}</p>
+							{% else %}
+								<p class="help-block">
+									{{ _("Your e-mail address will be used to log in to the website.") }}
+								</p>
+							{% endif %}
+						</div>
+					</div>
+					<div class="control-group{% if error.su.password %} error{% endif %}">
+						<label class="control-label" for="signup-password">{{ _("password")|capitalize }}</label>
+						<div class="controls">
+							<input type="password" class="input" id="signup-password" name="signup-password"{% if globals.post.signup-password %} value="{{ _post.signup-password }}"{% endif %} />
+							{% if error.su.password %}
+								<p class="help-block">
+									{{ error.su.password }}
+								</p>
+							{% else %}
+							<p class="help-block">
+								{{ _("Passwords must be at least 6 characters long, consist of letters, numbers and symbols.") }}
+							</p>
+							{% endif %}
+						</div>
+					</div>
+					<div class="control-group{% if error.su.password2 %} error{% endif %}">
+						<label class="control-label" for="signup-password2">{{ _("repeat password")|capitalize }}</label>
+						<div class="controls">
+							<input type="password" class="input" id="signup-password2" name="signup-password2"{% if globals.post.signup-password2 %} value="{{ _post.signup-password2 }}"{% endif %} />
+							{% if error.su.password2 %}<p class="help-block">{{ error.su.password2 }}</p>{% endif %}
+						</div>
+					</div>
+					<div class="control-group{% if error.su.realname %} error{% endif %}">
+						<label class="control-label" for="signup-realname">{{ _("Name")|capitalize }}</label>
+						<div class="controls">
+							<input type="text" class="input" id="signup-realname" name="signup-realname"{% if globals.post.signup-realname %} value="{{ _post.signup-realname }}"{% endif %} />
+							{% if error.su.realname %}<p class="help-block">{{ error.su.realname }}</p>{% endif %}
+						</div>
+					</div>
 					<div class="form-actions">
 						<input type="submit" name="register-user" class="btn btn-primary btn-large" value="Register" />
 					</div>

@@ -1,20 +1,20 @@
 	{% include "header" %}
-	
+	<div class="box-modal span{% if span %}{{ span }}{% else %}8{% endif %}">
 	{% if page.title %}
-		<h1{% if ms.owner and dom.wysiwyg %} data-edit-href="/ajax/page/{{ page.id }}/title"{% endif %}>
+		<div class="modal-header"><h1{% if ms.owner and dom.wysiwyg %} data-edit-href="/ajax/page/{{ page.id }}/title"{% endif %}>
 			{% if page.title %}{{ page.title }}{% elseif ms.owner %}no title, add one{% endif %}
 			{% if page.subtitle or ms.owner %} <small>{% if page.subtitle %}{{ page.subtitle }}{% elseif ms.owner %}no subtitle, add one {% endif %}</small>{% endif %}
-		</h1>
+		</h1></div>
 	{% endif %}
 	{% if page.content %}
-		<div{% if ms.owner and dom.wysiwyg %} data-edit-href="/ajax/page/{{ page.id }}/content"{% endif %}>
+		<div class="modal-body"{% if ms.owner and dom.wysiwyg %} data-edit-href="/ajax/page/{{ page.id }}/content"{% endif %}>
 		{{ page.content|raw }}
 		</div>
 	{% endif %}
 	
 	{% if ms.isowner %}
-		<div class="form-actions row">
-			<div class="span6">
+		<div class="modal-footer">
+			<div class="width-50 left">
 				{% if page.notexactsame %}
 					<a class="btn btn-small" href="#" data-original-title="Create new page for {{ page.route }}{{ page.notexactsame }}"
 						data-new-href="/ajax/page/new{{ page.route }}{{ page.notexactsame }}">
@@ -24,7 +24,7 @@
 				{% endif %}
 			</div>
 			{% if page and page.id %}
-			<div class="span5 text-right">
+			<div class="width-50 text-right right">
 				<span class="label label-info" data-original-title="Creation date"><i class="icon-share icon-white"></i> {{ page.created_dmy }}</span>
 				<span class="label label-info" data-original-title="Modification date"><i class="icon-edit icon-white"></i> {{ page.updated_dmy }}</span>
 				<span class="label label-warning" data-original-title="Internal identifier of this page"><i class="icon-barcode icon-white"></i> Page ID: {{ page.id }}</span><br />
@@ -32,7 +32,7 @@
 			{% endif %}
 		</div>
 	{% endif %}
-	
+	</div>
 	{% include "footer" %}
 
 	

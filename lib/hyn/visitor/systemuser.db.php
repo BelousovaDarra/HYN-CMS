@@ -20,7 +20,7 @@ class SystemUser_ extends BasicUser {
 			"signedup"		=> "datetime",
 			"lastactivity"	=> "datetime",
 			"admin"			=> "integer",
-			"state"			=> "integer",		// 1 - signed up, 0 - banned
+			"state"			=> "integer",		// 1 - signed up, 0 - banned, 9 - active
 		);
 	}
 

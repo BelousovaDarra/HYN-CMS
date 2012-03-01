@@ -45,7 +45,7 @@
 						<div class="controls">
 							<select name="country">
 								{% for country in countries %}
-								<option value="{{ country.iso }}"{% if relation and relation.country == country.iso %} selected{% endif %}>{{ country.printable_name }}</option>
+								<option value="{{ country.iso }}"{% if relation and relation.country == country.iso %} selected{% elseif not relation and country.iso == "NL" %} selected{% endif %}>{{ country.printable_name }}</option>
 								{% endfor %}
 							</select>
 						</div>

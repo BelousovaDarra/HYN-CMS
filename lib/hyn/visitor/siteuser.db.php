@@ -18,8 +18,8 @@ class SiteUser_ extends BasicUser {
 			"email"			=> "string",		// email address
 			"password"		=> "string",		// password
 			"realname"		=> "string",		// realname
-			"created"		=> "datetime",
-			"updated"		=> "datetime",
+			"signedup"		=> "datetime",
+			"lastactivity"	=> "datetime",
 			"state"			=> "integer"		// 1 - signed up, 0 - banned
 		);
 	}
