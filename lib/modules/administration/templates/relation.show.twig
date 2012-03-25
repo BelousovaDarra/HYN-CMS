@@ -1,33 +1,39 @@
 {% include "header" %}
 
+{% include "relation.modal" %}
+
 <div class="row">
 	<div class="span4 box-modal">
 		<div class="modal-header">
 			<h3>{{ _("Relation options") }}</h3>
 		</div>
 		<div class="modal-content">
-{#			<a class="btn btn-small">edit</a>
-			<a class="btn btn-small">delete</a> #}
+				<ul class="nav nav-list">
+					<li class="nav-header">{{ _("show") }}</li>
+						<li><a href="/administration"><i class="icon-list"></i> {{ _("overview")|capitalize }}</a></li>
+					<li class="nav-header">{{ _("edit") }}</li>
+						<li><a href="#create-relation" data-toggle="modal"><i class="icon-user"></i> {{ _("relation")|capitalize }}</a></li>
+
+				</ul>
 		</div>
 		<div class="modal-footer">
 		
 		</div>
 	</div>
-	<form class="span8 box-modal form-horizontal" method="POST">
+	<div class="span8 box-modal form-horizontal">
 		<div class="modal-header">
 			<h1>{{ relation.name }}
 				<small>{% if relation.company %}{{ orgtypes[relation.company] }}{% endif %}</small>
 			</h1>
 		</div>
 		<div class="modal-content padded-n">
-			
-			{% include "relation.form" %}
+			<div class="relation-location-map" data-location="{{ relation.houseno }} {{ relation.address }}, {{ relation.city }}, {{ relation.country }}">
+			</div>
 		</div>
 		<div class="modal-footer">
-			<input type="hidden" name="relationid" value="{{ relation.id }}" />
-			<input type="submit" class="btn btn-primary" name="relation" value="{{ _("update") }}" />
+
 		</div>
-	</form>
+	</div>
 </div>
 
 {% include "footer" %}

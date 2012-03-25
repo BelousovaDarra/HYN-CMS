@@ -14,7 +14,7 @@
 			<div class="modal-body">
 				<ul class="nav nav-list">
 					<li class="nav-header">{{ _("show") }}</li>
-						<li><a href="/administration"><i class="icon-list"></i> {{ _("invoices")|capitalize }}</a></li>
+						<li><a href="/administration"><i class="icon-list"></i> {{ _("overview")|capitalize }}</a></li>
 					<li class="nav-header">{{ _("create") }}</li>
 						<li><a href="#create-relation" data-toggle="modal"><i class="icon-user"></i> {{ _("relation")|capitalize }}</a></li>
 						<li><a href="#create-product" data-toggle="modal"><i class="icon-book"></i> {{ _("product")|capitalize }}</a></li>
@@ -28,39 +28,77 @@
 		</div>
 		<div class="box-modal span9">
 			<div class="modal-header">
-				<h3>{{ _("latest invoices")|capitalize }}</h3>
+				<h3>{{ _("overview")|capitalize }}</h3>
 			</div>
-			<div class="modal-body">
-				<table class="table table-bordered table-striped table-condensed">
-					<thead>
-						<tr>
-							<th>{{ _("invoice")|capitalize }}</th>
-							<th>{{ _("relation")|capitalize }}</th>
-							<th>{{ _("total")|capitalize }}</th>
-							<th>{{ _("VAT") }}</th>
-							<th>{{ _("status")|capitalize }}</th>
-							<th class="span2"></th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for invoice in invoices %}
-						<tr>
-							<td>{% if invoice.invoicenr %}{{ invoice.invoicenr }}{% else %}{{ invoice.id }}{% endif %}</td>
-							<td><a class="btn btn-small" data-original-title="{{ invoice.relation.name }}" data-popover-placement="right" data-content="{% include 'relation.small' with { 'relation':invoice.relation } only %}" href="{{ invoice.relation.ahref }}">{{ invoice.relation.name }}</a></td>
-							<td>{{ _p_money(invoice.total_incvat) }}</td>
-							<td>{{ _p_money(invoice.total_vat) }}</td>
-							<td>{{ invoice.state.short }} <i class="icon-resize-{% if invoice.outgoing %}full{% else %}small{% endif %}" data-original-title="{% if invoice.outgoing %}{{ _("outgoing") }}{% else %}{{ _("incoming") }}{% endif %} {{ _("invoice") }}"></i></td>
-							<td>
-								<div class="btn-group right">
-									<a href="{{ invoice.relation.ahref }}" class="btn btn-small" data-original-title="{{ _("view") }}"><i class="icon-eye-open"></i></a>
-									<a href="{{ invoice.relation.ahref }}" class="btn btn-small" data-original-title="{{ _("edit") }}"><i class="icon-pencil"></i></a>
-									<button class="btn btn-danger btn-small" data-original-title="{{ _("delete") }}"><i class="icon-trash"></i></button>
-								</div>
-							</td>
-						</tr>
-						{% endfor %}
-					</tbody>
-				</table>
+			<ul class="nav nav-tabs padded-nw">
+				<li class="active"><a data-toggle="tab" href="#overview-invoices">{{ _("invoices")|capitalize }}</a></li>
+				<li><a data-toggle="tab" href="#overview-relations">{{ _("relations")|capitalize }}</a></li>
+			</ul>			
+			<div class="modal-body tab-content">
+				<div class="tab-pane fade in active" id="overview-invoices">
+					<table class="table table-bordered table-striped table-condensed">
+						<thead>
+							<tr>
+								<th>{{ _("invoice")|capitalize }}</th>
+								<th>{{ _("relation")|capitalize }}</th>
+								<th>{{ _("total")|capitalize }}</th>
+								<th>{{ _("VAT") }}</th>
+								<th>{{ _("status")|capitalize }}</th>
+								<th class="span2"></th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for invoice in invoices %}
+							<tr>
+								<td>{% if invoice.invoicenr %}{{ invoice.invoicenr }}{% else %}{{ invoice.id }}{% endif %}</td>
+								<td><a class="btn btn-small" data-original-title="{{ invoice.relation.name }}" data-popover-placement="right" data-content="{% include 'relation.small' with { 'relation':invoice.relation } only %}" href="{{ invoice.relation.ahref }}">{{ invoice.relation.name }}</a></td>
+								<td>{{ _p_money(invoice.total_incvat) }}</td>
+								<td>{{ _p_money(invoice.total_vat) }}</td>
+								<td>{{ invoice.state.short }} <i class="icon-resize-{% if invoice.outgoing %}full{% else %}small{% endif %}" data-original-title="{% if invoice.outgoing %}{{ _("outgoing") }}{% else %}{{ _("incoming") }}{% endif %} {{ _("invoice") }}"></i></td>
+								<td>
+									<div class="btn-group right">
+										<a href="{{ invoice.relation.ahref }}" class="btn btn-small" data-original-title="{{ _("view") }}"><i class="icon-eye-open"></i></a>
+										<a href="{{ invoice.relation.ahref }}" class="btn btn-small" data-original-title="{{ _("edit") }}"><i class="icon-pencil"></i></a>
+										<button class="btn btn-danger btn-small" data-original-title="{{ _("delete") }}"><i class="icon-trash"></i></button>
+									</div>
+								</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-pane fade" id="overview-relations">
+					<table class="table table-bordered table-striped table-condensed">
+						<thead>
+							<tr>
+								<th>{{ _("name")|capitalize }}</th>
+								<th>{{ _("type")|capitalize }}</th>
+								<th>{{ _("products")|capitalize }}</th>
+								<th>{{ _("open")|capitalize }}</th>
+								<th>{{ _("paid")|capitalize }}</th>
+								<th class="span2"></th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for relation in relations %}
+							<tr>
+								<td><a class="btn btn-small" data-original-title="{{ relation.name }}" data-popover-placement="right" data-content="{% include 'relation.small' with { 'relation':relation } only %}" href="{{ relation.ahref }}">{{ relation.name }}</a></td>
+								<td>{{ relation.companytype }}</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td>
+									<div class="btn-group right">
+										<a href="{{ relation.ahref }}" class="btn btn-small" data-original-title="{{ _("view") }}"><i class="icon-eye-open"></i></a>
+										<a href="{{ relation.ahref }}" class="btn btn-small" data-original-title="{{ _("edit") }}"><i class="icon-pencil"></i></a>
+										<button class="btn btn-danger btn-small" data-original-title="{{ _("delete") }}"><i class="icon-trash"></i></button>
+									</div>
+								</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
 			</div>
 			<div class="modal-footer">
 			

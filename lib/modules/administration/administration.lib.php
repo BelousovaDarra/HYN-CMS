@@ -13,6 +13,8 @@ class administration extends module {
 	
 	public function _administration() {
 		DOM::set_default_theme();
+		DOM::set_js( "https://maps.googleapis.com/maps/api/js?key=AIzaSyA7YULvmwWO9lgoaky93cACLYN-vZac9ps&sensor=true" );
+		DOM::add_js( $this -> relation_map() );
 		$this -> vars['countries']
 						= Country::find_all();
 		$this -> vars['orgtypes']
@@ -54,6 +56,30 @@ class administration extends module {
 				$this -> overview();
 		}
 
+	}
+	private function relation_map() {
+		return "
+//		function maps_init() {
+			if( jQuery('.relation-location-map').length > 0	) {
+				var map			= [];
+				jQuery( '.relation-location-map' ).each( function( i ) {
+					var loc		= jQuery( this ).attr( 'data-location');
+					var opts	= {
+						zoom:			8,
+						mapTypeId: 		google.maps.MapTypeId.ROADMAP,
+						center: 		codeAddress( loc )
+					};
+					map.push( new google.maps.Map( jQuery(this) , opts ) );
+				});
+			}
+			function codeAddress( address ) {
+				var geocoder	= new google.maps.Geocoder();
+				geocoder.geocode( { 'address': address}, function(results, status) {
+					return results[0].geometry.location;
+			  	});
+			}
+//		}
+		";
 	}
 	private function processGPCs() {
 		# create relation
@@ -109,6 +135,7 @@ class administration extends module {
 	private function overview() {
 		
 		$this -> vars['invoices']	= invoice::find_all();
+		$this -> vars['relations']	= relation::find_all();
 		$this -> tpl				= "overview";
 	}
 	// require SSL

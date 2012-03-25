@@ -2,13 +2,13 @@
 	<form class="modal form-horizontal" method="POST">
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal" >&times;</a>
-			<h3>{{ _("create relation") }}</h3>
+			<h3>{% if relation %}{{ _("edit relation") }}{% else %}{{ _("create relation") }}{% endif %}</h3>
 		</div>
 		<div class="modal-content">
 			{% include "relation.form" %}
 		</div>
 		<div class="modal-footer">
-			<input type="submit" class="btn btn-primary" name="relation" value="{{ _("create") }}" />
+			<input type="submit" class="btn btn-primary" name="relation" value="{% if relation %}{{ _("edit") }}{% else %}{{ _("create") }}{% endif %}" />
 			<a data-dismiss="modal" href="" class="btn">{{ _("cancel") }}</a>
 		</div>
 	</form>
