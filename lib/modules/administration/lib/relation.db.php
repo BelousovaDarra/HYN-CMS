@@ -22,10 +22,22 @@ class relation_ extends ModuleRecord {
 			"country"		=> "string",
 			"phone"			=> "string",
 			"email"			=> "string",
-			"billperiod"	=> "string",		// day, week, months
+			"billperiod"	=> "string",		// day, week, months, years
 			"billunits"		=> "integer",		// number of previous period
 			"currency"		=> "string",
+			"vat"			=> "integer"		// tax percentage
 		);
+	}
+	public function get_companytype_() {
+		global $m_adm_cache;
+		if( isset($m_adm_cache['vars']) && isset($m_adm_cache['vars']['orgtypes']) && isset($m_adm_cache['vars']['orgtypes'][ $this -> _get('company') ])) {
+			return $m_adm_cache['vars']['orgtypes'][ $this -> _get('company') ];
+		} else {
+			return;
+		}
+	}
+	public function get_ahref_() {
+		return "/administration/relation/" . $this -> id . "/" . urlencode( $this -> name );
 	}
 }
 ModuleRecord::register("relation");

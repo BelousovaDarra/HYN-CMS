@@ -90,4 +90,7 @@ abstract class module {
 		}}
 		return $set;
 	}
+	private function loadSettings() {
+		
+	}
 }

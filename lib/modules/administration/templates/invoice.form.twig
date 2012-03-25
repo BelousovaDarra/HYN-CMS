@@ -1,0 +1,58 @@
+
+			<ul class="nav nav-tabs padded-w">
+				<li class="active"><a data-toggle="tab" href="#invoice-basic">{{ _("basic")|capitalize }}</a></li>
+				<li><a data-toggle="tab" href="#invoice-products">{{ _("address")|capitalize }}</a></li>
+			</ul>
+			<div class="tab-content">
+				{# BASIC #}
+				<div class="tab-pane fade in active" id="invoice-basic">
+					<div class="control-group">
+						<label class="control-label" for="name">{{ _("name")|capitalize }}</label>
+						<div class="controls">
+							<input type="text" id="name" name="name"{% if relation %} value="{{ relation.name }}"{% endif %} />
+							<p class="help-block">
+								{{ _("This will help you recognize this relation in the administration.") }}
+							</p>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="email">{{ _("email address")|capitalize }}</label>
+						<div class="controls">
+							<input type="text" id="email" name="email"{% if relation %} value="{{ relation.email }}"{% endif %} />
+						</div>
+					</div>
+				</div>
+				{# ADDRESS #}
+				<div class="tab-pane fade" id="invoice-products">
+					<div class="control-group">
+						<label class="control-label" for="address">{{ _("address")|capitalize }}</label>
+						<div class="controls">
+							<input type="text" id="address" name="address" placeholder="{{ _("street") }}"{% if relation %} value="{{ relation.address }}"{% endif %} />
+							<input class="span2" type="text" id="houseno" name="houseno" placeholder="{{ _("house number") }}"{% if relation %} value="{{ relation.houseno }}"{% endif %} />
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="city">{{ _("city")|capitalize }}</label>
+						<div class="controls">
+							<input class="span2" type="text" id="postal" name="postal" placeholder="{{ _("postal code") }}"{% if relation %} value="{{ relation.postal }}"{% endif %} />
+							<input type="text" id="city" name="city"  placeholder="{{ _("city") }}"{% if relation %} value="{{ relation.city }}"{% endif %} />
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="country">{{ _("country")|capitalize }}</label>
+						<div class="controls">
+							<select name="country">
+								{% for country in countries %}
+								<option value="{{ country.iso }}"{% if relation and relation.country == country.iso %} selected{% elseif not relation and country.iso == "NL" %} selected{% endif %}>{{ country.printable_name }}</option>
+								{% endfor %}
+							</select>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="phone">{{ _("phone")|capitalize }}</label>
+						<div class="controls">
+							<input type="text" id="phone" name="phone" placeholder="+31 8 00 00 00 00"{% if relation %} value="{{ relation.phone }}"{% endif %} />
+						</div>
+					</div>
+				</div>
+			</div>

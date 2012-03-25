@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<title>{% if dom.title %}{{ dom.title }}{% elseif ms %}{{ ms.domain }}{% endif %}</title> 
+{% for meta, metafield in dom.meta %}
+	{% for field, value in metafield %}
+	<meta {{ meta }}="{{ field }}" content="{{ value }}" />
+	{% endfor %}
+{% endfor %}
+{% for css in dom.css %}
+<link href="{{ css }}" rel="stylesheet">
+{% endfor %}
+<link href='http://fonts.googleapis.com/css?family=Cuprum' rel='stylesheet' type='text/css' />
+
+<script src="https://www.google.com/jsapi"></script>
+<script src="/js/libs/jq/jq+jqui.js"></script>
+
+{% for js in dom.js %}
+<script src="{{ js }}"></script>
+{% endfor %}
+
+
+{% include "header.wysiwyg" %}
+</head>
+
+<body>
+{% if allowregistration is sameas(true) %}
+<!-- Top navigation bar -->
+<div id="topNav">
+    <div class="fixed">
+        <div class="wrapper">
+            <div class="welcome">
+				{% if visitor.user %}
+					<a href="#" title=""><img src="/images/userPic.png" alt="" /></a><span>{{ _("hello")|capitalize }}, {{ visitor.user.realname }}!</span>
+				{% endif %}
+			</div>
+            <div class="userNav">
+                <ul>
+					{% if visitor.user %}
+{#                    <li><a href="#" title=""><img src="/images/icons/topnav/profile.png" alt="" /><span>Profile</span></a></li>
+                    <li><a href="#" title=""><img src="/images/icons/topnav/tasks.png" alt="" /><span>Tasks</span></a></li>
+                    <li class="dd"><img src="/images/icons/topnav/messages.png" alt="" /><span>Messages</span><span class="numberTop">8</span>
+                        <ul class="menu_body">
+                            <li><a href="#" title="">new message</a></li>
+                            <li><a href="#" title="">inbox</a></li>
+                            <li><a href="#" title="">outbox</a></li>
+                            <li><a href="#" title="">trash</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#" title=""><img src="/images/icons/topnav/settings.png" alt="" /><span>Settings</span></a></li>#}
+                    <li><a href="/login?logout" title=""><img src="/images/icons/topnav/logout.png" alt="" /><span>{{ _("logout")|capitalize }}</span></a></li>
+					{% else %}
+					<li><a href="/login" title=""><img src="/images/icons/topnav/logout.png" alt="" /><span>{{ _("login")|capitalize }}</span></a></li>
+					{% endif %}
+                </ul>
+            </div>
+            <div class="fix"></div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<!-- Header -->
+<div id="header" class="wrapper">
+    <div class="logo"><a href="/" title=""><img onmouseover="$(this).attr('src','/images/logo-200-hover.png');" src="/images/logo-200.png" alt="{{ ms.domain }}" /></a></div>
+	{% if allowregistration is sameas(true) %}
+    <div class="middleNav">
+    	<ul>
+        	<li class="iContests"><a href="/contests" title=""><span>{{ _("Contests") }}</span></a>{% if contests.running and contests.running > 0 %}<span class="numberMiddle">{{ contests.running }}</span>{% endif %}</li>
+        </ul>
+    </div>
+	{% endif %}
+    <div class="fix"></div>
+</div>
+
+
+<!-- Content wrapper -->
+<div class="wrapper">
+	
+	<!-- Left navigation -->
+    <div class="leftNav">
+    	<ul id="menu">
+			{% set uhome = "/" %}
+        	<li class="dash"><a href="{{ uhome }}" title=""{% if dom.show_uri == uhome or dom.show_uri == "" %} class="active"{% endif %}><span>{{ _("home")|capitalize }}</span></a></li>
+			
+			{% if ms.isowner %}
+			{% set ustats = "/statistics" %}
+			<li class="graphs"><a href="{{ ustats }}" title=""{% if dom.show_uri == ustats %} class="active"{% endif %}><span>Statistics</span></a></li>
+			{% endif %}
+
+			{% set uoffers = "/our/offers" %}
+			<li class="shopbag"><a href="{{ uoffers }}" title=""{% if dom.show_uri == uoffers %} class="active"{% endif %}><span>{{ _("our offers")|capitalize }}</span></a></li>			
+			{% set upartners = "/our/partners" %}
+			<li class="suitcase"><a href="{{ upartners }}" title=""{% if dom.show_uri == upartners %} class="active"{% endif %}><span>{{ _("our partners")|capitalize }}</span></a></li>
+			
+			{% if visitor.user is not defined and allowregistration is sameas(true) %}
+			{% set usignup = "/signup" %}
+			<li class="signup"><a href="{{ usignup }}" title=""{% if dom.show_uri == usignup %} class="active"{% endif %}><span>{{ _("sign up")|capitalize }}</span></a></li>
+			{% endif %}
+			
+			{% set uorder = "/order" %}
+			<li class="order"><a href="{{ uorder }}" title=""{% if dom.show_uri == uorder %} class="active"{% endif %}><span>{{ _("order")|capitalize }}</span></a></li>
+			
+			{% set ucontact = "/contact" %}
+			<li class="contact"><a href="{{ ucontact }}" title=""{% if dom.show_uri == ucontact %} class="active"{% endif %}><span>{{ _("contact")|capitalize }}</span></a></li>
+{#			
+            <li class="graphs"><a href="charts.html" title=""><span>Graphs and charts</span></a></li>
+            <li class="forms"><a href="form_elements.html" title=""><span>Form elements</span></a></li>
+            <li class="login"><a href="ui_elements.html" title=""><span>Interface elements</span></a></li>
+            <li class="typo"><a href="typo.html" title=""><span>Typography</span></a></li>
+            <li class="tables"><a href="tables.html" title=""><span>Tables</span></a></li>
+            <li class="cal"><a href="calendar.html" title=""><span>Calendar</span></a></li>
+            <li class="gallery"><a href="gallery.html" title=""><span>Gallery</span></a></li>
+            <li class="widgets"><a href="widgets.html" title=""><span>Widgets</span></a></li>
+            <li class="files"><a href="file_manager.html" title=""><span>File manager</span></a></li>
+            <li class="errors"><a href="#" title="" class="exp"><span>Error pages</span><span class="numberLeft">6</span></a>
+            	<ul class="sub">
+                    <li><a href="403.html" title="">403 page</a></li>
+                    <li><a href="404.html" title="">404 page</a></li>
+                    <li><a href="405.html" title="">405 page</a></li>
+                    <li><a href="500.html" title="">500 page</a></li>
+                    <li><a href="503.html" title="">503 page</a></li>
+                    <li class="last"><a href="offline.html" title="">Website is offline</a></li>
+                </ul>
+            </li>
+            <li class="pic"><a href="icons.html" title=""><span>Buttons and icons</span></a></li>
+            <li class="contacts"><a href="contacts.html" title=""><span>Organized contact list</span></a></li>
+#}
+        </ul>
+    </div>
+    
+    <!-- Content -->
+    <div class="content">
+		{% block content %}{% endblock %}
+    </div>
+    <div class="fix"></div>
+</div>
+
+<!-- Footer -->
+<div id="footer">
+	<div class="wrapper">
+    	<span>&copy; Copyright {{ ms.domain }}. <a href="/legal">About the terms of use &amp; general agreement</a>.</span>
+    </div>
+</div>
+{% include "footer.wysiwyg" %}
+</body>
+</html>

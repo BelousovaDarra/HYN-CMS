@@ -23,6 +23,6 @@ class HYN_Widget_Node extends Twig_Node {
 	public function compile( Twig_Compiler $compiler ) {
 		$compiler
 				-> addDebugInfo( $this )
-				-> write( '' )
+				-> write( '' );
 	}
 }

@@ -7,9 +7,6 @@ if( !defined("HYN")) { exit; }
 function filefind( $tpl , $module=false ) {
 	if( is_file( $tpl )) { return $tpl; }	
 
-	if( $module == "image" || $module == "img" || $module == "images" ) {
-		// [ todo ]
-	}
 	if( $module && defined("HYN_MS_DIR_MODULES") && is_dir( HYN_MS_DIR_MODULES )) {
 		# <domain>/modules/<module>/templates/<name>(.twig)
 		if( $r = _filefind( $tpl , HYN_MS_DIR_MODULES . $module . DS . "templates" . DS , "twig" )) {

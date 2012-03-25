@@ -1,0 +1,44 @@
+<table class='table table-striped table-condensed'>
+	<tbody>
+		<tr>
+			<th>
+				{{ _("company")|capitalize }}
+			</th>
+			<td>
+				{{ relation.companytype }}
+			</td>
+		</tr>
+		<tr>
+			<th>
+				{{ _("tax no")|capitalize }}
+			</th>
+			<td>
+				{{ relation.taxno }}
+			</td>
+		</tr>
+		<tr>
+			<th>
+				{{ _("coc no")|capitalize }}
+			</th>
+			<td>
+				{{ relation.cocno }}
+			</td>
+		</tr>
+		<tr>
+			<th>
+				{{ _("address")|capitalize }}
+			</th>
+			<td>
+				{{ relation.address }} {{ relation.houseno }}
+			</td>
+		</tr>
+		<tr>
+			<th>
+				{{ _("location")|capitalize }}
+			</th>
+			<td>
+				{{ relation.city }}, {{ relation.country }}
+			</td>
+		</tr>
+	</tbody>
+</table>

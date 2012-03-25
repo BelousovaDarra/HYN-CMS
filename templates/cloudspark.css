@@ -3,7 +3,7 @@ padding-top: 120px;
 }
 
 .header-cs
-{ padding: 20px 0; background: whiteSmoke; border-bottom: 1px solid #DDD; }
+{ padding: 20px 0; border-bottom: 1px solid #DDD; background: whiteSmoke url('/images/hyn-logo.png') no-repeat left 40%; }
 .header-cs .container 
 {  }
 .header-cs .brand

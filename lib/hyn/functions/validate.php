@@ -2,10 +2,10 @@
 if(!defined("HYN")) { exit; }
 
 
-function _v( $input , $type=true ) {
+function _v( $input=NULL , $type=true ) {
 	# regular expression to see if type is a regular expression
 	$isregex		= "/\/(.*)\//i";
-	if( !isset($input)) {
+	if( !isset($input) || is_null($input)) {
 		return false;
 	} elseif( is_bool($type) && !$type) {
 		return true;
@@ -52,7 +52,14 @@ function _v( $input , $type=true ) {
 		if( !preg_match( $regex , $input ) ) {
 			return _("the password must contain at least a symbol");
 		}
-		
+	} elseif( $type == "dir" ) {
+		if( !is_dir( $input )) {
+			return false;
+		}
+	} elseif( $type == "file" ) {
+		if( !is_file( $input )) {
+			return false;
+		}
 	} elseif( $type == "kvk" ) {
 /*		$c			= curl_init();
 		curl_setopt($c,CURLOPT_URL,"http://api.openkvk.nl/php/SELECT%20*%20FROM%20kvk%20WHERE%20kvks%20=%2052038219%20LIMIT%201;");

@@ -87,7 +87,10 @@ function _p_money( $amount ) {
 	if( !_v($amount,"int")) {
 		return false;
 	} else {
-		return "&euro; " . sprintf("%01.2f",($amount / 100 ));
+		$amount	= (string) $amount;
+		$decs	= substr( $amount , -2 );
+		$pre	= substr( $amount , 0 , -2 );
+		return "€ " . $pre . "," . ( $decs == "00" ? "-" : $decs );
 	}
 }
 function _p_bytes( $bytes , $to=false ) {

@@ -117,6 +117,13 @@ class MultiSite_ extends AutoRecord {
 		}
 		return false;
 	}
+	/**
+	*	Any startup things to do
+	*	@return nothing
+	*/
+	public function onLoad() {
+		
+	}
 }
 
 AutoRecord::register('MultiSite');

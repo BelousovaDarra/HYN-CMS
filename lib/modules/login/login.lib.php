@@ -7,12 +7,25 @@ class login extends module {
 		return TRUE;
 	}
 	public function _login() {
+		global $SiteVisitor;
+		if( GPC::post_string("login-user") ) {
+			if( $SiteVisitor -> login() ) {
+				# show public notification welcome	
+			}
+		}
+		// register
+		elseif( GPC::post_string("register-user") ) {
+			if( $SiteVisitor -> register() ) {
+				# do something after registering
+			}
+		}
+		
 		DOM::set_title( _("Sign up &amp; log in") );
 	}
-	public function display() {
+	public function display($v=array()) {
 		global $SiteVisitor;
-		$this -> v			= array();
-		$this -> v['allow-registration']
+		$this -> v			= $v;
+		$this -> v['allowregistration']
 							= ( MultiSite::setting( "registration" , "login" ) 
 								? (boolean) MultiSite::setting( "registration" , "login" ) -> get("value") 
 								: false );

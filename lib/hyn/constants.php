@@ -13,7 +13,7 @@ define(		"HYN_PATH_PUBLIC_JS", HYN_PATH_PUBLIC . "js" . DS );
 define(		"HYN_PATH_PUBLIC_CSS", HYN_PATH_PUBLIC . "css" . DS );
 define(		"HYN_PATH_PUBLIC_IMG", HYN_PATH_PUBLIC . "images" . DS );
 
-define(		"HYN_PATH_CACHE"	, HYN_PATH_ROOT . "cache" . DS );
+define(		"HYN_PATH_CACHE"	, HYN_PATH_PUBLIC . "cache" . DS );
 define(		"HYN_PATH_TPL"		, HYN_PATH_ROOT . "templates" . DS );
 
 define(		"HYN_PATH_ANEWT"	, HYN_PATH_LIB . "anewt" . DS );

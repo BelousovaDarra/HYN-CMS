@@ -38,7 +38,7 @@ ul.nodots
 .height-min-500											.height-min-600
 { min-height: 500px; }									{ min-height: 600px; }
 
-
+/*
 .table
 { width: 100%; }
 .table thead th
@@ -78,7 +78,7 @@ ul.nodots
 { font-size: 0.8em; font-style: italic; color: #aaa; }
 .forms .f-error
 { font-family: "Cousine"; color: #8d0000; }
-
+*/
 .marged			{ margin: .2em !important; }				.padded			{ padding: .4em !important; }
 .marged-n 		{ margin: .2em 0 0 0 !important; }			.padded-n		{ padding: .4em 0 0 0 !important; }
 .marged-e		{ margin: 0 .2em 0 0 !important; }			.padded-e		{ padding: 0 .4em 0 0 !important; }

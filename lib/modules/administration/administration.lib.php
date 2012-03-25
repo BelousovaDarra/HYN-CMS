@@ -3,7 +3,9 @@ if( !defined("HYN")) { exit; }
 
 hyn_include("country");
 hyn_include("ecommerce");
-
+/* we are using this to cache products and the like */
+$m_adm_cache			= NULL;
+global $m_adm_cache;
 class administration extends module {
 	
 	private $tpl		= false;
@@ -19,11 +21,19 @@ class administration extends module {
 						1		=> _("freelancer"),
 						2		=> _("sole proprietorship"),
 						3		=> _("non profit"),
+						4		=> _("national firm"),
+						5		=> _("international firm")
 						);
+		$this -> vars['states']
+						= NULL;
 		$this -> vars['categories']
 						= productcategory::find_all();
 		$this -> vars["currencies"]
 						= Currencies::find_all();
+
+		global $m_adm_cache;
+		$m_adm_cache['vars']	= $this -> vars;
+
 		$this -> processGPCs();
 						
 		if( !isset($this -> route -> path[1])) {
@@ -55,14 +65,16 @@ class administration extends module {
 				$r			= new relation;
 				$save		= true;
 			}
-			$v			= array(
-				"name" , "company" , "taxno" , "cocno" , "address" , "houseno" , "postal" , "city" , "country" , "phone" , "email" , "billperiod" , "billunits" , "currency"
-			);
-			foreach( $v as $req ) {
-				$r -> set( $req , GPC::post_string( $req ) );
-			}
+			
+			$post			= $_POST;
+			$post['vat']	= (int) ($post['vat'] * 100);
+			
+			$r -> seed( $_POST );
+
 			$rid		= $r -> save( $save );
-#			_p_redirect( "/administration/relation/". $rid );
+			if( $save ) {
+				_p_redirect( "/administration/relation/". $rid );
+			}
 		}
 		if( GPC::post_string("product") ) {
 			if( GPC::post_int( "productid" )) {
@@ -95,11 +107,15 @@ class administration extends module {
 		}
 	}
 	private function overview() {
+		
+		$this -> vars['invoices']	= invoice::find_all();
 		$this -> tpl				= "overview";
 	}
+	// require SSL
 	public function _SSL_() {
 		return true;
 	}
+	// require LOGIN
 	public function _LOGIN_() {
 		return true;
 	}
@@ -150,5 +166,9 @@ class administration extends module {
 		} else {
 			$this -> tpl			= "product.list";
 		}
+	}
+	public function ajax() {
+		$r							= $this -> route -> path;
+		
 	}
 } 

@@ -43,3 +43,12 @@
 [submodule "public_html/js/libs/jquery/jquerytools"]
 	path = public_html/js/libs/jquery/jquerytools
 	url = https://github.com/jquerytools/jquerytools.git
+[submodule "lib/modules/thinkup/lib"]
+	path = lib/modules/thinkup/lib
+	url = https://github.com/ginatrapani/ThinkUp.git
+[submodule "public_html/js/libs/jquery/plugins/camera"]
+	path = public_html/js/libs/jquery/plugins/camera
+	url = https://github.com/pixedelic/Camera.git
+[submodule "public_html/js/libs/jquery/themes/aristo"]
+	path = public_html/js/libs/jquery/themes/aristo
+	url = https://github.com/taitems/Aristo-jQuery-UI-Theme.git

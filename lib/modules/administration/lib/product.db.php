@@ -9,7 +9,7 @@ class product_ extends ModuleRecord {
 	protected static function _db_columns()
 	{
 		return array(
-			"id"			=> "integer",		// user id
+			"id"			=> "integer",
 			"name"			=> "string",
 			"description"	=> "string",
 			"category"		=> "integer",

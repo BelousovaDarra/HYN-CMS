@@ -20,6 +20,20 @@ class DOM {
 		DOM::set_meta( "name" , "generator" , "HYN.me" );
 	
 	}
+	static public function set_cp_theme() {
+		$dom					= self::get_instance();
+		if( isset( $dom -> cp_theme )) {
+			return;
+		}
+		$dom -> cp_theme	= true;
+		hyn_include( "bootstraps/cp.brain.lite" );
+		
+/*		hyn_include( "beaconpush" );
+#		BeaconPusher::send_to_channel( "notify" , "test" , array("Yes we are testing the push") );
+*/	
+		DOM::set_meta( "name" , "generator" , "HYN.me" );
+	
+	}
 	static public function get_instance() {
 		if( is_null(self::$dom) ) {
 			self::$dom				= new DOM;
@@ -48,8 +62,7 @@ class DOM {
 	}
 	static public function set_title( $value ) {
 		$dom						= self::get_instance();
-		$dom		-> title
-									= $value;
+		$dom		-> title		= $value;
 		
 	}	
 	static public function set_meta( $meta , $field , $value ) {
@@ -83,6 +96,7 @@ class DOM {
 	private function __construct() {
 		$this -> css				= array();
 		$this -> js					= array();
+		$this -> parsejs			= array();
 		$this -> request_uri		= HYN_URI_REQUEST;
 		$this -> show_uri			= HYN_URI_REQUEST;
 	}
@@ -103,7 +117,7 @@ class DOM {
 		if( $type == "js" ) {
 			hyn_include( "min" );
 			$r			= "";
-			foreach( $this -> js as $i => $js ) {
+			if(count($this -> js)) {foreach( $this -> js as $i => $js ) {
 				$uri				= parse_url( $js );
 				# local file
 				if( !isset($uri['scheme']) && !isset($uri['host'])) {
@@ -116,15 +130,16 @@ class DOM {
 #					$r					.= Minify::combine( $javascript , array( 'contentType' => Minify::TYPE_JS ));
 					unset( $this -> js[$i] );
 				}
-			}
-			
+			}}
+
 			if( strlen($r) > 0 ) {
-				file_put_contents( HYN_PATH_PUBLIC . "cache" . DS . "js". DS . md5(HYN_URI_REQUEST) . ".js" , $r );
+				file_put_contents( HYN_PATH_CACHE . "js". DS . md5(HYN_URI_REQUEST) . ".js" , $r );
 				$this -> js[]		= "/cache/js/".md5(HYN_URI_REQUEST).".js";
 			}
+			unset( $js , $r );
 			// add any other scripts seperately
-			if( _v($this -> parsejs,"array")) { foreach( $this -> parsejs as $where => $jsfiles ) {
-
+			if( count($this -> parsejs)) { foreach( $this -> parsejs as $where => $jsfiles ) {
+				$r			= "";
 #				$r			= Minify::combine( $jsfiles , array( 'contentType' => Minify::TYPE_JS ));
 				foreach( $jsfiles as $js ) {
 #					$r		.= JSMin::minify( $js );
@@ -135,20 +150,17 @@ class DOM {
 					if( $t	= _filefind( $where , __DIR__ . DS . "js" , "twig" )) {
 						$r				= Twig::parse( $t , array( "content" => $r ));
 					}
-					file_put_contents( HYN_PATH_PUBLIC . "cache" . DS . "js" . DS . md5( HYN_URI_REQUEST ) . "_".$where.".js" , $r );
+					file_put_contents( HYN_PATH_CACHE . "js" . DS . md5( HYN_URI_REQUEST ) . "_".$where.".js" , $r );
 					$this -> js[]		= "/cache/js/" . md5( HYN_URI_REQUEST) . "_".$where.".js";
 				}
 			}}
 		} elseif( $type == "css" ) {
-			$minsearch	= array("/(\t|\r|\n)+/i","/([ ]{2,})+/i","/\/\*(.*?)\*\//im","/\/\/(.*?)$/im");
-			$minreplace	= array(" ","","","");
 			$r			= "";
 			foreach( $this -> css as $i => $css ) {
 				$uri					= parse_url( $css );
 				# local file
 				if( !isset($uri['scheme']) && !isset($uri['host'])) {
 					$r				.= file_get_contents( filefind($css) );
-#					$r					.= preg_replace( $minsearch , $minreplace , $stylesheet );
 					unset( $this -> css[$i] );
 				}
 			}
@@ -156,7 +168,7 @@ class DOM {
 			if( strlen($r) > 0 ) {
 #				$r		= Minify::combine( array( $r ) , array( "contentType" => Minify::TYPE_CSS ));
 #_debug( $r );
-				if( file_put_contents( HYN_PATH_PUBLIC . "cache" . DS ."css" . DS . md5(HYN_URI_REQUEST) . ".css" , $r )) {
+				if( file_put_contents( HYN_PATH_CACHE . "css" . DS . md5(HYN_URI_REQUEST) . ".css" , $r )) {
 					$this -> css[]		= "/cache/css/".md5(HYN_URI_REQUEST).".css";
 				}
 			}

@@ -45,7 +45,7 @@ DOM::add_js( '
 		});
 	}' 
 	, "body" );
-DOM::add_js( 'if(jQuery("[data-original-title]:not([data-content])").length > 0) {jQuery("[data-original-title]").tooltip({ live: true, html: true });}' , "body" );
+DOM::add_js( 'if(jQuery("[data-original-title]:not([data-content])").length > 0) { jQuery("[data-original-title]:not([data-content])").tooltip({ live: true, html: true });}' , "body" );
 DOM::add_js( '	if(jQuery("[data-popover-placement]").length > 0) {
 			jQuery("[data-popover-placement]").popover({ 
 				live: true, 

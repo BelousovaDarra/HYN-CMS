@@ -1,0 +1,16 @@
+<html>
+<head>
+</head>
+<body>
+<h3>{{ _("dear")|capitalize }} {{ user.realname }}</h3>
+<p>
+	{{ _("In order to activate your account permanently, you need to click the following link.") }}
+</p>
+<p>
+	<a href="http://{{ ms.domain }}/login?{{ signuphash }}">{{ _("activate")|capitalize }}</a>
+</p>
+<p>
+	{{ _("Please note that this is an automated e-mail; if you have issues with registration please use the contact page on our website.") }}
+</p>
+</body>
+</html>

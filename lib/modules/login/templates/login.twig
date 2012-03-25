@@ -44,7 +44,7 @@
 				<ul class="nav nav-list">
 					<li><a href="/account/">Account</a></li>
 				</ul>
-			{% elseif allow-registration is sameas(true) %}
+			{% elseif allowregistration is sameas(true) %}
 				<h1>Sign up</h1>
 				{% if error.su.general %}
 				<p class="alert alert-error">
@@ -90,7 +90,7 @@
 					<div class="control-group{% if error.su.realname %} error{% endif %}">
 						<label class="control-label" for="signup-realname">{{ _("Name")|capitalize }}</label>
 						<div class="controls">
-							<input type="text" class="input" id="signup-realname" name="signup-realname"{% if globals.post.signup-realname %} value="{{ _post.signup-realname }}"{% endif %} />
+							<input type="text" class="input" id="signup-realname" name="signup-realname"{% if globals.post.signup-realname %} value="{{ _post.signup-realname }}"{% endif %} placeholder="{{ _("Firstname Lastname") }}" />
 							{% if error.su.realname %}<p class="help-block">{{ error.su.realname }}</p>{% endif %}
 						</div>
 					</div>

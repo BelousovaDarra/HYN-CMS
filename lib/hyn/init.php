@@ -11,6 +11,7 @@ if( isset($debugips) && in_array($_SERVER['REMOTE_ADDR'],$debugips)) {
 	error_reporting( E_ALL );
 } else { 
 	define("HYN_DEBUG" , false );
+	error_reporting( 0 );
 }
 
 /** anewt library included */
@@ -36,7 +37,8 @@ AnewtDatabase::setup_connection( array(
 anewt_include( "autorecord" , "gpc" , "i18n" );
 
 /** 
-*	hostname identification 
+*	hostname identification
+*	@file MultiSite.db.php 
 */
 hyn_include( "multisite" );
 /**
@@ -59,6 +61,7 @@ if( !$MultiSite ) {
 // setup defined dirs
 global $MultiSite;
 $MultiSite -> setConstants();
+$MultiSite -> onLoad();
 if( HYN != "cmd" ) {
 	if( HYN_SYSTEM_ID && $db = $MultiSite -> get("database") ) {
 		

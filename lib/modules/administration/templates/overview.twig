@@ -3,21 +3,64 @@
 {# we have to get all modal template; these are re-used on other pages #}
 {% include "relation.modal" %}
 {% include "product.modal" %}
+{% include "invoice.modal" %}
 
 
 <div class="row">
 		<div class="box-modal span3">
 			<div class="modal-header">
-				<h3>Quick Links</h3>
+				<h3>{{ _("quick links")|capitalize }}</h3>
 			</div>
 			<div class="modal-body">
 				<ul class="nav nav-list">
+					<li class="nav-header">{{ _("show") }}</li>
+						<li><a href="/administration"><i class="icon-list"></i> {{ _("invoices")|capitalize }}</a></li>
 					<li class="nav-header">{{ _("create") }}</li>
 						<li><a href="#create-relation" data-toggle="modal"><i class="icon-user"></i> {{ _("relation")|capitalize }}</a></li>
 						<li><a href="#create-product" data-toggle="modal"><i class="icon-book"></i> {{ _("product")|capitalize }}</a></li>
 						<li><a href="#create-invoice" data-toggle="modal"><i class="icon-shopping-cart"></i> {{ _("invoice")|capitalize }}</a></li>
 
 				</ul>
+			</div>
+			<div class="modal-footer">
+			
+			</div>
+		</div>
+		<div class="box-modal span9">
+			<div class="modal-header">
+				<h3>{{ _("latest invoices")|capitalize }}</h3>
+			</div>
+			<div class="modal-body">
+				<table class="table table-bordered table-striped table-condensed">
+					<thead>
+						<tr>
+							<th>{{ _("invoice")|capitalize }}</th>
+							<th>{{ _("relation")|capitalize }}</th>
+							<th>{{ _("total")|capitalize }}</th>
+							<th>{{ _("VAT") }}</th>
+							<th>{{ _("status")|capitalize }}</th>
+							<th class="span2"></th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for invoice in invoices %}
+						<tr>
+							<td>{% if invoice.invoicenr %}{{ invoice.invoicenr }}{% else %}{{ invoice.id }}{% endif %}</td>
+							<td><a class="btn btn-small" data-original-title="{{ invoice.relation.name }}" data-popover-placement="right" data-content="{% include 'relation.small' with { 'relation':invoice.relation } only %}" href="{{ invoice.relation.ahref }}">{{ invoice.relation.name }}</a></td>
+							<td>{{ _p_money(invoice.total_incvat) }}</td>
+							<td>{{ _p_money(invoice.total_vat) }}</td>
+							<td>{{ invoice.state.short }} <i class="icon-resize-{% if invoice.outgoing %}full{% else %}small{% endif %}" data-original-title="{% if invoice.outgoing %}{{ _("outgoing") }}{% else %}{{ _("incoming") }}{% endif %} {{ _("invoice") }}"></i></td>
+							<td>
+								<div class="btn-group right">
+									<a href="{{ invoice.relation.ahref }}" class="btn btn-small" data-original-title="{{ _("view") }}"><i class="icon-eye-open"></i></a>
+									<a href="{{ invoice.relation.ahref }}" class="btn btn-small" data-original-title="{{ _("edit") }}"><i class="icon-pencil"></i></a>
+									<button class="btn btn-danger btn-small" data-original-title="{{ _("delete") }}"><i class="icon-trash"></i></button>
+								</div>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
 			</div>
 			<div class="modal-footer">
 			

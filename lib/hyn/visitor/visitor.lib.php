@@ -12,7 +12,7 @@ class SiteVisitor {
 	
 	
 	
-	private function login() {
+	public function login() {
 		
 		if( ($un = GPC::post_string("login-username")) && ($pw = GPC::post_string("login-password") )) {
 			$remember				= GPC::post_bool("login-remember");
@@ -52,7 +52,7 @@ class SiteVisitor {
 		}
 		return false;
 	}
-	private function register() {
+	public function register() {
 		if( $email = GPC::post_string("signup-email") ) {
 			if( !_v( $email , "email" )) {
 				$this -> error['signup']['email']				= _("Please enter a valid e-mail address.");
@@ -102,18 +102,25 @@ class SiteVisitor {
 				return false;
 			
 			}
-			$su		= new SiteUser;
-			$su -> set( "email" , $email );
-			$su -> set( "realname" , $realname );
-			$su -> set( "password" , crypt( $password ));
-			$su -> set( "domain" , HYN_SYSTEM_ID );
-			$su -> set( "signedup" , AnewtDatetime::now() );
-			$su -> set( "lastactivity" , AnewtDatetime::now());
-			$su -> set( "state" , 1);
-			$su -> save( true );
-			
-			$this -> user	= $su;
-			$this -> saveSession();
+			try {
+				$su		= new SiteUser;
+				$su -> set( "email" , $email );
+				$su -> set( "realname" , $realname );
+				$su -> set( "password" , crypt( $password ));
+				$su -> set( "domain" , HYN_SYSTEM_ID );
+				$su -> set( "signedup" , AnewtDatetime::now() );
+				$su -> set( "lastactivity" , AnewtDatetime::now());
+				$su -> set( "state" , 9 );								# state 1 for unverified, 9 for verified
+				$su -> save( true );
+				
+				$this -> user	= $su;
+				$this -> saveSession();
+				
+#				$this -> sendRegistrationMail();
+			} catch( Exception $e ) {
+				$this -> error['signup']['general']				= _("Signing up failed.");
+				return false;
+			}
 			return true;
 		}
 		else {
@@ -121,6 +128,19 @@ class SiteVisitor {
 			$this -> error['signup']['email']					= _("Please enter your e-mail address.");
 			return false;
 		}
+	}
+	private function sendRegistrationMail() {
+		global $MultiSite;
+		hyn_include( "swiftmailer" );
+		# first setup the mail message // Twig::parse( filefind($tpl,$this -> class) , (_v($vrs,"array") ? $vrs : array()) );
+		$body		= 	Twig::parse( filefind("mail.register","login") , array( "user" => $this -> user ) );
+		
+		$message 	= Swift_Message::newInstance();
+		$message -> setSubject( _("Registration on ") . $MultiSite -> get("domain") );
+		$message -> setBody( $body , "text/html" );
+		$message -> setTo( $this -> user -> email );
+		$message -> setFrom( "no-reply@" . $MultiSite -> get("domain") );
+		sendEmail( $message );
 	}
 	public function __construct() {
 		
@@ -134,18 +154,6 @@ class SiteVisitor {
 			if( GPC::post_string("logout-user") || GPC::get_string("logout-user")) {
 				session_unset();
 				unset($this -> user);
-			}
-		}
-		// login
-		elseif( GPC::post_string("login-user") ) {
-			if( $this -> login() ) {
-				# show public notification welcome	
-			}
-		}
-		// register
-		elseif( GPC::post_string("register-user") ) {
-			if( $this -> register() ) {
-				# do something after registering
 			}
 		}
 	}

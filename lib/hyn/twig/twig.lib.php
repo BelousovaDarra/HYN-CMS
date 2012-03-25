@@ -15,7 +15,8 @@ class Twig {
 			"Function" 	=> array(
 									"_"				=> "_",
 									"sitesetting"	=> "SiteSetting",
-									"_debug"		=> "_debug"
+									"_debug"		=> "_debug",
+									"_p_money"		=> "_p_money",
 			),
 			"Filter" 	=> array(
 									"bytes"			=> "_p_bytes"

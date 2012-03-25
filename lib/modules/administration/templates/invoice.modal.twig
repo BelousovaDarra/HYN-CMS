@@ -1,0 +1,15 @@
+<div class="modal hide" id="create-invoice">
+	<form class="modal form-horizontal" method="POST">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal" >&times;</a>
+			<h3>{{ _("create invoice") }}</h3>
+		</div>
+		<div class="modal-content">
+			{% include "invoice.form" %}
+		</div>
+		<div class="modal-footer">
+			<input type="submit" class="btn btn-primary" name="product" value="{{ _("create") }}" />
+			<a data-dismiss="modal" href="" class="btn">{{ _("cancel") }}</a>
+		</div>
+	</form>
+</div>

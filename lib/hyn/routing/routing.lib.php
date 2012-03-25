@@ -83,6 +83,9 @@ class routing {
 			$c				= new login;
 			$call_func		= "display";
 		}
+		// end of verify SSL and LOGIN
+		
+		// continue loading class and function
 		$r -> called		= strtolower($call_class);
 		self::$c			= $c;
 		// find function - first by defined, if

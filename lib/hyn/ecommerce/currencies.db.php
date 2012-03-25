@@ -22,6 +22,22 @@ class currencies_ extends AutoRecord {
 			"updated"		=> "datetime",
 		);
 	}
+	/**
+	*	calculate any amount from euro to the loaded currency
+	*	@return amount in integer and different currency
+	*/
+	public function fromEUR( $amount ) {
+		if( is_float( $amount )) {
+			$amount = round( $amount * 100 );
+		}
+		if( !is_int( $amount ) || !$amount ) {
+			return false;
+		}
+		return round( $amount * $this -> get("1EUR") );
+	}
+	public static function find_one_by_iso( $iso="EUR" ) {
+		return currencies::find_one_by_column( "iso" , $iso );
+	}
 }
 
 AutoRecord::register("currencies");

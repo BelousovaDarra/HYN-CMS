@@ -64,7 +64,7 @@
 						<div class="controls">
 							{% for orgvalue, org in orgtypes %}
 							<label class="radio">
-								<input type="radio" name="company" value="{{ orgvalue }}"{% if relation and relation.company == orgvalue %} checked{% elseif not relation and orgvalue == 0 %}checked{% endif %} />
+								<input type="radio" name="company" value="{{ orgvalue }}"{% if relation and relation.company == orgvalue %} checked{% elseif relation is not defined and orgvalue == 0 %}checked{% endif %} />
 								{{ org|capitalize }}
 							</label>
 							{% endfor %}
@@ -124,6 +124,15 @@
 							<input type="text" id="billunits" name="billunits" value="{% if relation %}{{ relation.billunits }}{% else %}1{% endif %}" />
 							<p class="help-block">
 								{{ _("How much previously set units are between invoices.") }}
+							</p>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="vat">{{ _("vat percentage")|capitalize }}</label>
+						<div class="controls">
+							<input type="text" id="vat" name="vat" value="{% if relation %}{{ relation.vat }}{% else %}19{% endif %}" />
+							<p class="help-block">
+								{{ _("The tax percentage for this relation.") }}
 							</p>
 						</div>
 					</div>
