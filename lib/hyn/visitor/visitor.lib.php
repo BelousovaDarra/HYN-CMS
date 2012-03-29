@@ -26,6 +26,13 @@ class SiteVisitor {
 					if( !$user -> get("banned") ) {
 						$this	-> user		= $user;
 						$this -> saveSession();
+						
+						// find any redirect back to a previous page
+						if( GPC::get_string("return") ) {
+							$return		= urldecode( GPC::get_string( "return" ));
+							_p_redirect( $return );
+						}
+						
 						return true;
 					} else {
 						# show error [TODO]	- banned

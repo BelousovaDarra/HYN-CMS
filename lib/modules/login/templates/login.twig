@@ -20,7 +20,7 @@
 				<div class="control-group{% if error.login.username %} error{% endif %}">
 					<label class="control-label" for="login-username">{{ _("username")|capitalize }}</label>
 					<div class="controls">
-						<input type="text" class="input" id="login-username" name="login-username" placeholder="{{ _("your e-maiil address") }}" />
+						<input type="text" class="input" id="login-username" name="login-username" placeholder="{{ _("your e-mail address") }}" />
 						{% if error.login.username %}<p class="help-block">{{ error.login.username }}</p>{% endif %}
 					</div>
 				</div>

@@ -57,8 +57,8 @@
 								<td>{{ invoice.state.short }} <i class="icon-resize-{% if invoice.outgoing %}full{% else %}small{% endif %}" data-original-title="{% if invoice.outgoing %}{{ _("outgoing") }}{% else %}{{ _("incoming") }}{% endif %} {{ _("invoice") }}"></i></td>
 								<td>
 									<div class="btn-group right">
-										<a href="{{ invoice.relation.ahref }}" class="btn btn-small" data-original-title="{{ _("view") }}"><i class="icon-eye-open"></i></a>
-										<a href="{{ invoice.relation.ahref }}" class="btn btn-small" data-original-title="{{ _("edit") }}"><i class="icon-pencil"></i></a>
+										<a href="{{ invoice.ahref }}" class="btn btn-small" data-original-title="{{ _("view") }}"><i class="icon-eye-open"></i></a>
+										<a href="{{ invoice.ahref }}" class="btn btn-small" data-original-title="{{ _("edit") }}"><i class="icon-pencil"></i></a>
 										<button class="btn btn-danger btn-small" data-original-title="{{ _("delete") }}"><i class="icon-trash"></i></button>
 									</div>
 								</td>

@@ -28,6 +28,12 @@ class relation_ extends ModuleRecord {
 			"vat"			=> "integer"		// tax percentage
 		);
 	}
+	protected static function _db_sort_column() {
+		return "name";
+	}
+	protected static function _db_sort_order() {
+		return "DESC";
+	}
 	public function get_companytype_() {
 		global $m_adm_cache;
 		if( isset($m_adm_cache['vars']) && isset($m_adm_cache['vars']['orgtypes']) && isset($m_adm_cache['vars']['orgtypes'][ $this -> _get('company') ])) {

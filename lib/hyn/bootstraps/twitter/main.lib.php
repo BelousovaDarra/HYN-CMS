@@ -26,6 +26,12 @@ DOM::set_js( __DIR__ . DS . "lib" . DS . "js" . DS . "bootstrap-transition.js" )
 DOM::set_js( __DIR__ . DS . "lib" . DS . "js" . DS . "bootstrap-typeahead.js" );
 
 DOM::add_js( '
+	if( jQuery(".button").length > 0 ) {
+		jQuery(".button").button();
+	}
+', "body" );
+
+DOM::add_js( '
 	if(jQuery("[data-box-minify]").length > 0) {
 		jQuery("[data-box-minify]").click(function() {
 //			alert(jQuery(this).attr("data-box-minify"));

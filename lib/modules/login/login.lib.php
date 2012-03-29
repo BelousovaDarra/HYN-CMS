@@ -20,7 +20,7 @@ class login extends module {
 			}
 		}
 		
-		DOM::set_title( _("Sign up &amp; log in") );
+		DOM::set_title( _("Sign up & log in") );
 	}
 	public function display($v=array()) {
 		global $SiteVisitor;

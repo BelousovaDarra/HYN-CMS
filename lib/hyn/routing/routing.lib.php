@@ -69,7 +69,7 @@ class routing {
 		}
 		// otherwise throw error
 		else {
-			# [TODO] throw error
+			// [TODO] throw error
 		}
 
 		$c					= new $call_class;
@@ -79,9 +79,20 @@ class routing {
 		if( $MultiSite -> get("ssl") && HYN_URI_HTTPS != "https://" && $c -> _SSL_() ) {
 			_p_redirect( "https://" . HYN_URI_HTTPHOST . HYN_URI_REQUEST );
 		}
-		if( $c -> _LOGIN_() && !$SiteVisitor -> user ) {
-			$c				= new login;
-			$call_func		= "display";
+		/**
+		*	check whether module requires log on and if so, redirect to login page
+		* 	@todo get login page from routes.db if set, otherwise disallow access
+		*/
+		if( 
+			// check for site user
+			($c -> _LOGIN_() && !$SiteVisitor -> user) 
+			// check for system user
+			|| ($c -> _LOGIN_() == "system" && $SiteVisitor -> user -> get('type') != 0)
+			// check for system admin
+			|| ($c -> _LOGIN_() == "admin" && $SiteVisitor -> user -> get('type') != 0)  
+			|| ($c -> _LOGIN_() == "admin" && !$SiteVisitor -> user -> get('admin') )  
+		) {
+			_p_redirect( "/login?return=" . urlencode( $_SERVER['REQUEST_URI'] ) );
 		}
 		// end of verify SSL and LOGIN
 		

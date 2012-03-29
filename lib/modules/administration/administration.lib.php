@@ -59,17 +59,16 @@ class administration extends module {
 	}
 	private function relation_map() {
 		return "
-//		function maps_init() {
 			if( jQuery('.relation-location-map').length > 0	) {
 				var map			= [];
-				jQuery( '.relation-location-map' ).each( function( i ) {
+				jQuery( '.relation-location-map' ).each( function( i , Elm ) {
 					var loc		= jQuery( this ).attr( 'data-location');
 					var opts	= {
 						zoom:			8,
 						mapTypeId: 		google.maps.MapTypeId.ROADMAP,
 						center: 		codeAddress( loc )
 					};
-					map.push( new google.maps.Map( jQuery(this) , opts ) );
+					map.push( new google.maps.Map( Elm , opts ) );
 				});
 			}
 			function codeAddress( address ) {
@@ -78,37 +77,36 @@ class administration extends module {
 					return results[0].geometry.location;
 			  	});
 			}
-//		}
 		";
 	}
 	private function processGPCs() {
 		# create relation
-		if( GPC::post_string("relation")) {
+		if( GPC::post_string("relation-change")) {
 			if( GPC::post_int( "relationid" )) {
-				$r			= relation::find_one_by_id( GPC::post_int( "relationid" ) );
-				$save		= false;
-			} else {
-				$r			= new relation;
+				$r		= relation::find_one_by_id( GPC::post_int( "relationid" ) );
 				$save		= true;
+			} else {
+				$r		= new relation;
+				$save		= false;
 			}
 			
 			$post			= $_POST;
-			$post['vat']	= (int) ($post['vat'] * 100);
+			$post['vat']		= (int) ($post['vat'] * 100);
 			
-			$r -> seed( $_POST );
+			$r 	-> seed( $_POST );
 
-			$rid		= $r -> save( $save );
-			if( $save ) {
-				_p_redirect( "/administration/relation/". $rid );
+			$r 	-> save( !$save );
+			if( !$save ) {
+				_p_redirect( sprintf("/administration/relation/%d/%s" , $r -> get("id") , $r -> get("name") ));
 			}
 		}
-		if( GPC::post_string("product") ) {
+		if( GPC::post_string("product-change") ) {
 			if( GPC::post_int( "productid" )) {
 				$p			= product::find_one_by_id( GPC::post_int( "relationid" ) );
-				$save		= false;
+				$save		= true;
 			} else {
 				$p			= new product;
-				$save		= true;
+				$save		= false;
 			}
 			$v			= array(
 				"name" , "description" , "category" , "price" , "billperiod" , "billunits"
@@ -124,7 +122,25 @@ class administration extends module {
 					$p -> set( $req , GPC::post_string( $req ) );
 				}
 			}
-			$pid		= $p -> save( $save );
+			$p 	-> save( !$save );
+		}
+		if( GPC::post_string("invoice-change") ) {
+			if( GPC::post_int( "invoiceid" ) ) {
+				$i		= invoice::find_one_by_id( GPC::post_int( "invoiceid" ) );
+				$i -> set( "updated" , AnewtDatetime::now() );
+				$save		= true;
+			} else {
+				$i 		= new invoice;
+				$i -> set( "state" , 101 );
+				$i -> set( "created" , AnewtDatetime::now() );
+				$save		= false;
+			}
+			$post			= $_POST;
+			$i	-> seed( $post );
+			$i 	-> save( !$save );
+			if( !$save ) {
+				_p_redirect( sprintf( "/administration/invoice/%d" , $i -> get("id") ));
+			}
 		}
 	}
 	public function display() {
@@ -136,6 +152,11 @@ class administration extends module {
 		
 		$this -> vars['invoices']	= invoice::find_all();
 		$this -> vars['relations']	= relation::find_all();
+		
+		global $m_adm_cache;
+		$m_adm_cache['invoices']	= $this -> vars['invoices'];
+		$m_adm_cache['relations']	= $this -> vars['relations'];
+		
 		$this -> tpl				= "overview";
 	}
 	// require SSL
@@ -144,7 +165,7 @@ class administration extends module {
 	}
 	// require LOGIN
 	public function _LOGIN_() {
-		return true;
+		return "system";
 	}
 	private function invoice() {
 		if( $this -> pathid ) {

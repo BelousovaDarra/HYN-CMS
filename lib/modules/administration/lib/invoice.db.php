@@ -5,6 +5,11 @@ class invoice_ extends ModuleRecord {
 	
 	private $totals			= false;
 	
+	protected static function _db_primary_key()
+	{
+		return 'id';
+	}
+
 	protected static function _db_table()
 	{
 		return "m_adm_invoice";
@@ -26,7 +31,7 @@ class invoice_ extends ModuleRecord {
 				array(
 					"foreign_class"		=> "relation",
 					"foreign_key"		=> "id",
-#					"foreign_alias"		=> "relation",
+					"foreign_alias"		=> "relation",
 					"own_key"			=> "relation",
 					"multi"				=> false,
 					"child_name"		=> "relation"
@@ -34,7 +39,7 @@ class invoice_ extends ModuleRecord {
 				array(
 					"foreign_class"		=> "invoice_item",
 					"foreign_key"		=> "invoice",
-#					"foreign_alias"		=> "item",			// cannot use foreign_alias if multi is set and child-name is set
+					"foreign_alias"		=> "item",
 					"own_key"			=> "id",
 					"multi"				=> true,
 					"child_name"		=> "items"
@@ -42,12 +47,18 @@ class invoice_ extends ModuleRecord {
 				array(
 					"foreign_class"		=> "invoice_state",
 					"foreign_key"		=> "state",
-#					"foreign_alias"		=> "item",			// cannot use foreign_alias if multi is set and child-name is set
+					"foreign_alias"		=> "state",
 					"own_key"			=> "state",
 					"multi"				=> false,
 					"child_name"		=> "state"
 				)
 		);
+	}
+	protected static function _db_skip_on_insert() {
+		return array( "invoicenr" );
+	}
+	public function get_ahref_() {
+		return "/administration/invoice/" . $this -> get("id") ."/" . $this -> get("invoicenr");
 	}
 	/**
 	*	@return status with in/out status
@@ -62,7 +73,7 @@ class invoice_ extends ModuleRecord {
 		if( $this -> _get("invoicenr") != "" ) {
 			return $this -> _get("invoicenr");
 		} else {
-			return _("concept") . "-" . $this -> id;
+			return _("concept") . ( $this -> id ? "-" . $this -> id : false );
 		}
 	}
 	/**
@@ -100,10 +111,10 @@ class invoice_ extends ModuleRecord {
 			$this -> totals['exvat']			= 0;
 			$this -> totals['incvat']			= 0;
 			$this -> totals['vat']				= 0;
-
-			if( count($this -> items) ) { foreach( $this -> items as $item ) {
+			if( isset($this -> items) && count($this -> items) ) { foreach( $this -> items as $item ) {
 					$this -> totals['exvat']	+= $item -> get("item_product") -> get("price");
 				}
+
 				if( $this -> get("relation") -> currency != HYN_CURRENCY_DEFAULT ) {
 					$cur						= currencies::find_one_by_iso( $this -> get("relation") -> currency );
 					$this -> totals['exvat']	= $cur -> fromEUR( $this -> totals['exvat'] );

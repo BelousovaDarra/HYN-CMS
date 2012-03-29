@@ -45,6 +45,13 @@ abstract class module {
 	public function _SSL_() {
 		return false;
 	}
+	/**
+	*	if module returns "site" or true, will check whether a user is logged in
+	*	if module returns "system", will check whether system user is logged in
+	*	if module returns "admin", will check whether admin system user is logged in
+	*	if not any of both requirements are met, visitor is redirect to login page
+	*	after login, visitor is redirect back to where he came from
+	*/
 	public function _LOGIN_() {
 		return false;
 	}

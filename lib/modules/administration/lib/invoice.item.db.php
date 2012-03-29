@@ -2,6 +2,10 @@
 if( !defined("HYN")) { exit; }
 
 class invoice_item_ extends ModuleRecord {
+	protected static function _db_primary_key()
+	{
+		return 'id';
+	}
 	protected static function _db_table()
 	{
 		return "m_adm_invoice_item";
@@ -34,9 +38,9 @@ class invoice_item_ extends ModuleRecord {
 		} elseif( is_int( $this -> get("product"))) {
 			$m_adm_cache['product'][ $this -> get("product") ]	= product::find_one_by_id( $this -> get("product") );
 			return $m_adm_cache['product'][ $this -> get("product") ];
-		} else {
+		} elseif( is_a( $this -> get("product") , "product")) {
 			return $this -> get("product");
-		}
+		} else { return false; }
 	}
 }
 
