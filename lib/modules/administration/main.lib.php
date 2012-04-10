@@ -3,6 +3,7 @@ if( !defined("HYN")) { exit; }
 
 
 require_once "lib" . DS . "relation.db.php";
+require_once "lib" . DS . "relation.product.db.php";
 
 require_once "lib" . DS . "product.category.db.php";
 require_once "lib" . DS . "product.db.php";

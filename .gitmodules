@@ -55,3 +55,9 @@
 [submodule "public_html/js/libs/leaflet"]
 	path = public_html/js/libs/leaflet
 	url = https://github.com/CloudMade/Leaflet.git
+[submodule "lib/hyn/github-api/lib"]
+	path = lib/hyn/github-api/lib
+	url = https://github.com/ornicar/php-github-api.git
+[submodule "lib/hyn/swiftmailer/lib"]
+	path = lib/hyn/swiftmailer/lib
+	url = https://github.com/swiftmailer/swiftmailer.git

@@ -84,8 +84,8 @@ function _p_icon( $icoclasses , $title ) {
 	return "<span class=\"".$icoclasses."\" title=\"".$title."\"></span>";
 }
 function _p_money( $amount ) {
-	if( !_v($amount,"int")) {
-		return false;
+	if( !_v($amount,"int") || $amount == 0) {
+		return "€ 0,-";
 	} else {
 		$amount	= (string) $amount;
 		$decs	= substr( $amount , -2 );

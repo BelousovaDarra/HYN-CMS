@@ -1,30 +1,70 @@
 	{% include "header" %}
 	<div class="row">
-		<div class="span4">
+		<div class="span4 box-modal">
+			<div class="modal-header">
 			<h3>Content management system</h3>
-			<p>
-				HYN is a multi-domain, modular content management system; with only one installation one can manage multiple sites, each with their own functionalities, design and users.
-			</p>
+			</div>
+			<div class="modal-body">
+				HYN is an <strong>open source</strong>, multi-domain, modular content management system; with only one installation one can manage multiple sites, each with their own functionalities, design and users.
+			</div>
+			<div class="modal-body">
+				Sick of needing to log in on every client website? With HYN you can use your system credentials to log in on any of them; safe, secure and hasslefree.
+			</div>
+			<div class="modal-body">
+				Usage of HYN CMS is <strong>free-of-charge</strong>, unless used commercially in any way. We do allow exceptions against a standard fee, which we enable in the near future.
+			</div>
+			<div class="modal-footer">
+				<div class="btn-group right">
+					<a href="/about/features/" class="btn btn-small disabled">{{ _("features") }}</a>
+					<a href="/about/modules/" class="btn btn-small">{{ _("modules") }}</a>
+					<a href="/discuss/" class="btn btn-small disabled">{{ _("discuss") }}</a>
+				</div>
+			</div>
 		</div>
-		<div class="span4">
+		<div class="span4 box-modal">
+			<div class="modal-header">
 			<h3>Requirements</h3>
-			<p>
+			</div>
+			<div class="modal-body">
 				HYN is fully functional when using
 				<ul>
 					<li>Apache or Nginx</li>
 					<li>PHP 5.3+</li>
 					<li>MySQL 4+</li>
 				</ul>
-			</p>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn btn-small disabled"><i class="icon-star-empty"></i> {{ _("see verified webhosts") }}</a>
+			</div>
 		</div>
-		<div class="span4">
+		<div class="span4 box-modal">
+			<div class="modal-header"><h3>{{ _("latest updates")|capitalize }}</h3></div>
+			<div class="modal-body">
+				<ul>
+				{% for gitcommit in gitcommits %}
+					<li>
+						&#8220;<a href="https://github.com{{ gitcommit.url }}"><span class="commit-message">{{ gitcommit.message }}</span></a>&#8221;
+						<div class="commit-user">{{ _("by") }} {{ gitcommit.committer.name }}</div>
+					</li>
+				{% endfor %}
+				</ul>
+			</div>
+			<div class="modal-footer">
+				<a class="btn btn-small" href="https://github.com/Luceos/HYN-CMS/"><i class="icon-list-alt"></i> {{ _("GitHub repository") }}</a>
+			</div>
+		</div>
+{#		<div class="span4 box-modal">
+			<div class="modal-header">
 			<h3>Technology</h3>
+			</div>
+			<div class="modal-body">
 			<ul>
 				<li>Twig ; template engine</li>
 				<li>Twitter bootstrap ; built sites easily if you want</li>
 				<li>Aloha <abbr title="What You See Is What You Get">WYSIWYG</abbr>-editor ; edit pages exactly as they will look</li>
 				<li>Jquery &amp; plugins ; extendable and dependable javascript</li>
 			</ul>
-		</div>
+			</div>
+		</div>#}
 	</div>
 	{% include "footer" %}

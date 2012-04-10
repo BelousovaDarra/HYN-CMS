@@ -1,5 +1,124 @@
 {% include "header" %}
 
+{% include "invoice.modal" %}
+{% include "relation.product.modal" %}
+
+<div class="row">
+	<div class="span4 box-modal">
+		<div class="modal-header">
+			<h3>{{ _("Invoice options") }}</h3>
+		</div>
+		<div class="modal-content">
+				<ul class="nav nav-list">
+					<li class="nav-header">{{ _("show") }}</li>
+						<li><a href="/administration"><i class="icon-list"></i> {{ _("overview")|capitalize }}</a></li>
+					<li class="nav-header">{{ _("edit") }}</li>
+						<li><a href="#create-invoice" data-toggle="modal"><i class="icon-user"></i> {{ _("invoice")|capitalize }}</a></li>
+						<li><a href="#add-relation-product" data-toggle="modal"><i class="icon-user"></i> {{ _("add product")|capitalize }}</a></li>
+
+				</ul>
+		</div>
+		<div class="modal-footer">
+		
+		</div>
+	</div>
+	<div class="span8 box-modal form-horizontal">
+		<div class="modal-header">
+			<h1>{{ invoice.invoicenr }}
+				<small><a href="{{ invoice.relation.href }}" data-original-title="{{ invoice.relation.name }}" data-popover-placement="bottom" data-content="{% include 'relation.small' with { 'relation':invoice.relation } only %}">{{ invoice.relation.name }}</a></small>
+			</h1>
+		</div>
+		<div class="modal-body">
+			<div class="btn-toolbar text-center">
+				<div class="btn-group">
+					<div class="btn btn-small disabled">{{ _("invoice")|capitalize }}</div>
+					<button data-original-title="{{ invoice.state.long }}" class="btn btn-small">{{ invoice.state.short }}</button>
+					<button data-original-title="{% if invoice.outgoing %}{{ _("outgoing") }}{% else %}{{ _("incoming") }}{% endif %} {{ _("invoice") }}" class="btn btn-small{% if invoice.incoming %} btn-info{% endif %}"><i class="icon-resize-{% if invoice.outgoing %}full{% else %}small{% endif %}"></i></button>
+				</div>
+				<div class="btn-group">
+					<div class="btn btn-small disabled">{{ _("relation")|capitalize }}</div>
+					<a class="btn btn-small" href="{{ invoice.relation.href }}">{{ invoice.relation.name }}</a>
+					<div class="btn btn-small">{{ invoice.relation.companytype }}</div>
+				</div>
+				<div class="btn-group">
+					<div class="btn btn-small disabled">{{ _("created")|capitalize }}</div>
+					<div class="btn btn-small">{{ invoice.created_formatted }}</div>
+				</div>
+			</div>
+			<div class="btn-toolbar text-center well">
+				<div class="btn-group" data-original-title="{{ _("Total excluding VAT") }}">
+					<div class="btn btn-large disabled">{{ _("items total")|capitalize }}</div>
+					<div class="btn btn-large btn-info">{{ _p_money(invoice.total_exvat) }}</div>
+				</div>
+				<div class="btn-group" data-original-title="{{ _("Total VAT") }}">
+					<div class="btn btn-large disabled">{{ _("vat")|capitalize }}</div>
+					<div class="btn btn-large btn-info">{{ _p_money(invoice.total_vat) }}</div>
+				</div>
+				<div class="btn-group" data-original-title="{{ _("Total including VAT") }}">
+					<div class="btn btn-large disabled">{{ _("total")|capitalize }}</div>
+					<div class="btn btn-large btn-info">{{ _p_money(invoice.total_incvat) }}</div>
+				</div>
+			</div>
+			{% if invoice.items %}
+			<table class="table table-bordered table-striped marged-n">
+				<thead>
+				<tr>
+					<th>
+						{{ _("product")|capitalize }}
+					</th>
+					<th>
+						{{ _("price")|capitalize }}
+					</th>
+				</tr>
+				</thead>
+				<tbody>
+				{% for item in invoice.items %}
+				<tr>
+					<td data-popover-placement="left" 
+						data-original-title="{{ item.item_product.name }}"
+						data-content='{% include 'product.small' with { 'product':item.item_product } only %}'>
+						{{ item.item_product.name }}: {{ item.description }}
+					</td>
+					<td>
+						{{ _p_money( item.item_product.price ) }}
+					</td>
+				</tr>
+				{% endfor %}
+				</tbody>
+				<tfooter>
+				<tr>
+					<th>
+						{{ _("total items")|capitalize }}
+					</th>
+					<th>
+						{{ _p_money( invoice.total_exvat ) }}
+					</th>
+				</tr>
+				<tr>
+					<th>
+						{{ _("total VAT")|capitalize }} ({{ invoice.relation.vat_percentage }}%)
+					</th>
+					<th>
+						{{ _p_money( invoice.total_vat ) }}
+					</th>
+				</tr>
+				<tr>
+					<th>
+						{{ _("total")|capitalize }}
+					</th>
+					<th>
+						{{ _p_money( invoice.total_incvat ) }}
+					</th>
+				</tr>
+				</tfooter>
+			</table>
+			{% endif %}
+		</div>
+		<div class="modal-footer">
+
+		</div>
+	</div>
+</div>
 
 
 {% include "footer" %}

@@ -13,8 +13,11 @@ abstract class moduleCP {
 	}
 	/**		function to parse the sidemenu with options
 	*/
-	final public function menu() {
+	final public function sidemenu() {
 		
 	}
+	/**
+	*/
+	
 	
 }

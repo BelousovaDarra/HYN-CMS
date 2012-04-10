@@ -57,23 +57,23 @@ class invoice_ extends ModuleRecord {
 	protected static function _db_skip_on_insert() {
 		return array( "invoicenr" );
 	}
+	public function get_created_formatted() {
+		return AnewtDatetime::format( '%e %b \'%y' , $this -> get("created") );
+	}
+	public function get_outgoing_() {
+		return !$this -> get( "incoming" );
+	}
 	public function get_ahref_() {
 		return "/administration/invoice/" . $this -> get("id") ."/" . $this -> get("invoicenr");
-	}
-	/**
-	*	@return status with in/out status
-	*/
-	public function get_state_formatted_() {
-		return $this -> get("state");
 	}
 	/**
 	*	@return invoicenr if has one or concept-id if not
 	*/
 	public function get_invoicenr() {
-		if( $this -> _get("invoicenr") != "" ) {
+		if( $this -> _get("invoicenr") != "" && $this -> _get("invoicenr") != "concept" ) {
 			return $this -> _get("invoicenr");
 		} else {
-			return _("concept") . ( $this -> id ? "-" . $this -> id : false );
+			return _("concept") . ( $this -> get("id") > 0 ? sprintf("-%d" , $this -> get("id") ) : false );
 		}
 	}
 	/**

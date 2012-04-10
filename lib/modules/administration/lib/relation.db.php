@@ -9,7 +9,7 @@ class relation_ extends ModuleRecord {
 	protected static function _db_columns()
 	{
 		return array(
-			"id"			=> "integer",		// user id
+			"id"			=> "integer",		// relation id
 			"uid"			=> "string",		// optional; relates to a user
 			"name"			=> "string",
 			"company"		=> "string",		// optional
@@ -22,7 +22,7 @@ class relation_ extends ModuleRecord {
 			"country"		=> "string",
 			"phone"			=> "string",
 			"email"			=> "string",
-			"billperiod"	=> "string",		// day, week, months, years
+			"billperiod"		=> "string",		// day, week, months, years
 			"billunits"		=> "integer",		// number of previous period
 			"currency"		=> "string",
 			"vat"			=> "integer"		// tax percentage
@@ -42,8 +42,37 @@ class relation_ extends ModuleRecord {
 			return;
 		}
 	}
+	public function get_last_invoices_( $num=5 ) {
+		return invoice::find_by_sql( sprintf( "WHERE relation = %d LIMIT %d" , $this -> id , $num ) );
+	}
 	public function get_ahref_() {
 		return "/administration/relation/" . $this -> id . "/" . urlencode( $this -> name );
+	}
+	public function get_href_() {
+		return $this -> get("ahref");
+	}
+	public function get_products_active_() {
+		return relation_product::find_active_by_relation( $this -> id );
+	}
+	public function get_gmaps_address_() {
+		if( !$this -> get('houseno') 
+			|| !$this -> get('address')
+			|| !$this -> get('postal')
+			|| !$this -> get('city')
+			|| !$this -> get('country') ) {
+			return false;
+		} else {
+			return sprintf( "%s %s, %s %s, %s"
+			, $this -> get('houseno')
+			, $this -> get('address')
+			, $this -> get('postal')
+			, $this -> get('city')
+			, $this -> get('country')
+			);
+		}
+	}
+	public function get_vat_percentage_() {
+		return $this -> get("vat") / 100;
 	}
 }
 ModuleRecord::register("relation");

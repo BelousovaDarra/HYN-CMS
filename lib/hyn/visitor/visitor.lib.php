@@ -6,12 +6,12 @@ if(!defined("HYN")) { exit; }
 *		
 */
 
+
 session_start();
 
 class SiteVisitor {
 	
-	
-	
+
 	public function login() {
 		
 		if( ($un = GPC::post_string("login-username")) && ($pw = GPC::post_string("login-password") )) {
@@ -117,7 +117,7 @@ class SiteVisitor {
 				$su -> set( "domain" , HYN_SYSTEM_ID );
 				$su -> set( "signedup" , AnewtDatetime::now() );
 				$su -> set( "lastactivity" , AnewtDatetime::now());
-				$su -> set( "state" , 9 );								# state 1 for unverified, 9 for verified
+				$su -> set( "state" , 1 );								# state 1 for unverified, 9 for verified
 				$su -> save( true );
 				
 				$this -> user	= $su;
@@ -139,7 +139,7 @@ class SiteVisitor {
 	private function sendRegistrationMail() {
 		global $MultiSite;
 		hyn_include( "swiftmailer" );
-		# first setup the mail message // Twig::parse( filefind($tpl,$this -> class) , (_v($vrs,"array") ? $vrs : array()) );
+		# first setup the mail message
 		$body		= 	Twig::parse( filefind("mail.register","login") , array( "user" => $this -> user ) );
 		
 		$message 	= Swift_Message::newInstance();
@@ -195,5 +195,30 @@ class SiteVisitor {
 		else {
 			return false;
 		}
+	}
+	
+	/*
+	*	temporary fix? [todo]
+	*/
+	static $user_cache								= array();
+	
+	public static function get_by_un( $un , $onlysite=false ) {
+		if( !$onlysite ) {
+			if( isset( self::$user_cache[0][$un] )) {
+				return self::$user_cache[0][$un];
+			}
+			elseif( !is_null( $s = SystemUser::find_one_by_un( $un )) ) {
+				self::$user_cache[0][$un]			= $s;
+				return $s;
+			}
+		}
+		if( isset( self::$user_cache[HYN_SYSTEM_ID][$un] )) {
+			return self::$user_cache[HYN_SYSTEM_ID][$un];
+		}
+		elseif( !is_null( $u = SiteUser::find_one_by_un( $un ))) {
+			self::$user_cache[HYN_SYSTEM_ID][$un]	= $u;
+			return $u;
+		}
+		return false;
 	}
 }

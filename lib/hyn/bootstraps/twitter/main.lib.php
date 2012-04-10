@@ -5,7 +5,7 @@ DOM::set_css( __DIR__ . DS . "lib" . DS . "docs" . DS . "assets" . DS . "css" . 
 
 DOM::set_css( __DIR__ . DS . "overrideimg.css" );
 
-DOM::set_css( "cloudspark.css" );
+DOM::set_css( "hyn.css" );
 
 DOM::set_js( "https://www.google.com/jsapi" );
 DOM::set_js( HYN_PATH_PUBLIC_JS . "libs" . DS . "jq". DS . "jq.js" );
@@ -24,13 +24,32 @@ DOM::set_js( __DIR__ . DS . "lib" . DS . "js" . DS . "bootstrap-scrollspy.js" );
 DOM::set_js( __DIR__ . DS . "lib" . DS . "js" . DS . "bootstrap-tab.js" );
 DOM::set_js( __DIR__ . DS . "lib" . DS . "js" . DS . "bootstrap-transition.js" );
 DOM::set_js( __DIR__ . DS . "lib" . DS . "js" . DS . "bootstrap-typeahead.js" );
+/**
+*	Resizes elements to it's direct parent
+*	@var 	.height-to-parent
+*/
+DOM::add_js( '
+	if( jQuery(".height-to-parent").length > 0 ) {
+		jQuery(".height-to-parent").each( function() {
+			jQuery( this ).height( jQuery(this).parent().height() );
+		});
+	}
+', "body" );
 
+/**
+*	Create button from all button classed elements
+*	@var 	.button
+*/
 DOM::add_js( '
 	if( jQuery(".button").length > 0 ) {
 		jQuery(".button").button();
 	}
 ', "body" );
 
+/**
+*	Toggle close any element with data-box-minify
+*	@var	[data-box-minify]
+*/
 DOM::add_js( '
 	if(jQuery("[data-box-minify]").length > 0) {
 		jQuery("[data-box-minify]").click(function() {
@@ -51,7 +70,17 @@ DOM::add_js( '
 		});
 	}' 
 	, "body" );
+
+/**
+*	Show tooltips
+*	@var	[data-original-title]
+*/
 DOM::add_js( 'if(jQuery("[data-original-title]:not([data-content])").length > 0) { jQuery("[data-original-title]:not([data-content])").tooltip({ live: true, html: true });}' , "body" );
+
+/**
+*	Popover; extended hover with html possibility
+*	@var	[data-popover-placement]
+*/
 DOM::add_js( '	if(jQuery("[data-popover-placement]").length > 0) {
 			jQuery("[data-popover-placement]").popover({ 
 				live: true, 
@@ -61,17 +90,9 @@ DOM::add_js( '	if(jQuery("[data-popover-placement]").length > 0) {
 				}
 			});
 		}' , "body" );
-DOM::add_js( 'if(jQuery(".carousel .item").length > 0) {jQuery(".carousel").carousel();}' , "body" );
 
-DOM::add_js( '	jQuery("input[name=\'free-trial\']").click(function() {
-			if( jQuery(this).attr("checked") ) {
-				jQuery("input[name=\'payment\'][value=0]:disabled").attr("disabled",false);
-				jQuery("input[name=\'order-domain\'][value=7]:disabled").attr("disabled",false);
-			} else {
-				jQuery("input[name=\'order-domain\'][value=7]").attr("disabled",true);
-				jQuery("input[name=\'payment\'][value=0]").attr("disabled",true);
-				jQuery("input[name=\'order-domain\'][value!=7]").first().attr("checked",true);
-				jQuery("input[name=\'payment\'][value!=0]").first().attr("checked",true);
-			} 
-		});
-' , "body" );
+/**
+*	Carousel
+*	@var	.carousel
+*/
+DOM::add_js( 'if(jQuery(".carousel .item").length > 0) {jQuery(".carousel").carousel();}' , "body" );

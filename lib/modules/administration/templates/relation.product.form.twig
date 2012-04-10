@@ -1,0 +1,114 @@
+
+			<ul class="nav nav-tabs padded-nw">
+				<li class="active"><a data-toggle="tab" href="#product-select">{{ _("select")|capitalize }}</a></li>
+				<li><a data-toggle="tab" href="#product-basic">{{ _("basic")|capitalize }}</a></li>
+				<li><a data-toggle="tab" href="#product-pricing">{{ _("pricing")|capitalize }}</a></li>
+				<li><a data-toggle="tab" href="#product-billing">{{ _("billing")|capitalize }}</a></li>
+			</ul>
+			<div class="tab-content">
+				{# SELECT #}
+				<div class="tab-pane active" id="product-select">
+					<div class="control-group">
+						<label class="control-label" for="product">{{ _("product")|capitalize }}</label>
+						<div class="controls">
+							<select name="product-select">
+								<option value="0">{{ _("don't use preset product") }}</option>
+								{% for product in products %}
+								<option value="{{ product.id }}">{{ product.categoryname }} - {{ product.name }}</option>
+								{% endfor %}
+							</select>
+							<p class="help-block">
+								{{ _("Values from the selected product can be overruled.") }}
+							</p>
+						</div>
+					</div>
+				</div>				
+				{# BASIC #}
+				<div class="tab-pane" id="product-basic">
+					<div class="control-group">
+						<label class="control-label" for="name">{{ _("name")|capitalize }}</label>
+						<div class="controls">
+							<input type="text" id="name" name="name"{% if product %} value="{{ product.name }}"{% endif %} />
+							<p class="help-block">
+								{{ _("This will help you recognize this product in the administration.") }}
+							</p>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="description">{{ _("description")|capitalize }}</label>
+						<div class="controls">
+							<textarea class="wysiwyg" type="text" id="description" name="description">{% if product %}{{ product.email }}{% endif %}</textarea>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="category">{{ _("category")|capitalize }}</label>
+						<div class="controls">
+							{% if categories %}
+							<select name="category">
+								{% for category in categories %}
+								<option value="{{ category.id }}"{% if product and product.category == category.id %} selected{% endif %}>{{ category.name }}</option>
+								{% endfor %}
+							</select>
+							{% else %}
+								<input type="hidden" value="0" name="category">
+								<div class="alert"><strong>{{ _("uncategorized")|capitalize }}</strong>: {{ _("no categories available") }}</div>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				{# PRICING #}
+				<div class="tab-pane" id="product-pricing">
+					<div class="control-group">
+						<label class="control-label" for="price">{{ _("price")|capitalize }}</label>
+						<div class="controls">
+							<input type="text" id="price" name="price" placeholder="{{ _("25,99") }}"{% if product %} value="{{ product.price }}"{% endif %} />
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="exvat">{{ _("VAT is included?")|capitalize }}</label>
+						<div class="controls">
+							<label class="radio">
+								<input type="radio" name="exvat" value="0"{% if product and not product.exvat %} checked{% elseif not product %} checked{% endif %} />
+								{{ _("Price excludes VAT") }}
+							</label>
+							<label class="radio">
+								<input type="radio" name="exvat" value="1"{% if product and product.exvat %} checked{% endif %} />
+								{{ _("Price includes VAT") }}
+							</label>
+						</div>
+					</div>
+				</div>
+				{# BILLING #}
+				<div class="tab-pane" id="product-billing">
+					<div class="control-group">
+						<label class="control-label" for="billperiod">{{ _("bill period")|capitalize }}</label>
+						<div class="controls">
+							<label class="radio">
+								<input type="radio" name="billperiod" value="d"{% if product and product.billperiod == "d" %} checked{% endif %} />
+								{{ _("days") }}
+							</label>
+							<label class="radio">
+								<input type="radio" name="billperiod" value="m"{% if product and product.billperiod == "m" %} checked{% elseif not product %} checked{% endif %} />
+								{{ _("months") }}
+							</label>
+							<label class="radio">
+								<input type="radio" name="billperiod" value="q"{% if product and product.billperiod == "q" %} checked{% endif %} />
+								{{ _("quarters") }}
+							</label>
+							<label class="radio">
+								<input type="radio" name="billperiod" value="y"{% if product and product.billperiod == "y" %} checked{% endif %} />
+								{{ _("years") }}
+							</label>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="billunits">{{ _("bill period amount")|capitalize }}</label>
+						<div class="controls">
+							<input type="text" id="billunits" name="billunits" value="{% if product %}{{ product.billunits }}{% else %}1{% endif %}" />
+							<p class="help-block">
+								{{ _("How often in previously set bill period will these costs be invoiced?") }}
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>

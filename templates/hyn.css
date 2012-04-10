@@ -1,0 +1,26 @@
+body 
+{ padding-top: 120px; background: url('/images/bg-dark.gif') repeat; }
+
+.header-cs
+{ padding: 20px 0; border-bottom: 1px solid #DDD; background: whiteSmoke url('/images/hyn-logo.png') no-repeat 10% 40%; }
+.header-cs .container 
+{  }
+.header-cs .brand
+{ font-family: 'Cuprum'; color: #000; font-size: 35px; float: left; width: 300px; letter-spacing: 4px; word-spacing: 3px; }
+.header-cs .brand a 
+{ text-decoration: none; }
+
+footer
+{ margin: 50px 0; }
+
+.commit-message
+{  }
+
+.commit-user
+{ margin-left: 10px; }
+
+/*
+
+*/
+.steps .details
+{ min-height: 105px; }

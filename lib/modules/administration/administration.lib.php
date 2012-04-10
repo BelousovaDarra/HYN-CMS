@@ -13,8 +13,8 @@ class administration extends module {
 	
 	public function _administration() {
 		DOM::set_default_theme();
-		DOM::set_js( "https://maps.googleapis.com/maps/api/js?key=AIzaSyA7YULvmwWO9lgoaky93cACLYN-vZac9ps&sensor=true" );
-		DOM::add_js( $this -> relation_map() );
+#		DOM::set_js( "https://maps.googleapis.com/maps/api/js?key=AIzaSyA7YULvmwWO9lgoaky93cACLYN-vZac9ps&sensor=true" );
+#		DOM::add_js( $this -> relation_map() );
 		$this -> vars['countries']
 						= Country::find_all();
 		$this -> vars['orgtypes']
@@ -32,7 +32,13 @@ class administration extends module {
 						= productcategory::find_all();
 		$this -> vars["currencies"]
 						= Currencies::find_all();
-
+		$this -> vars['billperiods']
+						= array(
+							"d"		=> array( 	_("day") 	, _("days") ),
+							"m"		=> array(	_("month")	, _("months") ),
+							"q"		=> array(	_("quarter"), _("quarters") ),
+							"y"		=> array(	_("year")	, _("years") ),
+		);
 		global $m_adm_cache;
 		$m_adm_cache['vars']	= $this -> vars;
 
@@ -47,7 +53,39 @@ class administration extends module {
 				$this -> invoice();
 				break;
 			case "relation":
-				$this -> relation();
+				if( $this -> pathid ) {
+					$relation				= relation::find_one_by_id( $this -> pathid );
+
+					if( !is_null($relation) && $relation -> get("gmaps_address") ) {
+						hyn_include( "gmaps" );
+						$gm					= new Googlemaps;
+						$gm -> apikey		= "AIzaSyA7YULvmwWO9lgoaky93cACLYN-vZac9ps";
+//						$gm -> disableDefaultUI = true;
+						$gm -> map_div_id	= "map_relation_small";
+						$gm -> center		= $relation -> get("gmaps_address");
+						$gm -> add_marker( array( 
+								"position" 	=> $relation -> get("gmaps_address"),
+								"title"		=> $relation -> get("name")
+						));
+						$gmap				= $gm -> create_map();
+						$this -> vars['relationmap']
+											= array( "id"	=> $gm -> map_div_id );
+						
+						/**
+						*	Create popupable google maps
+						*	@var 	.relation-location-map
+						*/
+/*						DOM::add_js( '
+							if( jQuery(".relation-location-map").length > 0 ) {
+								jQuery(".relation-location-map").click( function() {  
+									jQuery("#relation-modal-map").parent(".modal").modal("show");
+								});
+							}
+						', "body" );*/
+						$this -> vars['lastinvoices']	= $relation -> get( "last_invoices" );
+					}
+				}
+				$this -> relation( ( is_null($relation) ? false : $relation ));
 				break;
 			case "product":
 				$this -> product();
@@ -56,28 +94,6 @@ class administration extends module {
 				$this -> overview();
 		}
 
-	}
-	private function relation_map() {
-		return "
-			if( jQuery('.relation-location-map').length > 0	) {
-				var map			= [];
-				jQuery( '.relation-location-map' ).each( function( i , Elm ) {
-					var loc		= jQuery( this ).attr( 'data-location');
-					var opts	= {
-						zoom:			8,
-						mapTypeId: 		google.maps.MapTypeId.ROADMAP,
-						center: 		codeAddress( loc )
-					};
-					map.push( new google.maps.Map( Elm , opts ) );
-				});
-			}
-			function codeAddress( address ) {
-				var geocoder	= new google.maps.Geocoder();
-				geocoder.geocode( { 'address': address}, function(results, status) {
-					return results[0].geometry.location;
-			  	});
-			}
-		";
 	}
 	private function processGPCs() {
 		# create relation
@@ -174,6 +190,8 @@ class administration extends module {
 				$this -> tpl		= "invoice.show";
 				$this -> vars['invoice']
 									= $invoice;
+				$this -> vars['products']
+									= product::find_all();
 			} else 
 			# relation not found
 			{
@@ -217,6 +235,6 @@ class administration extends module {
 	}
 	public function ajax() {
 		$r							= $this -> route -> path;
-		
+		_debug( $r );
 	}
 } 

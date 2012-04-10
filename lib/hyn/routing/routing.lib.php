@@ -74,8 +74,9 @@ class routing {
 
 		$c					= new $call_class;
 		
-		// verify SSL and LOGIN
+		
 		global $MultiSite,$SiteVisitor;
+		// verify SSL and LOGIN
 		if( $MultiSite -> get("ssl") && HYN_URI_HTTPS != "https://" && $c -> _SSL_() ) {
 			_p_redirect( "https://" . HYN_URI_HTTPHOST . HYN_URI_REQUEST );
 		}
@@ -95,7 +96,12 @@ class routing {
 			_p_redirect( "/login?return=" . urlencode( $_SERVER['REQUEST_URI'] ) );
 		}
 		// end of verify SSL and LOGIN
-		
+		/**
+		*	Load bootstrap if set in settings
+		*/
+		if( HYN_DEBUG && $MultiSite -> setting( "bootstrap" , "core" )) {
+			DOM::set_default_theme();
+		}		
 		// continue loading class and function
 		$r -> called		= strtolower($call_class);
 		self::$c			= $c;

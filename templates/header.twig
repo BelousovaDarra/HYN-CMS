@@ -14,9 +14,6 @@
 		<script src="{{ js }}"></script>
     {% endfor %}
 	{% include "header.wysiwyg" %}
-	<!-- start Mixpanel --><script type="text/javascript">(function(d,c){var a,b,g,e;a=d.createElement("script");a.type="text/javascript";a.async=!0;a.src=("https:"===d.location.protocol?"https:":"http:")+'//api.mixpanel.com/site_media/js/api/mixpanel.2.js';b=d.getElementsByTagName("script")[0];b.parentNode.insertBefore(a,b);c._i=[];c.init=function(a,d,f){var b=c;"undefined"!==typeof f?b=c[f]=[]:f="mixpanel";g="disable track track_links track_forms register register_once unregister identify name_tag set_config".split(" ");for(e=0;e<
-	g.length;e++)(function(a){b[a]=function(){b.push([a].concat(Array.prototype.slice.call(arguments,0)))}})(g[e]);c._i.push([a,d,f])};window.mixpanel=c})(document,[]);
-	mixpanel.init("b35b4fb69b744a8769d7062d2bc12b84");</script><!-- end Mixpanel -->
   </head> 
  
 <body>
@@ -28,6 +25,11 @@
 			<div class="btn-toolbar">
 				<div class="btn-group">
 					<a class="btn{% if dom.show_uri == "/" or dom.show_uri == "" %} active{% endif %}" href="/"><i class="icon-home"></i> {{ _("Home") }}</a>
+				</div>
+				<div class="btn-group">
+					<div class="btn disabled">{{ _("discover")|capitalize }}</div>
+					{% set urlmodules = "/about/modules/" %}
+					<a class="btn btn-info{% if urlmodules == dom.show_uri %} active{% endif %}" href="{{ urlmodules }}"><i class="icon-eye-open"></i> {{ _("modules")|capitalize }}</a>
 				</div>
 {#				<div class="btn-group">
 					{% set urldiscover = "/discover/" %}
