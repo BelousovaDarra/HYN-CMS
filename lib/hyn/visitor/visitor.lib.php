@@ -155,6 +155,7 @@ class SiteVisitor {
 		
 		$this		-> ip 				= $_SERVER['REMOTE_ADDR'] ;
 		$this		-> host				= gethostbyaddr( $_SERVER['REMOTE_ADDR'] );	
+		$this 		-> sessionid		= session_id();
 		// 
 		if( isset($_SESSION['user']) ) {
 			$this -> readSession();

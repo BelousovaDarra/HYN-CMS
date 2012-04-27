@@ -1,6 +1,6 @@
-	{% include "header" %}
+	{% include "header" %}{#
 	<div class="box-modal span{% if span %}{{ span }}{% else %}8{% endif %}">
-	{% if page.title %}
+	#}{% if page.title %}
 		<div class="modal-header"><h1{% if ms.owner and dom.wysiwyg %} data-edit-href="/ajax/page/{{ page.id }}/title"{% endif %}>
 			{% if page.title %}{{ page.title }}{% elseif ms.owner %}no title, add one{% endif %}
 			{% if page.subtitle or ms.owner %} <small>{% if page.subtitle %}{{ page.subtitle }}{% elseif ms.owner %}no subtitle, add one {% endif %}</small>{% endif %}
@@ -32,7 +32,7 @@
 			{% endif %}
 		</div>
 	{% endif %}
-	</div>
+	{#</div>#}
 	{% include "footer" %}
 
 	

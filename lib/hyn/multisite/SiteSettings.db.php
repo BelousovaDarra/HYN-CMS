@@ -27,9 +27,9 @@ class SiteSettings_ extends AutoRecord {
 AutoRecord::register('SiteSettings');
 
 function SiteSetting( $name=false , $module=false ) {
-		$ss	= SiteSettings::find_one_by_sql( 
-			sprintf("WHERE `name` = '%s'". ($module ? " AND `module` = '%s'" : false ) , $setting , ($module ? $module : NULL ))
-		);
-		if( $ss ) { return $ss -> get("value"); }
-		return false;
+	$ss	= SiteSettings::find_one_by_sql( 
+		sprintf("WHERE `name` = '%s'". ($module ? " AND `module` = '%s'" : false ) , $name , ($module ? $module : NULL ))
+	);
+	if( $ss && count($ss) == 1 ) { return $ss -> get("value"); }
+	return false;
 }

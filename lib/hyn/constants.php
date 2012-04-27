@@ -22,5 +22,6 @@ define(		"HYN_PATH_MODULES"	, HYN_PATH_LIB . "modules" . DS );
 
 
 define(		"HYN_URI_REQUEST"	, $_SERVER['REQUEST_URI'] );
-define(		"HYN_URI_HTTPS"		, (isset($_SERVER['HTTPS']) ? "https://" : "http://" ));
+define(		"HYN_URI_SSL"		, (isset($_SERVER['HTTPS']) ? TRUE : FALSE ));
+define(		"HYN_URI_HTTPS"		, (HYN_URI_SSL ? "https://" : "http://" ));
 define(		"HYN_URI_HTTPHOST"	, $_SERVER['HTTP_HOST'] );

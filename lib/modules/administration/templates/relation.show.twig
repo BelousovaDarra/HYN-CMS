@@ -1,6 +1,7 @@
 {% include "header" %}
 
 {% include "relation.modal" %}
+{% include "relation.product.modal" %}
 
 <div class="row">
 	<div class="span4 box-modal">
@@ -13,6 +14,8 @@
 						<li><a href="/administration"><i class="icon-list"></i> {{ _("overview")|capitalize }}</a></li>
 					<li class="nav-header">{{ _("edit") }}</li>
 						<li><a href="#create-relation" data-toggle="modal"><i class="icon-user"></i> {{ _("relation")|capitalize }}</a></li>
+						
+						<li><a href="#add-relation-product" data-toggle="modal"><i class="icon-user"></i> {{ _("add product")|capitalize }}</a></li>
 
 				</ul>
 		</div>

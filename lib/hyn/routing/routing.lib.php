@@ -13,6 +13,7 @@ class routing {
 		$this			-> path			= explode( "/" , $this -> uri['path'] );
 		# due to explosion, the first part is empty uri /subdir
 		array_shift($this -> path);
+		// [todo] global routes which can be overruled (eg /ajax)
 		$this			-> route		= routes::routefrompath( $this -> path );
 		# no route in database found find routing from file
 		if( !$this -> route && count( $this -> path ) ) {

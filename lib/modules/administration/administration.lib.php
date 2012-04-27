@@ -67,6 +67,7 @@ class administration extends module {
 								"position" 	=> $relation -> get("gmaps_address"),
 								"title"		=> $relation -> get("name")
 						));
+						DOM::set_title( _("relation") . ": ". $relation -> get("name") );
 						$gmap				= $gm -> create_map();
 						$this -> vars['relationmap']
 											= array( "id"	=> $gm -> map_div_id );
@@ -233,8 +234,12 @@ class administration extends module {
 			$this -> tpl			= "product.list";
 		}
 	}
+	/**
+	*		Generic ajax call
+	*
+	*/
 	public function ajax() {
 		$r							= $this -> route -> path;
-		_debug( $r );
+		
 	}
 } 

@@ -25,8 +25,8 @@
 [submodule "lib/hyn/min/lib"]
 	path = lib/hyn/min/lib
 	url = https://github.com/mrclay/minify.git
-[submodule "public_html/js/libs/pusher/lib"]
-	path = public_html/js/libs/pusher/lib
+[submodule "lib/hyn/pushnotify/lib"]
+	path = lib/hyn/pushnotify/lib
 	url = https://github.com/pusher/pusher-js.git
 [submodule "public_html/js/libs/jquery/plugins/noty"]
 	path = public_html/js/libs/jquery/plugins/noty
@@ -61,3 +61,15 @@
 [submodule "lib/hyn/swiftmailer/lib"]
 	path = lib/hyn/swiftmailer/lib
 	url = https://github.com/swiftmailer/swiftmailer.git
+[submodule "public_html/js/libs/jquery/plugins/form-validation"]
+	path = public_html/js/libs/jquery/plugins/form-validation
+	url = https://github.com/victorjonsson/jQuery-Form-Validator.git
+[submodule "public_html/js/libs/pushnotify/ape"]
+	path = public_html/js/libs/pushnotify/ape
+	url = https://github.com/APE-Project/APE_JSF.git
+[submodule "lib/hyn/pushnotify/serve"]
+	path = lib/hyn/pushnotify/serve
+	url = https://github.com/squeeks/Pusher-PHP
+[submodule "lib/hyn/elfinder/lib"]
+	path = lib/hyn/elfinder/lib
+	url = https://github.com/Studio-42/elFinder.git

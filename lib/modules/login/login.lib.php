@@ -29,13 +29,15 @@ class login extends module {
 							= ( MultiSite::setting( "registration" , "login" ) 
 								? (boolean) MultiSite::setting( "registration" , "login" ) -> get("value") 
 								: false );
-		if( _v( $SiteVisitor -> error['login'] , "array" )) {
-			$this -> v['error']['login']		
-							= $SiteVisitor -> error['login'];
-		}
-		if( _v( $SiteVisitor -> error['signup'] , "array" )) {
-			$this -> v['error']['su']		
-							= $SiteVisitor -> error['signup'];
+		if( isset( $SiteVisitor -> error ) ) {
+			if( _v( $SiteVisitor -> error['login'] , "array" )) {
+				$this -> v['error']['login']		
+								= $SiteVisitor -> error['login'];
+			}
+			if( _v( $SiteVisitor -> error['signup'] , "array" )) {
+				$this -> v['error']['su']		
+								= $SiteVisitor -> error['signup'];
+			}
 		}
 		return $this -> parseTemplate( "login" , $this -> v );
 	}

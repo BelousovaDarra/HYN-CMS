@@ -17,10 +17,14 @@ class MultiSiteAlias_ extends AutoRecord {
 			"aliasid"		=> "integer",
 			"alias"			=> "string",
 			"aliasof"		=> "integer",
+			"lang"			=> "string",
 		);
 	}
 	protected static function _db_primary_key() {
 		return "aliasid";
+	}
+	protected static function _db_skip_on_insert() {
+		return array( "lang" );
 	}
 }
 
