@@ -22,6 +22,10 @@ class login extends module {
 		
 		DOM::set_title( _("Sign up & log in") );
 	}
+	// require SSL
+	public function _SSL_() {
+		return true;
+	}
 	public function display($v=array()) {
 		global $SiteVisitor;
 		$this -> v			= $v;

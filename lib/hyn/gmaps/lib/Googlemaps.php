@@ -42,7 +42,7 @@ class Googlemaps {
 	var $draggableCursor			= '';						// The name or url of the cursor to display on a draggable object
 	var $draggingCursor				= '';						// The name or url of the cursor to display when an object is being dragged
 	var $geocodeCaching				= FALSE;					// If set to TRUE will cache any geocode requests made when an address is used instead of a lat/long. Requires DB table to be created (see documentation)
-	var $https						= FALSE;					// If set to TRUE will load the Google Maps JavaScript API over HTTPS, allowing you to utilize the API within your HTTPS secure application 
+	var $https						= HYN_URI_SSL;					// If set to TRUE will load the Google Maps JavaScript API over HTTPS, allowing you to utilize the API within your HTTPS secure application 
 	var $navigationControlPosition	= '';						// The position of the Navigation control, eg. 'BOTTOM_RIGHT'
 	var $keyboardShortcuts			= TRUE;						// If set to FALSE will disable to map being controlled via the keyboard
 	var $jsfile						= '';						// Set this to the path of an external JS file if you wish the JavaScript to be placed in a file rather than output directly into the <head></head> section. The library will try to create the file if it does not exist already. Please ensure the destination file is writeable

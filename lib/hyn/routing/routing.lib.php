@@ -77,10 +77,6 @@ class routing {
 		
 		
 		global $MultiSite,$SiteVisitor;
-		// verify SSL and LOGIN
-		if( $MultiSite -> get("ssl") && HYN_URI_HTTPS != "https://" && $c -> _SSL_() ) {
-			_p_redirect( "https://" . HYN_URI_HTTPHOST . HYN_URI_REQUEST );
-		}
 		/**
 		*	check whether module requires log on and if so, redirect to login page
 		* 	@todo get login page from routes.db if set, otherwise disallow access
@@ -95,6 +91,12 @@ class routing {
 			|| ($c -> _LOGIN_() == "admin" && !$SiteVisitor -> user -> get('admin') )  
 		) {
 			_p_redirect( "/login?return=" . urlencode( $_SERVER['REQUEST_URI'] ) );
+		}
+		// verify SSL and LOGIN
+		// [TODO] for now we disable ssl if the folder ssl does not exist in the domains map
+		// SSL checks also on DB entry for the domain, it could be the SSL has become invalid at some time
+		if( $MultiSite -> get("ssl") && !HYN_URI_SSL && $MultiSite -> SSLon() && $c -> _SSL_() ) {
+			_p_redirect( "https://" . HYN_URI_HTTPHOST . HYN_URI_REQUEST );
 		}
 		// end of verify SSL and LOGIN
 		/**

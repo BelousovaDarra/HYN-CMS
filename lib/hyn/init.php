@@ -6,6 +6,7 @@ if( !defined( "HYN" )) { exit; }
 require_once "constants.php";
 require_once "config.php";
 
+
 if( isset($debugips) && in_array($_SERVER['REMOTE_ADDR'],$debugips)) {
 	define( "HYN_DEBUG"	, true );
 	error_reporting( E_ALL );

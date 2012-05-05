@@ -8,9 +8,9 @@ class OnApp_client {
 			&& MultiSite::setting( "username" , "onapp" ) -> get("value")
 			&& MultiSite::setting( "apikey" , "onapp" ) -> get("value")
 		) {
-			$this -> host	= MultiSite::setting( "server" , "onapp" )->get("value");
-			$this -> un	= MultiSite::setting( "username" , "onapp" )->get("value");
-			$this -> pw	= MultiSite::setting( "apikey" , "onapp" )->get("value");
+			$this -> host	= MultiSite::setting( "server" 		, "onapp" )->get("value");
+			$this -> un	= MultiSite::setting( "username" 	, "onapp" )->get("value");
+			$this -> pw	= MultiSite::setting( "apikey" 		, "onapp" )->get("value");
 			return true;
 		}
 		throw new Exception( "OnApp Client cannot be initiated, missing domain settings" );
@@ -39,5 +39,15 @@ class OnApp_client {
 		$u = new OnApp_VirtualMachine;
 		$u -> auth( $c -> host , $c -> un , $c -> pw );
 		return $u -> getList( $id );
+	}
+	static public function getVMNetworkUsage( $id=false , $interface=false ) {
+		if( $id && $interface ) {
+			$c = self::get_instance();
+			$u = new ONAPP_VirtualMachine_NetworkInterface_Usage;
+			$u -> auth( $c -> host , $c -> un , $c -> pw );
+			
+			return $u -> getList( $id , $interface );
+		}
+		return false;
 	}
 }

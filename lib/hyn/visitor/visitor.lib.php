@@ -180,6 +180,9 @@ class SiteVisitor {
 	}
 	public function get_right( $r="owner" ) {
 		global $MultiSite;
+		if( !$this -> loggedin() ) {
+			return false;
+		}
 		$owner		= $MultiSite -> get( "owner" );
 		// if system admin
 		if( $this -> user -> get("type") == 0 && $this -> user -> get("admin")) {

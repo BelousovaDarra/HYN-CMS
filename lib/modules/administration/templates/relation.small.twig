@@ -56,7 +56,7 @@
 				{{ _("location")|capitalize }}
 			</th>
 			<td>
-				{{ relation.city }}, {{ relation.country }}
+				<img class='padded-s' src='/media/icons/flags/{{ relation.country|lower }}.png' /> {{ relation.city }}, {{ relation.country }}
 			</td>
 		</tr>
 	</tbody>

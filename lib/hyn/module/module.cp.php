@@ -16,8 +16,10 @@ abstract class moduleCP {
 	final public function sidemenu() {
 		
 	}
-	/**
+	/**		settings returns an array of settings; with value types, required and how it matches
 	*/
-	
+	abstract protected function settings();
+	/**		
+	*/
 	
 }
