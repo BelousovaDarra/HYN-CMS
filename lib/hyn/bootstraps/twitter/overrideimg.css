@@ -23,3 +23,9 @@
 	-moz-background-clip: padding-box;
 	background-clip: padding-box; 
 }
+.box-modal:first-child {
+	margin-left: 0px;
+}
+.box-modal .modal-body {
+	overflow-y: inherit !important;
+}

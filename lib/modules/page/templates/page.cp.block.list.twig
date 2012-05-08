@@ -1,0 +1,42 @@
+	<div class="span6 box-modal">
+		<div class="modal-header">
+			<h3>{{ block.title|capitalize }}</h3>
+		</div>
+		<div class="modal-body">
+			<table class="table table-bordered table-striped">
+				<tr>
+					<th>
+						{{ _("title")|capitalize }}
+					</th>
+					<th>
+						{{ _("route")|capitalize }}
+					</th>
+					<th>
+						{{ _("created")|capitalize }}
+					</th>
+					<th>
+						{{ _("updated")|capitalize }}
+					</th>
+				</tr>
+			{% for page in block.pages %}
+				<tr>
+					<td>
+						<a href="{{ page.route }}">{{ page.title }}</a>
+					</td>
+					<td>
+						{{ page.route }}
+					</td>
+					<td>
+						{{ page.created_dmy }}
+					</td>
+					<td>
+						{{ page.updated_dmy }}
+					</td>
+				</tr>
+			{% endfor %}
+			</table>
+		</div>
+		<div class="modal-footer">
+			{{ pages|count }}
+		</div>
+	</div>

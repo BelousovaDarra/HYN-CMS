@@ -8,7 +8,8 @@
 			{% include "relation.product.form" %}
 		</div>
 		<div class="modal-footer">
-			<input type="submit" class="btn btn-primary" name="add-relation-product" value="{{ _("add") }}" />
+			<input type="submit" class="btn btn-primary" name="relation-product" value="{{ _("add") }}" />
+			<input type="hidden" name="relationid" value="{{ relation.id }}" />
 			<a data-dismiss="modal" href="" class="btn">{{ _("cancel") }}</a>
 		</div>
 	</form>

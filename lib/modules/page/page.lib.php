@@ -63,11 +63,12 @@ class page extends module {
 				# subtitle exists
 				if( count($m) ) {
 					$title		= str_replace( $m[0] , "" , $new );
-					$subtitle	= $m[1];
+					$subtitle	= trim($m[1]);
 					$this -> page -> set("subtitle" , $subtitle);
 				} else {
 					$title		= $new;
 				}
+				$title			= trim( $title );
 				$this -> page -> set("title",$title);
 			}
 			# throw error 0 if type does not exist

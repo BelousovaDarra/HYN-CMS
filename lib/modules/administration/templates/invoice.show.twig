@@ -1,7 +1,7 @@
 {% include "header" %}
 
 {% include "invoice.modal" %}
-{% include "relation.product.modal" %}
+{% include "relation.product.modal" with { 'relation':invoice.relation } %}
 
 <div class="row">
 	<div class="span4 box-modal">

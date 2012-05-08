@@ -26,7 +26,7 @@ class relation_product_ extends ModuleRecord {
 		);
 	}
 	protected static function _db_skip_on_insert() {
-		return array( "dependson" , "description" );
+		return array( "dependson" , "description" , "ended" );
 	}
 	function delete() {
 		if( $this -> get("dependson") && relation_product::find_one_by_id( $this -> get("dependson") )) {

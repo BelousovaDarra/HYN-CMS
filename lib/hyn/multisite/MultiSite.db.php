@@ -68,17 +68,17 @@ class MultiSite_ extends AutoRecord {
 	}
 	public function setConstants() {
 		define(		"HYN_SYSTEM_ID"		, $this -> get("id") );
-		if( is_dir( HYN_PATH_DOMAINS . $this -> get("domain") . DS ) ) {
-			define(		"HYN_MS_DIR"	, HYN_PATH_DOMAINS . $this -> get("domain") . DS );
+#		if( is_dir( HYN_PATH_DOMAINS . $this -> get("domain") . DS ) ) {
+			define(		"HYN_MS_DIR"			, is_dir( HYN_PATH_DOMAINS . $this -> get("domain") . DS ) 	? HYN_PATH_DOMAINS . $this -> get("domain") . DS : false );
 			
-			define(		"HYN_MS_DIR_TPL"		, is_dir( HYN_MS_DIR . "templates" . DS ) 	? HYN_MS_DIR . "templates" . DS 	: false );
-			define(		"HYN_MS_DIR_LIB"		, is_dir( HYN_MS_DIR . "lib" . DS ) 		? HYN_MS_DIR . "lib" . DS 		: false );
+			define(		"HYN_MS_DIR_TPL"		, HYN_MS_DIR && is_dir( HYN_MS_DIR . "templates" . DS ) 	? HYN_MS_DIR . "templates" . DS 	: false );
+			define(		"HYN_MS_DIR_LIB"		, HYN_MS_DIR && is_dir( HYN_MS_DIR . "lib" . DS ) 			? HYN_MS_DIR . "lib" . DS 			: false );
 			
-			define(		"HYN_MS_DIR_MODULES"	, is_dir( HYN_MS_DIR . "modules" . DS ) 		? HYN_MS_DIR . "modules" . DS 		: false );
-			define(		"HYN_MS_DIR_IMAGES"		, is_dir( HYN_MS_DIR . "images" . DS ) 		? HYN_MS_DIR . "images" . DS 		: false );
-			define(		"HYN_MS_DIR_MEDIA"		, is_dir( HYN_MS_DIR . "media" . DS ) 		? HYN_MS_DIR . "media" . DS 		: false );
-			define(		"HYN_MS_DIR_SSL"		, is_dir( HYN_MS_DIR . "ssl" . DS ) 		? HYN_MS_DIR . "ssl" . DS 		: false );
-		}
+			define(		"HYN_MS_DIR_MODULES"	, HYN_MS_DIR && is_dir( HYN_MS_DIR . "modules" . DS ) 		? HYN_MS_DIR . "modules" . DS 		: false );
+			define(		"HYN_MS_DIR_IMAGES"		, HYN_MS_DIR && is_dir( HYN_MS_DIR . "images" . DS ) 		? HYN_MS_DIR . "images" . DS 		: false );
+			define(		"HYN_MS_DIR_MEDIA"		, HYN_MS_DIR && is_dir( HYN_MS_DIR . "media" . DS ) 		? HYN_MS_DIR . "media" . DS 		: false );
+			define(		"HYN_MS_DIR_SSL"		, HYN_MS_DIR && is_dir( HYN_MS_DIR . "ssl" . DS ) 		? HYN_MS_DIR . "ssl" . DS 		: false );
+#		}
 	
 	}
 	public function SSLon() {

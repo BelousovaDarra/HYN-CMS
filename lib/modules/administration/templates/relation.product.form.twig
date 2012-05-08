@@ -1,9 +1,9 @@
 
 			<ul class="nav nav-tabs padded-nw">
 				<li class="active"><a data-toggle="tab" href="#product-select">{{ _("select")|capitalize }}</a></li>
-				<li><a data-toggle="tab" href="#product-basic">{{ _("basic")|capitalize }}</a></li>
+{#				<li><a data-toggle="tab" href="#product-basic">{{ _("basic")|capitalize }}</a></li>
 				<li><a data-toggle="tab" href="#product-pricing">{{ _("pricing")|capitalize }}</a></li>
-				<li><a data-toggle="tab" href="#product-billing">{{ _("billing")|capitalize }}</a></li>
+				<li><a data-toggle="tab" href="#product-billing">{{ _("billing")|capitalize }}</a></li>#}
 			</ul>
 			<div class="tab-content">
 				{# SELECT #}
@@ -12,7 +12,7 @@
 						<label class="control-label" for="product">{{ _("product")|capitalize }}</label>
 						<div class="controls">
 							<select name="product-select">
-								<option value="0">{{ _("don't use preset product") }}</option>
+{#								<option value="0">{{ _("don't use preset product") }}</option> #}
 								{% for product in products %}
 								<option value="{{ product.id }}">{{ product.categoryname }} - {{ product.name }}</option>
 								{% endfor %}

@@ -43,6 +43,7 @@
 			{% endif %}
 			</form>
 		</div>
+		{% if allowregistration is sameas(true) or visitor.user %}
 		<div class="span6 box-modal">
 			{% if visitor.user %}
 			<div class="modal-header">
@@ -113,6 +114,7 @@
 				</form>
 			{% endif %}
 		</div>
+		{% endif %}
 	</div>
 	
 	{% include "footer" %}

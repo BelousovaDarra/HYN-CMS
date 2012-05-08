@@ -1,0 +1,70 @@
+{% include "header" %}
+{% include "cp-submenu" %}
+
+{% if item.description %}
+<div class="well marged-ns">
+	<h2>{{ item.name|capitalize }}</h2>
+	{{ item.description }}
+</div>
+{% endif %}
+
+<div class="row marged-ns">
+	{% if routes %}
+	<div class="span6 box-modal">
+		<div class="modal-header">
+			<h3>{{ _("routes")|capitalize }}</h3>
+		</div>
+		<div class="modal-body">
+			{% for route in routes %}
+			<span 
+				data-popover-placement="top" 
+				data-content="The route <code>{{ route.route }}</code> redirects to the function <code>{{ route.function }}</code> of this module <code>{{ route.module }}</code> and is currently {% if route.active %}en{% else %}dis{% endif %}abled" 
+				data-original-title="{{ route.route }}" 
+				class="badge marged-e {% if route.active %}badge-success{% else %}badge-inverse{% endif %}">{{ route.route }}</span>
+			{% endfor %}
+		</div>
+		<div class="modal-body">
+			<i>{{ _("All above routes are assigned to this module; any of these (and deeper) links on your website are available to this module unless the route is overruled with another, deeper route.") }}</i>
+		</div>
+		<div class="modal-footer">
+			<a href="{{ baseuri }}/routes" class="btn">{{ _("site routes") }}</a>
+		</div>
+	</div>
+	{% endif %}
+	{% if item.settings %}
+	<form class="span6 box-modal form-horizontal" method="POST">
+		<div class="modal-header">
+			<h3>
+				{{ _("settings")|capitalize }}
+			</h3>
+		</div>
+		<div class="modal-body">
+			{% for name, setting in item.settings %}
+				<div class="control-group">
+					<label class="control-label">{{ setting.name }}</label>
+					<div class="controls">
+						{# Show different setting types #}
+						{% if setting.type == "boolean" %}
+						<input type="hidden" name="settings[{{ name }}]" value="0" />
+						<input type="checkbox" name="settings[{{ name }}]" value="1" {% if sitesetting( name , class ) == 1 or sitesetting( name , class ) is sameas(true) %}checked{% endif %}  />
+						{% endif %}
+						
+						{# Show additional info #}
+						{% if setting.description %}
+							<p class="help-block">{{ setting.description }}</p>
+						{% endif %}
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+		<div class="modal-footer">
+			<input class="btn btn-primary" type="submit" name="save-settings" value="{{ _("save settings") }}" />
+		</div>
+	</form>
+	{% endif %}
+	{% for block in item.blocks %}
+		{% include block.template %}
+	{% endfor %}
+</div>
+
+{% include "footer" %}

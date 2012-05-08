@@ -13,6 +13,10 @@ function _v( $input=NULL , $type=true ) {
 		if( !isset($input) || $input == "" ) {
 			return _("this field is required");
 		}
+	} elseif( $type == "boolean" || $type == "bool" ) {
+		if( !($input == true || $input == 1 || $input == 0 || $input == false) ) {
+			return false;
+		}
 	} elseif( $type == "int" || $type == "integer" ) {
 		if( (int) $input != $input ) {
 			return false;
@@ -37,6 +41,9 @@ function _v( $input=NULL , $type=true ) {
 			return _("this date & time format is incorrect, use YYYY-mm-dd HH:ii:ss");
 		}
 	} elseif( $type == "password" ) {
+		if( trim( $input ) != $input ) {
+			return _("the password cannot end or start with a space");
+		}
 		if( strlen( $input ) < 6 ) {
 			return _("the password must be at least 6 characters long");
 		}

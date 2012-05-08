@@ -141,6 +141,24 @@ class administration extends module {
 			}
 			$p 	-> save( !$save );
 		}
+		if( GPC::post_string("relation-product") == "add" ) {
+			$ps				= GPC::post_int( "product-select" , 0 );
+			if( $ps > 0 ) {
+				if($p = product::find_one_by_id( $ps )) {
+					$rp				= new relation_product;
+					$rp -> seed( $p );
+					// remove product id from relationproduct object
+					$rp -> set( "id" , NULL );
+					
+					$rp -> set( "added" , AnewtDatetime::now() );
+					$rp -> set( "product" , $ps );
+					$rp -> set( "relation" , GPC::post_int( "relationid" ) );
+					$rp -> save();
+				}
+			
+			}
+			
+		}
 		if( GPC::post_string("invoice-change") ) {
 			if( GPC::post_int( "invoiceid" ) ) {
 				$i		= invoice::find_one_by_id( GPC::post_int( "invoiceid" ) );

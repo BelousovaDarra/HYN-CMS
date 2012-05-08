@@ -19,7 +19,8 @@ class Twig {
 									"_p_money"		=> "_p_money",
 			),
 			"Filter" 	=> array(
-									"bytes"			=> "_p_bytes"
+									"bytes"			=> "_p_bytes",
+									"count"			=> "count"
 			)
 		);
 		foreach( $twigfunctions as $twigimplement => $fs ) {

@@ -18,8 +18,13 @@ function _p_value( $value , $type=false ) {
 		if( !preg_match($r[$type],$value)) {
 			return (string) $value; }
 	} elseif( $type == "int" ) {
-		if( is_int($value) && preg_match($r['int'],$value)) {
-			return (int) $value; }
+		
+		if( (int) $value == $value ) {
+			$value = (int) $value;
+		
+			if( is_int($value) && preg_match($r['int'],$value)) {
+				return (int) $value; }
+		}
 	} elseif( $type == "float" ) {
 		if( is_float($value) && preg_match($r['float'],$value)) {
 			return (float) $value; }
@@ -30,6 +35,8 @@ function _p_value( $value , $type=false ) {
 		if( is_dir( $value )) {
 			return $value;
 		}
+	} elseif( $type == "text" || $type == "html" ) {
+		return $value;
 	} else {
 # [ TODO ]
 #		if(isset($notification)) {

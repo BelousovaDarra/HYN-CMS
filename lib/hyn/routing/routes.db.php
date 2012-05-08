@@ -19,6 +19,9 @@ class routes_ extends AutoRecord {
 			"active"		=> "boolean",		// active
 		);
 	}
+	protected static function _db_primary_key() {
+		return "route";
+	}
 	static public function routefrompath($path="/") {
 		# string
 		if( !_v($path,"array")) {

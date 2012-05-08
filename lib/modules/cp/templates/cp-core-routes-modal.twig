@@ -1,0 +1,42 @@
+<div class="modal hide" id="add-route">
+	<form class="modal form-horizontal" method="POST">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal" >&times;</a>
+			<h3>{{ _("add a new route") }}</h3>
+		</div>
+		<div class="modal-content">
+			<div class="control-group">
+				<label class="control-label" for="route">{{ _("route")|capitalize }}</label>
+				<div class="controls">
+					<input type="text" id="route" name="route"{% if route %} value="{{ route.route }}"{% endif %} placeholder="/example" />
+					<p class="help-block">
+						{{ _("A route matches on the requested URL, once found it will execute the module and function below.") }}
+					</p>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="module">{{ _("module")|capitalize }}</label>
+				<div class="controls">
+					<select name="module">
+						{% for class, module in modules %}
+						<option value="{{ class }}">{{ class }}</option>
+						{% endfor %}
+					</select>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="route">{{ _("function")|capitalize }}</label>
+				<div class="controls">
+					<input type="text" id="function" name="function"{% if route %} value="{{ route.function }}"{% endif %} placeholder="display" />
+					<p class="help-block">
+						{{ _("If you do not know what to add here, leave it blank. The function will default to <code>display</code>.")|raw }}
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<input type="submit" class="btn btn-primary" name="add-route" value="{{ _("add") }}" />
+			<a data-dismiss="modal" href="" class="btn">{{ _("cancel") }}</a>
+		</div>
+	</form>
+</div>
