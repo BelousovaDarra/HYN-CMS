@@ -115,7 +115,7 @@ class DOM {
 	private function min( $type ) {
 		if( $type != "js" && $type != "css" ) { return; }
 		if( $type == "js" ) {
-			hyn_include( "min" );
+//			hyn_include( "min" );
 			$r			= "";
 			if(count($this -> js)) {foreach( $this -> js as $i => $js ) {
 				$uri				= parse_url( $js );
@@ -133,6 +133,8 @@ class DOM {
 			}}
 
 			if( strlen($r) > 0 ) {
+//				$min_S		= new Minify_Source( array( "id" => sprintf("%s.%s",md5(HYN_URI_REQUEST),"js") , "content" => $r ));
+//				$r		= Minify::combine( array( $min_S ) , array( "contentType" => Minify::TYPE_JS ));
 				file_put_contents( HYN_PATH_CACHE . "js". DS . md5(HYN_URI_REQUEST) . ".js" , $r );
 				$this -> js[]		= "/cache/js/".md5(HYN_URI_REQUEST).".js";
 			}
@@ -142,7 +144,7 @@ class DOM {
 				$r			= "";
 #				$r			= Minify::combine( $jsfiles , array( 'contentType' => Minify::TYPE_JS ));
 				foreach( $jsfiles as $js ) {
-#					$r		.= JSMin::minify( $js );
+#					$r		.= Minify::combine( $js , array( 'contentType' => Minify::TYPE_JS ) );
 					$r		.= $js;
 				}
 				if( strlen($r) > 0 ) {
@@ -150,6 +152,8 @@ class DOM {
 					if( $t	= _filefind( $where , __DIR__ . DS . "js" , "twig" )) {
 						$r				= Twig::parse( $t , array( "content" => $r ));
 					}
+//					$min_S		= new Minify_Source( array( "id" => sprintf("%s_%s.%s",md5(HYN_URI_REQUEST),$where,"js") , "content" => $r ));
+//					$r		= Minify::combine( array( $min_S ) , array( "contentType" => Minify::TYPE_JS ));
 					file_put_contents( HYN_PATH_CACHE . "js" . DS . md5( HYN_URI_REQUEST ) . "_".$where.".js" , $r );
 					$this -> js[]		= "/cache/js/" . md5( HYN_URI_REQUEST) . "_".$where.".js";
 				}
@@ -166,7 +170,8 @@ class DOM {
 			}
 			
 			if( strlen($r) > 0 ) {
-#				$r		= Minify::combine( array( $r ) , array( "contentType" => Minify::TYPE_CSS ));
+//				$min_S		= new Minify_Source( array( "id" => sprintf("%s.%s",md5(HYN_URI_REQUEST),"css") , "content" => $r ));
+//				$r		= Minify::combine( array( $min_S ) , array( "contentType" => Minify::TYPE_CSS ));
 #_debug( $r );
 				if( file_put_contents( HYN_PATH_CACHE . "css" . DS . md5(HYN_URI_REQUEST) . ".css" , $r )) {
 					$this -> css[]		= "/cache/css/".md5(HYN_URI_REQUEST).".css";

@@ -1,6 +1,7 @@
 <?PHP
 if(!defined("HYN")) { exit; }
 
+
 class pageCP extends moduleCP {
 	function name() {
 		return _("page");
@@ -16,7 +17,7 @@ class pageCP extends moduleCP {
 
 		return array(
 			array(
-				"title"				=> _("list"),
+				"title"				=> _("list of current pages"),
 				"template"			=> filefind("page.cp.block.list","page"),
 				"pages"				=> pages::find_all()
 			)

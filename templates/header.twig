@@ -41,7 +41,9 @@
 				</div>#}
 				<div class="btn-group right">
 					{% if visitor.user %}
-						<a class="btn btn-small" href="/login/?logout-user"><i class="icon-lock"></i> {{ _("Log Out") }} {{ visitor.user.realname }}</a>
+						<span class="btn btn-small disabled">{{ visitor.user.realname }}</span>
+						<a class="btn btn-small" href="{{ _routes.cp }}"><i class="icon-cog"></i> {{ _("admin")|capitalize }}</a>
+						<a class="btn btn-small" href="/login/?logout-user"><i class="icon-lock"></i> {{ _("log off")|capitalize }}</a>
 					{% else %}
 						{% set urllogin = "/login/" %}
 						<a class="btn btn-small{% if urllogin == dom.show_uri %} active{% endif %}" href="{{ urllogin }}"><i class="icon-user"></i> {{ _("Sign Up") }}</a>

@@ -1,10 +1,15 @@
 {% include "header" %}
 {% include "cp-submenu" %}
 
-{% if item.description %}
+{% if item.summary or item.description %}
 <div class="well marged-ns">
 	<h2>{{ item.name|capitalize }}</h2>
-	{{ item.description }}
+	{% if item.summary %}
+		<div class="alert alert-info">{{ item.summary }}</div>
+	{% endif %}
+	{% if item.description %}
+		{{ item.description|raw }}
+	{% endif %}
 </div>
 {% endif %}
 
@@ -31,7 +36,7 @@
 		</div>
 	</div>
 	{% endif %}
-	{% if item.settings %}
+	{% if item.cp.settings %}
 	<form class="span6 box-modal form-horizontal" method="POST">
 		<div class="modal-header">
 			<h3>
@@ -39,7 +44,7 @@
 			</h3>
 		</div>
 		<div class="modal-body">
-			{% for name, setting in item.settings %}
+			{% for name, setting in item.cp.settings %}
 				<div class="control-group">
 					<label class="control-label">{{ setting.name }}</label>
 					<div class="controls">
@@ -62,7 +67,7 @@
 		</div>
 	</form>
 	{% endif %}
-	{% for block in item.blocks %}
+	{% for block in item.cp.blocks %}
 		{% include block.template %}
 	{% endfor %}
 </div>

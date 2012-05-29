@@ -17,23 +17,6 @@
 			<h2>{{ _("routes")|capitalize }}</h2>
 		</div>
 		<div class="modal-body">
-			<script type="text/javascript">
-				jQuery(function() {
-					jQuery( ".route-edit").click(function() {
-						jQuery( this ).closest( "tr" ).children( "td[class]" ).each( function( i , elm ) {
-							var inputname	= jQuery(this).attr("class");
-							var inputvalue	= jQuery(this).find("code").html();
-							if( inputname == "module" ) {
-								jQuery( "#add-route form" ).find( "select[name=" + inputname + "] option[value!=" + inputvalue + "]").removeAttr( "selected" );
-								jQuery( "#add-route form" ).find( "select[name=" + inputname + "] option[value=" + inputvalue + "]").attr( "selected" , true );
-							} else {
-								jQuery( "#add-route form" ).find( "input[name=" + inputname + "]" ).attr( "value" , inputvalue );
-							}
-						});
-						jQuery( "#add-route" ).modal( "show" );
-					});
-				});
-			</script>
 			<table class="table table-bordered table-striped">
 				<tr>
 					<th>{{ _("route") }}</th>
@@ -44,11 +27,18 @@
 				{% for route in routes %}
 				<tr>
 					<td class="route"><code>{{ route.route }}</code></td>
-					<td class="module"><code>{{ route.module }}</code></td>
+					<td class="module" 
+						data-popover-placement="top" 
+						data-content="{{ modules[route.module].summary|raw }}" 
+						data-original-title="{{ modules[route.module].name }}" 
+					><code>{{ route.module }}</code></td>
 					<td class="function"><code>{{ route.function }}</code></td>
-					<td class="btn-group">
-						<a class="btn btn-small"><i class="icon-remove-sign"></i></a>
-						<a class="btn btn-small route-edit"><i class="icon-edit"></i></a>
+					<td>
+						<a class="btn btn-info btn-small route-edit"><i class="icon-edit"></i></a>
+						<form method="POST" style="margin: 0; display: inline;">
+							<button class="btn btn-danger btn-small route-del"><i class="icon-remove-sign"></i></button>
+							<input type="hidden" name="del-route" value="{{ route.route }}" />
+						</form>
 					</td>
 				</tr>
 				{% endfor %}

@@ -5,49 +5,90 @@ if(!defined("HYN")) { exit; }
 
 class cp extends module {
 	public function _cp() {
+		
+
+		# we do a redirection after saving through post
+		$this -> redir						= false;
+		
 		$this -> getModulesCP();
 		
 		$this -> baseURI					= $this -> route -> route -> get("route");
 		preg_match( sprintf("/^%s(\/)?([^\/]+)(\/)?([^\/]+)?/i",str_replace("/","\/",$this -> baseURI)) , $this -> route -> request_uri , $m );
 		$this -> act						= isset($m[2]) ? $m[2] : false;
 		$this -> item						= isset($m[4]) ? $m[4] : false;
-		
-		$this -> handleGPC();
+
+		if( method_exists( $this , $this -> act )) {
+			call_user_func( array( $this , $this -> act ) );
+		}
+
+
+
+		if( $this -> redir ) _p_redirect( $this -> route -> request_uri );
 		
 	}
-	private function handleGPC() {
-		$redir								= false;
-		if( $this -> act == "settings" && GPC::post_string( "save-settings") && $this -> item && GPC::post_string( "settings" ) ) {
-			$c								= $this -> classes[$this -> item];
-			$settings						= $c -> settings();
+	private function channels() {
+	}
+	private function users() {
+		$this -> users 						= SiteUser::find_all();
+	
+	}
+	private function settings() {
+		if( GPC::post_string( "save-settings") && $this -> item && GPC::post_string( "settings" ) ) {
+			$c							= $this -> modules[$this -> item];
+			$settings						= $c -> cp -> settings();
 			foreach( GPC::post_string( "settings" ) as $name => $value ) {
 				if( _v($value,$settings[$name]['validates'])) {
 					SaveSiteSetting( $name , $this -> item , _p_value( $value , $settings[$name]['saveas']) );
-					$redir					= true;
+					$this -> redir			= true;
 				} else {
 					$this -> error[]		= _(sprintf("field %s did not validate as a type %s",$settings[$name]['name'],$settings[$name]['type']));
 				}
 			}
 		}
-		if( $this -> act == "routes" && GPC::post_string( "add-route" ) ) {
+	}
+	private function routes() {
+		if( GPC::post_string( "add-route" ) ) {
 			$r								= routes::find_one_by_column( "route" , GPC::post_string( "route" ));
 			if( !$r ) 
 			$r								= new routes;
-			$r -> set( "route" 		, GPC::post_string( "route" ));
-			$r -> set( "module"		, GPC::post_string( "module" ));
+			$r -> set( "route" 	, GPC::post_string( "route" ));
+			$r -> set( "module"	, GPC::post_string( "module" ));
 			$r -> set( "function"	, GPC::post_string( "function" , "display" ));
 			$r -> set( "active" 	, GPC::post_bool( "active" , true ) );
 			$r -> save( );
-			$redir 							= true;
+			$this -> redir							= true;
 		}
-		
-		if( $redir ) _p_redirect( sprintf( "%s/%s" ,$this -> baseURI , $this -> act ));
+		if( GPC::post_string( "del-route" )) {
+			$r								= routes::find_one_by_column( "route" , GPC::post_string( "del-route" ));
+			$r -> delete();
+			$this -> redir							= true;
+		}
+		DOM::add_js( '
+				jQuery( ".route-edit").click(function() {
+					jQuery( this ).closest( "tr" ).children( "td[class]" ).each( function( i , elm ) {
+						var inputname	= jQuery(this).attr("class");
+						var inputvalue	= jQuery(this).find("code").html();
+						if( inputname == "module" ) {
+							jQuery( "#add-route form" ).find( "select[name=" + inputname + "] option[value!=" + inputvalue + "]").removeAttr( "selected" );
+							jQuery( "#add-route form" ).find( "select[name=" + inputname + "] option[value=" + inputvalue + "]").attr( "selected" , true );
+						} else {
+							jQuery( "#add-route form" ).find( "input[name=" + inputname + "]" ).attr( "value" , inputvalue );
+						}
+					});
+					jQuery( "#add-route" ).modal( "show" );
+				});
+				jQuery( ".route-del" ).click(function() {
+					event.preventDefault();
+					if(confirm(\'This will permanently remove this route, resulting in any requests to this route to re-route or fail.\')) {
+						jQuery( this ).parent("form").submit(); 
+					}
+				});
+		' , "body" );
 	}
 	public function display() {
 		
 		$vars			= array(
 			"modules"	=> $this -> modules,
-			"classes"	=> $this -> classes,
 			"baseuri"	=> $this -> baseURI,
 			"act"		=> $this -> act
 		);
@@ -55,7 +96,7 @@ class cp extends module {
 		switch( $this -> act ) {
 			case "settings":
 				if( !$this -> item ) { _p_redirect( $this -> baseURI ); }
-				$vars['item']		= $this -> classes[$this -> item];
+				$vars['item']		= $this -> modules[$this -> item];
 				$vars['class']		= $this -> item;
 				$vars['routes']		= routes::find_by_column( "module" , $this -> item );
 				return $this -> parseTemplate( "cp-module-settings" , $vars );
@@ -63,6 +104,14 @@ class cp extends module {
 			case "routes":
 				$vars['routes']		= routes::find_all();
 				return $this -> parseTemplate( "cp-core-routes" , $vars );
+				break;
+			case "users":
+				$vars['users']		= $this -> users;
+				return $this -> parseTemplate( "cp-core-users" , $vars );
+				break;
+			case "channels":
+				$vars['channels']	= "";
+				return $this -> parseTemplate( "cp-core-channels" , $vars );
 				break;
 			case false:
 				break;
@@ -77,42 +126,15 @@ class cp extends module {
 	*	@note should also include domain modules, first global than overrule with domain
 	*/
 	private function getModulesCP() {
-		$this -> modules 					= array();
 		
-		$modirs		= scandir( HYN_PATH_MODULES );
-		
-		foreach( $modirs as $dir ) {
-			if( $dir == "." || $dir == ".." || $dir == "cp" ) {
-				continue;
-			}
-			if( is_file( HYN_PATH_MODULES . $dir . DS . $dir . ".cp.php" )) {
-				$this -> modules[$dir]		= HYN_PATH_MODULES . $dir . DS;
-			}
+		$ms					= modules::find_by_sql(sprintf("WHERE routable >= %d",0));
+		foreach( $ms as $module ) {
+			// local modules are stored in domain dir instead of global dir
+			if( $module -> get("local") && !$module -> get("cp") ) continue;
+			$class				= $module -> get("folder");
+			$this -> modules[$class]	= $module;
 		}
-		if( HYN_MS_DIR_MODULES ) {
-			$modirs	= scandir( HYN_MS_DIR_MODULES );
-			if( isset($modirs) && _v($modirs,"array") ) {
-				foreach( $modirs as $dir ) {
-					if( is_file( HYN_MS_DIR_MODULES . $dir . DS . $dir . ".cp.php" )) {
-						$this -> modules[$dir]	= HYN_MS_DIR_MODULES . $dir . DS;
-					}
-				}
-			}
-		}
-		$this -> classes					= array();
-		foreach( $this -> modules as $class => $dir ) {
-			// require the cp lib file for this module
-			if( is_file( sprintf( "%smain.lib.php" , $dir ))) {
-				require_once sprintf( "%smain.lib.php" , $dir );
-			}
-			if( is_file(sprintf( "%s%s.cp.php" , $dir , $class ))) {
-				require_once sprintf( "%s%s.cp.php" , $dir , $class );
-			} else { continue; }
-			
-			// instantiate a class for later calling
-			$c								= sprintf( "%sCP" , $class );
-			$this -> classes[$class]		= new $c;
-		}
+
 	}
 	function _SSL_() {
 		return true;

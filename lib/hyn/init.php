@@ -97,9 +97,16 @@ if( HYN != "cmd" ) {
 	hyn_include( "routing" );
 	
 	hyn_include( "twig" );
+	
+	// load push notifications and subscriptions
+	hyn_include( "pushnotify/client" );
+	$pushclient						= new pushclient();
+	if( $pushclient ) 
+		$pushclient -> enable();
 
 	# load url and requested module or load overview module
 	routing::init();
+	
 	# throw the content to the browser
 	routing::flush();
 }

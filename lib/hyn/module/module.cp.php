@@ -7,10 +7,7 @@ if(!defined("HYN")) { exit; }
 */
 
 
-abstract class moduleCP {
-	final public function __construct() {
-		
-	}
+abstract class moduleCP extends module {
 	/**		function to parse the sidemenu with options
 	*/
 	final public function sidemenu() {

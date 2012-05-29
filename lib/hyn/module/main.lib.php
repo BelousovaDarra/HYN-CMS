@@ -7,3 +7,5 @@ require_once "module.lib.php";
 require_once "module.db.php";
 // extends to give admin settings
 require_once "module.cp.php";
+// loads module information
+require_once "modules.db.php";

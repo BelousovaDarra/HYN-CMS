@@ -3,12 +3,31 @@
 		<li><a href="{{ baseuri }}">{{ _("CP") }}</a></li>
 		<li class="dropdown">
 			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+				{{ _("settings")|capitalize }} <b class="caret"></b>
+			</a>
+			<ul class="dropdown-menu">
+				<li><a href="{{ baseuri }}/routes">{{ _("routes")|capitalize }}</a></li>
+			</ul>
+		</li>
+		<li class="dropdown">
+			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
 				{{ _("modules")|capitalize }} <b class="caret"></b>
 			</a>
 			<ul class="dropdown-menu">
-				{% for classdir, class in classes %}
+				{% for classdir, class in modules %}
+					{% if class.cp %}
 					<li><a href="{{ baseuri }}/settings/{{ classdir }}">{{ class.name|capitalize }}</a></li>
+					{% endif %}
 				{% endfor %}
+			</ul>
+		</li>
+		<li class="dropdown">
+			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+				{{ _("users")|capitalize }} <b class="caret"></b>
+			</a>
+			<ul class="dropdown-menu">
+				<li><a href="{{ baseuri }}/users">{{ _("list")|capitalize }}</a></li>
+				{% if visitor.isadmin %}<li><a href="{{ baseuri }}/channels">{{ _("notification & chat channels")|capitalize }}</a></li>{% endif %}
 			</ul>
 		</li>
 	</ul>

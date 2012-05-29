@@ -61,6 +61,10 @@ class Twig {
 		$this -> vars['dom']		= DOM::get_instance();
 		$this -> vars['globals']	= $_SERVER;
 		$this -> vars['visitor']	= $SiteVisitor;
+
+		$cp									= routes::find_one_by_column( "module" , "cp" );
+		$this -> vars['_routes']['cp']
+									= ( $cp ? $cp -> route : false );
 		
 		if( isset($_POST)) {
 			$this -> vars['globals']['post']	= $_POST;	

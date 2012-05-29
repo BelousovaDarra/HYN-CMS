@@ -84,14 +84,16 @@ class page extends module {
 		exit();
 	}
 	public function display() {
-		if( !$this -> page ) {
+		if( !$this -> page && !$this -> page -> notexactsame ) {
 			# if admin
 			#DOM::set_wysiwyg();
 			
 			# [TODO] show 404
+			hyn_include( "errorpage" );
+			$e		= new ErrorPage;
+			return $e -> display();
 		}
 		global $MultiSite;
-		
 		if( $MultiSite -> get("isowner") ) {
 			DOM::set_wysiwyg();
 		}

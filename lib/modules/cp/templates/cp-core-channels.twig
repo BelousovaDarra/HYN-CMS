@@ -1,0 +1,37 @@
+{% include "header" %}
+{% include "cp-submenu" %}
+{% include "cp-push-msg-modal" %}
+
+
+<div class="row marged-ns">
+	<div class="box-modal span12">
+		<div class="modal-header">
+			<h3>{{ _("users") }}</h3>
+		</div>
+		<div class="modal-body">
+			<table id="pusher-users" class="table table-condensed table-striped table-bordered">
+				<tr>
+					<th></th>
+					<th>{{ _("name") }}</th>
+					<th>{{ _("website") }}</th>
+				</tr>
+				<tr class="hide" id="pusher-example">
+					<td class="icon">
+						<i class=""></i>
+					</td>
+					<td class="name" data-original-title="" data-content="" data-popover-placement="bottom">
+						
+					</td>
+					<td class="website">
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="modal-footer">
+
+		</div>
+	</div>
+</div>
+
+
+{% include "footer" %}

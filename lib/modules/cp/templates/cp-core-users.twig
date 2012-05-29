@@ -1,0 +1,37 @@
+{% include "header" %}
+{% include "cp-submenu" %}
+
+<div class="row marged-ns">
+	<form method="POST" class="box-modal span12">
+		<div class="modal-header">
+			<h3>{{ _("list users")|capitalize }}</h3>
+		</div>
+		<div class="modal-body">
+			<table class="table table-striped table-condensed">
+				{% for user in users %}
+				<tr>
+					<td>
+						{{ user.realname }}
+					</td>
+					<td>
+						{{ user.email }}
+					</td>
+					<td>
+						{{ user.state }}
+					</td>
+					<td>
+						<div class="btn-group">
+							<input type="button" class="btn" value="{{ _("delete") }}" />
+						</div>
+					</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+		<div class="modal-footer">
+		
+		</div>
+	</form>
+</div>
+
+{% include "footer" %}

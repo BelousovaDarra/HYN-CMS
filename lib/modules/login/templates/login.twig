@@ -1,48 +1,46 @@
 	{% include "header" %}
 	
 	<div class="row">
-		<div class="span6 box-modal">
+		<form method="POST" class="span6 box-modal">
 			<div class="modal-header">
 				<h1>{% if visitor.user %}{{ _("log out")|capitalize }}{% else %}{{ _("log in")|capitalize }}{% endif %}</h1>
 			</div>
-			<form method="POST" class="form-horizontal">
-				<div class="modal-body">
-				{% if visitor.user %}
-					<p>
-						{{ _("currently logged in as")|capitalize }} <code>{{ visitor.user.realname }}</code>.
-					</p>
-				</div>
-					<div class="modal-footer">
-						<input type="submit" class="btn btn-large btn-primary" name="logout-user" value="{{ _("not you?")|capitalize }} {{ _("log out")|capitalize }}" />
-					</div>
-				{% else %}
-					{% if error.login.general %}
-					<p class="alert alert-error">
-						{{ error.login.general }}
-					</p>
-					{% endif %}
-					<div class="control-group{% if error.login.username %} error{% endif %}">
-						<label class="control-label" for="login-username">{{ _("username")|capitalize }}</label>
-						<div class="controls">
-							<input type="text" class="input" id="login-username" name="login-username" placeholder="{{ _("your e-mail address") }}" />
-							{% if error.login.username %}<p class="help-block">{{ error.login.username }}</p>{% endif %}
-						</div>
-					</div>
-					<div class="control-group{% if error.login.password %} error{% endif %}">
-						<label class="control-label" for="login-password">{{ _("password")|capitalize }}</label>
-						<div class="controls">
-							<input type="password" class="input" id="login-password" name="login-password" />
-							{% if error.login.password %}<p class="help-block">{{ error.login.password }}</p>{% endif %}
-						</div>
+			<div class="modal-body">
+			{% if visitor.user %}
+				<p>
+					{{ _("currently logged in as")|capitalize }} <code>{{ visitor.user.realname }}</code>.
+				</p>
+			</div>
+			<div class="modal-footer">
+					<input type="submit" class="btn btn-large btn-primary" name="logout-user" value="{{ _("not you?")|capitalize }} {{ _("log out")|capitalize }}" />
+			</div>
+			{% else %}
+				{% if error.login.general %}
+				<p class="alert alert-error">
+					{{ error.login.general }}
+				</p>
+				{% endif %}
+				<div class="control-group{% if error.login.username %} error{% endif %}">
+					<label class="control-label" for="login-username">{{ _("username")|capitalize }}</label>
+					<div class="controls">
+						<input type="text" class="input" id="login-username" name="login-username" placeholder="{{ _("your e-mail address") }}" />
+						{% if error.login.username %}<p class="help-block">{{ error.login.username }}</p>{% endif %}
 					</div>
 				</div>
-				<div class="modal-footer">
-					<input type="submit" name="login-user" class="btn btn-primary btn-large" value="{{ _("log in")|capitalize }}" />
-					<input type="submit" name="login-fpw" class="btn btn-large" value="{{ _("recover")|capitalize }}" />
+				<div class="control-group{% if error.login.password %} error{% endif %}">
+					<label class="control-label" for="login-password">{{ _("password")|capitalize }}</label>
+					<div class="controls">
+						<input type="password" class="input" id="login-password" name="login-password" />
+						{% if error.login.password %}<p class="help-block">{{ error.login.password }}</p>{% endif %}
+					</div>
 				</div>
+			</div>
+			<div class="modal-footer">
+				<input type="submit" name="login-user" class="btn btn-primary btn-large" value="{{ _("log in")|capitalize }}" />
+				<input type="submit" name="login-fpw" class="btn btn-large" value="{{ _("recover")|capitalize }}" />
+			</div>
 			{% endif %}
-			</form>
-		</div>
+		</form>
 		{% if allowregistration is sameas(true) or visitor.user %}
 		<div class="span6 box-modal">
 			{% if visitor.user %}

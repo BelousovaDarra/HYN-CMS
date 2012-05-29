@@ -18,8 +18,10 @@
 				<label class="control-label" for="module">{{ _("module")|capitalize }}</label>
 				<div class="controls">
 					<select name="module">
-						{% for class, module in modules %}
-						<option value="{{ class }}">{{ class }}</option>
+						{% for module in modules %}
+						{% if module.routable %}
+						<option value="{{ module.systemname }}">{{ module.name }}</option>
+						{% endif %}
 						{% endfor %}
 					</select>
 				</div>

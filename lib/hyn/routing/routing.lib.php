@@ -22,6 +22,15 @@ class routing {
 	}
 	# [TODO] find file based routings
 	private function findFolderRouting( $path ) {
+		if( HYN_URI_REQUEST == "/pusher/auth" ) {
+			hyn_include( "pushnotify/push" );
+			$pserv						= new pushserver;
+			if( $pserv ) {
+				$pserv -> authAjax();
+			}
+			exit;
+			
+		}
 		# not using $this -> path because we do not want to change it
 		$module							= array_shift( $path );
 		if( isset($module) && _v( $module , "string" )) {
@@ -47,6 +56,7 @@ class routing {
 		$r					= self::get_instance();
 		$call_class			= false;
 		$call_func			= false;
+		hyn_include( "errorpage" );
 		// find class - first by route
 		if( $r -> route && class_exists( $r -> route -> get("module") ) ) {
 			$call_class		= $r -> route -> get("module");
@@ -119,9 +129,13 @@ class routing {
 			return;
 		}
 	}
+	/**
+	*	todo add forced elements to body, but only if <head> tags are found eg proper html (not cmd)
+	*
+	*/
 	static function flush() {
 		$r 					= self::get_instance();
-#_debug( self::$c );
+
 		if( !isset( self::$c ) || !is_object( self::$c )) {
 			if( HYN_DEBUG ) {
 				exit(sprintf("<h1>System malfunctioned</h1><pre>No class found to load module from: %s - %s</pre>.",__FILE__,__LINE__));
@@ -136,8 +150,26 @@ class routing {
 #		if( method_exists( $r -> c , "get_header" )) {
 #			echo $r -> c -> get_header();
 #		}
+		/**
+		*	return function's parsetemplate etc
+		*/
 		if( isset($f)) {
-			echo self::$c -> $f();
+			$html		= self::$c -> $f();
+			// overrule some template elements or add them here forcefully
+			if( HYN == "www" ) {
+				$checkregex		= "/<html(.*?)<\/html>/ims";
+				if( preg_match($checkregex,$html,$m)) {
+					// start fusing the overrules
+
+				}
+			}
+			hyn_include( "min" );
+			if( HYN_DEBUG ) {
+				$min_S		= new Minify_Source( array( "id" => "content" , "content" => $html ));
+				echo Minify::combine( array( $min_S ), array( "contentType" => Minify::TYPE_HTML ) );
+				exit;
+			}
+			echo $html;
 		}
 #		if( method_exists( $r -> c , "get_footer" )) {
 #			echo $r -> c -> get_footer();

@@ -4,13 +4,13 @@ if(!defined("HYN")) { exit; }
 class OnApp_client {
 	private static $c	= null;
 	private function __construct() {
-		if( 	MultiSite::setting( "server" , "onapp" )->get("value")
-			&& MultiSite::setting( "username" , "onapp" ) -> get("value")
-			&& MultiSite::setting( "apikey" , "onapp" ) -> get("value")
+		if( 	SiteSetting( "server" , "onapp" )
+				&& SiteSetting( "username" , "onapp" )
+				&& SiteSetting( "apikey" , "onapp" )
 		) {
-			$this -> host	= MultiSite::setting( "server" 		, "onapp" )->get("value");
-			$this -> un	= MultiSite::setting( "username" 	, "onapp" )->get("value");
-			$this -> pw	= MultiSite::setting( "apikey" 		, "onapp" )->get("value");
+			$this -> host	= SiteSetting( "server" 		, "onapp" );
+			$this -> un		= SiteSetting( "username" 		, "onapp" );
+			$this -> pw		= SiteSetting( "apikey" 		, "onapp" );
 			return true;
 		}
 		throw new Exception( "OnApp Client cannot be initiated, missing domain settings" );
@@ -31,6 +31,13 @@ class OnApp_client {
 	static public function getProfile( $id ) {
 		$c = self::get_instance();
 		$u = new OnApp_Profile;
+		$u -> auth( $c -> host , $c -> un , $c -> pw );
+		return $u -> load( $id );
+	}
+	static public function getVM( $id=NULL ) {
+		if( is_null($id) ) return;
+		$c = self::get_instance();
+		$u = new OnApp_VirtualMachine;
 		$u -> auth( $c -> host , $c -> un , $c -> pw );
 		return $u -> load( $id );
 	}

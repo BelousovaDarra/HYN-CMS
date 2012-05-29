@@ -178,6 +178,12 @@ class SiteVisitor {
 			return false;
 		}
 	}
+	public function isadmin() {
+		if( $this -> user && $this -> user -> get("type") == 0 && $this -> user -> get("admin") ) {
+			return true;
+		}
+		return false;
+	}
 	public function get_right( $r="owner" ) {
 		global $MultiSite;
 		if( !$this -> loggedin() ) {
